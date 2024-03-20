@@ -14,18 +14,22 @@
 # define PARSING_H
 
 # include <stdlib.h>
+# include <stdio.h>
+
+
 typedef enum token {
         W_SPACE = 255,
         _NL,
         RED_IN,
         RED_OUT,
-        H_DOC_IN,
-        H_DOC_OUT,
+        H_DOC_TRUNC,
+        H_DOC_APPEND,
         _PIPE,
         _DOLLAR,
         D_QUOTE,
         S_QUOTE,
-        _WORD
+        _WORD,
+        NULL_TOKEN,
 } token;
     
 typedef struct s_list

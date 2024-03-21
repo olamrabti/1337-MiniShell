@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "parse.h"
 
-char *ft_getenv(char *key, char **envp)
+char *ft_getvalue(char *key, char **envp)
 {
     int i;
     int j;
@@ -42,7 +42,7 @@ char *ft_expand_dollar(char *line, char **envp)
     while (line[i] && line[i] != ' ')
         i++;
     key = ft_strndup(line, i);
-    value = ft_getenv(key, envp);
+    value = ft_getvalue(key, envp);
     if (value == NULL)
         return (NULL);
     tmp = ft_strdup(value);
@@ -56,6 +56,7 @@ t_list *ms_tokenize(char *line, char **envp)
     t_list *head;
     t_list *current;
     int i;
+    char *tmp;
 
     head = malloc(sizeof(t_list));
     head->value = NULL;
@@ -64,106 +65,34 @@ t_list *ms_tokenize(char *line, char **envp)
     head->nxt = NULL;
     current = head;
     i = 0;
+    tmp = NULL;
     while (line[i])
     {
         if (line[i] == '>')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = RED_OUT;
-            current->nxt = NULL;
-        }
+            node_addback(&current, create_node(">", RED_OUT));
         else if (line[i] == '<')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = RED_IN;
-            current->nxt = NULL;
-        }
+            node_addback(&current, create_node("<", RED_IN));
         else if (line[i] == '|')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = _PIPE;
-            current->nxt = NULL;
-        }
+            node_addback(&current, create_node("|", _PIPE));
         else if (line[i] == '$')
         {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = _DOLLAR;
-            current->nxt = NULL;
+            tmp = ft_expand_dollar(&line[i], envp);
+            node_addback(&current, create_node(tmp, _DOLLAR));
         }
         else if (line[i] == '"')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = D_QUOTE;
-            current->nxt = NULL;
-        }
+            node_addback(&current, create_node("\"", D_QUOTE));
         else if (line[i] == '\'')
+            node_addback(&current, create_node("'", S_QUOTE));
+        else if (line[i]== '<' && line[i + 1] == '<')
         {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = S_QUOTE;
-            current->nxt = NULL;
+            node_addback(&current, create_node("<<", H_DOC_TRUNC));
         }
-        else if (line[i]== '<<')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = H_DOC_TRUNC;
-            current->nxt = NULL;
-        }
-        else if (line[i] == '>>')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = NULL;
-            current->type = H_DOC_APPEND;
-            current->nxt = NULL;
-        }
-        else if (line[i]== '$')
-        {
-            current->nxt = malloc(sizeof(t_list));
-            current->nxt->prv = current;
-            current = current->nxt;
-            current->value = ft_expand_dollar(&line[i], envp);
-            current->type = _DOLLAR;
-            current->nxt = NULL;
-            
-        }
-        else if (line[i] == ' ')
-        {
-            if (current->value != NULL)
-            {
-                current->nxt = malloc(sizeof(t_list));
-                current->nxt->prv = current;
-                current = current->nxt;
-                current->value = NULL;
-                current->type = _SPACE;
-                current->nxt = NULL;
-            }
-        }
+        else if (line[i] == '>' && line[i + 1] == '>')
+            node_addback(&current, create_node(">>", H_DOC_APPEND));
         else
         {
             if (current->value == NULL)
-                current->value = ft_strdup(&line[i]);
+                node_addback(&current, create_node(&line[i], _WORD));
             else
                 current->value = ft_strjoin(current->value, &line[i]);
         }

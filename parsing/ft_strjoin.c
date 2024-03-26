@@ -40,25 +40,28 @@ char *ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char *ft_charjoin(char *s1, char c)
 {
-	char	*arr;
-	char	*dest;
-	char	*src;
-	size_t	s1_len;
-	size_t	s2_len;
+	char *arr;
+	char *dest;
+	size_t s1_len;
 
-	dest = (char *)s1;
-	src = (char *)s2;
-	if (!s1 || !s2)
-		return (NULL);
+	dest = s1;
+	if (!s1)
+	{
+		arr = (char *)malloc(sizeof(char) * 2);
+		if (!arr)
+			return (NULL);
+		arr[0] = c;
+		arr[1] = '\0';
+		return (arr);
+	}
 	s1_len = ft_strlen(dest);
-	s2_len = ft_strlen(src);
-	arr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	arr = (char *)malloc(sizeof(char) * (s1_len + 2));
 	if (!arr)
 		return (NULL);
 	ft_memmove(arr, dest, s1_len);
-	ft_memmove(arr + s1_len, src, s2_len);
-	arr[s1_len + s2_len] = '\0';
+	ft_memmove(arr + s1_len, &c, 1);
+	arr[s1_len + 1] = '\0';
 	return (arr);
 }

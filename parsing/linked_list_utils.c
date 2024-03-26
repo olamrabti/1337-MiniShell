@@ -97,3 +97,24 @@ void	remove_list(t_list **list)
 	}
 	*list = NULL;
 }
+
+void print_list(t_list *list)
+{
+	t_list	*temp;
+
+	temp = list;
+	while (temp)
+	{
+		printf("value: -%s-  token : %d\n", temp->value, temp->type);
+		temp = temp->nxt;
+	}
+}
+
+t_list *get_last_node(t_list *list)
+{
+	if (!list)
+		return (NULL);
+	while (list->nxt)
+		list = list->nxt;
+	return (list);
+}

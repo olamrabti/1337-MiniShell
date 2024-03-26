@@ -21,7 +21,7 @@
 
 
 typedef enum token {
-        W_SPACE = 255,
+        W_SPACE = 1,
         _NL,
         RED_IN,
         RED_OUT,
@@ -46,6 +46,7 @@ typedef struct s_list
 char	*ft_strdup(const char *s);
 char *ft_strndup(char *s, int n);
 char	*ft_strjoin(char const *s1, char const *s2);
+char *ft_charjoin(char *s1, char c);
 int	ft_strcmp(const char *s1, const char *s2);
 char *ft_memcpy(void *dst, const void *src, size_t n);
 char *ft_memmove(void *dst, const void *src, size_t len);
@@ -56,8 +57,10 @@ t_list *ms_tokenize(char *line, char **envp);
 t_list	*create_node(char *value, token type);
 int	node_addfront(t_list **list, t_list *new);
 int	node_addback(t_list **list, t_list *new);
-void	delete_node(t_list *node);
+int	delete_node(t_list *node);
 void	remove_list(t_list **list);
+void print_list(t_list *list);
+t_list *get_last_node(t_list *list);
 
 
 #endif

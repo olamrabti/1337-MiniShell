@@ -60,6 +60,9 @@ char *ft_strndup(char *s, int n)
 {
     char *copy;
     int i;
+
+	if (!s)
+		return (NULL);
     copy = malloc(n + 1);
     if (!copy)
         return (NULL);

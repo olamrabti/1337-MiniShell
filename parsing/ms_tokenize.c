@@ -58,43 +58,46 @@ t_list *ms_tokenize(char *line, char **envp)
     int i;
     char *tmp;
 
-    head = malloc(sizeof(t_list));
-    head->value = NULL;
-    head->type = NULL_TOKEN;
-    head->prv = NULL;
-    head->nxt = NULL;
+    head = create_node(NULL, NULL_TOKEN);
     current = head;
     i = 0;
     tmp = NULL;
     while (line[i])
     {
-        if (line[i] == '>')
-            node_addback(&current, create_node(">", RED_OUT));
+        if (line[i]== '<' && line[i + 1] == '<')
+        {
+            node_addback(&current, create_node(ft_strdup("<<"), H_DOC_TRUNC));
+            i++;
+        }
+        else if (line[i] == '>' && line[i + 1] == '>')
+        {
+           node_addback(&current, create_node(ft_strdup(">>"), H_DOC_APPEND));
+           i++;
+        }
+        else if (line[i] == '>')
+            node_addback(&current, create_node(ft_strdup(">"), RED_OUT));
         else if (line[i] == '<')
-            node_addback(&current, create_node("<", RED_IN));
+            node_addback(&current, create_node(ft_strdup("<"), RED_IN));
         else if (line[i] == '|')
-            node_addback(&current, create_node("|", _PIPE));
+            node_addback(&current, create_node(ft_strdup("|"), _PIPE));
+        else if (line[i] == '"')
+            node_addback(&current, create_node(ft_strdup("\""), D_QUOTE));
+        else if (line[i] == '\'')
+            node_addback(&current, create_node(ft_strdup("'"), S_QUOTE));
         else if (line[i] == '$')
         {
             tmp = ft_expand_dollar(&line[i], envp);
             node_addback(&current, create_node(tmp, _DOLLAR));
+            i += ft_strlen(tmp) - 1;
+            free(tmp);
         }
-        else if (line[i] == '"')
-            node_addback(&current, create_node("\"", D_QUOTE));
-        else if (line[i] == '\'')
-            node_addback(&current, create_node("'", S_QUOTE));
-        else if (line[i]== '<' && line[i + 1] == '<')
-        {
-            node_addback(&current, create_node("<<", H_DOC_TRUNC));
-        }
-        else if (line[i] == '>' && line[i + 1] == '>')
-            node_addback(&current, create_node(">>", H_DOC_APPEND));
         else
         {
-            if (current->value == NULL)
-                node_addback(&current, create_node(&line[i], _WORD));
+            current = get_last_node(current);
+            if (current && current->type == _WORD)
+            current->value = ft_charjoin(current->value, line[i]);
             else
-                current->value = ft_strjoin(current->value, &line[i]);
+                node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
         }
         i++;
     }

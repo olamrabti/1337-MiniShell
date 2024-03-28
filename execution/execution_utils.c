@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 00:28:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/03/28 05:38:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		execute_builtin(t_shell *shell, t_cmd *command)
 {

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 22:52:40 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 00:26:18 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/03/28 06:00:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 #include <termios.h>                // tcsetattr, tcgetattr
 #include <sys/ioctl.h>              // ioctl
 #include <curses.h>                 // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-
 
 
 #define PROMPT "minishell$ "
@@ -91,6 +90,8 @@ typedef struct s_shell
     t_cmd *cmd;
     int status;
 } t_shell;
+
+
 
 void ft_putstr(char *str);
 void ft_putchar(char c);

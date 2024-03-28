@@ -45,7 +45,7 @@ typedef struct s_list
 
 char	*ft_strdup(const char *s);
 char *ft_strndup(char *s, int n);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char *ft_charjoin(char *s1, char c);
 int	ft_strcmp(const char *s1, const char *s2);
 char *ft_memcpy(void *dst, const void *src, size_t n);
@@ -54,6 +54,7 @@ int ft_strlen(const char *s);
 char *ft_getvalue(char *key, char **envp);
 char *ft_expand_dollar(char *line, char **envp);
 t_list *ms_tokenize(char *line, char **envp);
+void ms_parse(t_list **list, char **envp);
 t_list	*create_node(char *value, token type);
 int	node_addfront(t_list **list, t_list *new);
 int	node_addback(t_list **list, t_list *new);

@@ -40,6 +40,27 @@ char *ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
+char *ft_strjoin(char *s1, char *s2)
+{
+	char *arr;
+	char *dest;
+	size_t s1_len;
+	size_t s2_len;
+
+	dest = s1;
+	if (!s1 || !s2)
+		return (NULL);
+	s1_len = ft_strlen(dest);
+	s2_len = ft_strlen(s2);
+	arr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!arr)
+		return (NULL);
+	ft_memmove(arr, dest, s1_len);
+	ft_memmove(arr + s1_len, s2, s2_len);
+	arr[s1_len + s2_len] = '\0';
+	return (arr);
+}
+
 char *ft_charjoin(char *s1, char c)
 {
 	char *arr;

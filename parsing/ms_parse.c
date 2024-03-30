@@ -70,21 +70,30 @@ int handle_double_quotes(t_list **list, char **envp)
             i++;
             while (current->nxt && current->nxt->type != D_QUOTE)
             {
-                tmp = ft_expand_dollar(current->value, envp);
-                if (tmp == NULL)
-                    return 1;
-                free(current->value);
-                free(current->nxt->value);
-                free(current->nxt);
-                current->value = tmp;
-                current->type = _WORD;
-                current->nxt = current->nxt->nxt;
+                if (current->nxt && current->nxt->type == _DOLLAR)
+                {
+                    tmp = ft_strjoin(current->value, ft_expand_dollar(current->nxt->value, envp));
+                    free(current->value);
+                    free(current->nxt->value);
+                    free(current->nxt);
+                    current->value = tmp;
+                    current->type = _WORD;
+                    current->nxt = current->nxt->nxt;
+                }
+                else
+                {
+                    tmp = ft_strjoin(current->value, current->nxt->value);
+                    free(current->value);
+                    free(current->nxt->value);
+                    free(current->nxt);
+                    current->value = tmp;
+                    current->type = _WORD;
+                    current->nxt = current->nxt->nxt;
+                }
             }
-            if (current->nxt->type == D_QUOTE)
+            if (current->nxt && current->nxt->type == D_QUOTE)
             {
-                tmp = ft_expand_dollar(current->value, envp);
-                if (tmp == NULL)
-                    return 1;
+                tmp = ft_strjoin(current->value, current->nxt->value);
                 free(current->value);
                 free(current->nxt->value);
                 free(current->nxt);
@@ -109,4 +118,19 @@ void ms_parse(t_list **list, char **envp)
     // handle double quotes
     if (handle_double_quotes(list, envp) == 1)
         return ;
+    // if (check_tokens(*list) == 1)
+    //     return ;
 }
+
+// int check_tokens(t_list *list)
+// {
+//     t_list *current;
+
+//     current = list;
+//     while (current)
+//     {
+//         // if | .. 
+//         // throw syntax error 
+//     }
+//     return 0;
+// }

@@ -18,50 +18,46 @@ char *ft_getvalue(char *key, char **envp)
     int j;
     
     i = 0;
+    printf("key: -%s-\n", key);
     while (envp[i])
     {
-        if(ft_strcmp(key, envp[i]) == 0)
+        if(ft_strncmp(key, envp[i], ft_strlen(key)) == 0)
         {
             j = 0;
             while (envp[i][j] != '=')
                 j++;
             return (ft_strdup(&envp[i][j + 1]));
         }
+        printf("%s\n", envp[i]);
         i++;
     }
     return (NULL);
 }
 
-char *ft_expand_dollar(char *line, char **envp)
+char *ft_expand_dollar(char *key, char **envp)
 {
-    int i;
     char *value;
-    char *key;
-    char *tmp;
-    i = 0;
-    while (line[i] && line[i] != ' ')
-        i++;
-    key = ft_strndup(line, i);
-    value = ft_getvalue(key, envp);
-    if (value == NULL)
-        return (NULL);
-    tmp = ft_strdup(value);
-    free(key);
-    free(value);
-    return (tmp);
+    if (key && key[1] == '\0')
+        return (key);
+    value = ft_getvalue(key + 1, envp);
+    if (!value)
+        return (key);
+    return (value);
 }
+
 
 t_list *ms_tokenize(char *line, char **envp)
 {
+    (void ) envp;
     t_list *head;
     t_list *current;
     int i;
-    char *tmp;
+    int j;
 
     head = create_node(NULL, NULL_TOKEN);
     current = head;
     i = 0;
-    tmp = NULL;
+    j = 0;
     while (line[i])
     {
         if (line[i]== '<' && line[i + 1] == '<')
@@ -86,16 +82,19 @@ t_list *ms_tokenize(char *line, char **envp)
             node_addback(&current, create_node(ft_strdup("'"), S_QUOTE));
         else if (line[i] == '$')
         {
-            tmp = ft_expand_dollar(&line[i], envp);
-            node_addback(&current, create_node(tmp, _DOLLAR));
-            i += ft_strlen(tmp) - 1;
-            free(tmp);
+            j = 1;
+            while (line [i + j] && (line[i + j] != ' ' || line[i + j] != '"'))
+                j++;
+            printf("j: %d\n", j); 
+            // still not fixed yet 
+            node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
+            i += j - 1;
         }
         else
         {
             current = get_last_node(current);
             if (current && current->type == _WORD)
-            current->value = ft_charjoin(current->value, line[i]);
+                current->value = ft_charjoin(current->value, line[i]);
             else
                 node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
         }

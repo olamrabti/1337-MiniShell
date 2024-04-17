@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/17 17:42:41 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:30:29 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ t_list *ms_tokenize(char *line, char **envp)
             else
                 node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
         }
-        // [x] add W_SPACE
         i++;
     }
     return (head);

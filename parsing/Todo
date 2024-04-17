@@ -22,3 +22,5 @@ As a start :
 
 // COMMENT :
 Til here the parsing is done.
+
+git config --global user.email yourname@email.address

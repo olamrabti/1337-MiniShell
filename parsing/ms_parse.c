@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/17 19:25:14 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:33:42 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int handle_sq(t_list **list)
             i++;
             while (curr && curr->type != S_QUOTE)
             {
-                // [x] : to fix : doesnt work when its only whitespace inside (doesnt change type to word)!!
                 if (curr->nxt && curr->nxt->type != S_QUOTE)
                 {
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
@@ -52,7 +51,6 @@ int handle_sq(t_list **list)
     return i;
 }
 
-// [x] WHEN $ is proceeded by none double quote it doesnt expand (figure out why)
 int handle_dq(t_list **list, char **envp)
 {
     t_list *curr;
@@ -137,7 +135,6 @@ void ms_parse(t_list **list, char **envp)
         printf("quote>\n");
         return;
     }
-    // [x] expand right after handling single quote. remove it from Double quotes.
     // handle double quotes
     if (handle_dq(list, envp) == 1)
         return;
@@ -155,7 +152,7 @@ void ms_parse(t_list **list, char **envp)
 //     while (current)
 //     {
 //         // if | .. must have a word before and after
-//         // throw syntax error
+//         // throw syntax error return -1;
 //     }
 //     return 0;
 // }

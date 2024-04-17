@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 03:32:17 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 06:05:20 by oumimoun         ###   ########.fr       */
+/*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
+/*   Updated: 2024/04/17 16:20:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		ft_cd(t_shell *shell, char **argv)
+void   ft_cd(char *str)
 {
-
+    
 }

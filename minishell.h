@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 22:52:40 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 06:00:05 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:30:26 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,8 @@ typedef struct s_env
 {
     char *key;
     char *value;
+    struct s_env *next;
 } t_env;
-
-typedef struct s_cmd
-{
-    char **av;
-    char *cmd;
-    int pipe;
-    int redir;
-    int redir_type;
-    char *redir_file;
-    struct s_cmd *next;
-} t_cmd;
-
-typedef struct s_shell
-{
-    t_env *env;
-    t_cmd *cmd;
-    int status;
-} t_shell;
 
 
 
@@ -104,7 +87,7 @@ void ft_putnbr_fd(int n, int fd);
 
 int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
-int ft_strncmp(char *s1, char *s2, int n);
+int ft_strncmp(char *s1, char *s2, unsigned int n);
 char *ft_strdup(char *str);
 
 #endif

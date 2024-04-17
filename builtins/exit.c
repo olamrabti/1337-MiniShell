@@ -6,13 +6,8 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 06:02:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:37:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_exit(t_shell *shell, char **args)
-{
-
-}

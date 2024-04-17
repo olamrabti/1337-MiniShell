@@ -6,13 +6,9 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/03/28 06:01:38 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:36:26 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		ft_unset(t_shell *shell, char **argv)
-{
-
-}

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/17 14:13:02 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:42:41 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 int	ft_isdigit(int d)
 {
 	if (d >= '0' && d <= '9')
+		return (1);
+	return (0);
+}
+int	ft_isspace(int d)
+{
+	if (d == ' ' || (d >= 9 && d <= 13))
 		return (1);
 	return (0);
 }
@@ -48,7 +54,6 @@ char *ft_getvalue(char *key, char **envp)
                 j++;
             return (ft_strdup(&envp[i][j + 1]));
         }
-        printf("%s\n", envp[i]);
         i++;
     }
     return (NULL);
@@ -57,8 +62,9 @@ char *ft_getvalue(char *key, char **envp)
 char *ft_expand(char *key, char **envp)
 {
     char *value;
-    if (key && key[1] == '\0') // seems ghalat, can lead to a SEGFAULT
-        return (key);
+    
+    if (key && key[1] == '\0')
+        return (NULL);
     value = ft_getvalue(key + 1, envp);
     if (!value)
         return (key);
@@ -103,10 +109,17 @@ t_list *ms_tokenize(char *line, char **envp)
         else if (line[i] == '$')
         {
             j = 1;
-            while ((line [i + j]) && ft_isalnum(line[i + j]))
+            while ((line [i + j]) && ft_isalnum(line[i + j]) && line[i+j] != '$')
                 j++;
-            // [x] storing variable name still not fixed yet 
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
+            i += j - 1;
+        }
+        else if (ft_isspace(line[i]))
+        {
+            j = 1;
+            while ((line [i + j]) && ft_isspace(line[i + j]))
+                j++;
+            node_addback(&current, create_node(ft_strndup(&line[i], j), W_SPACE));
             i += j - 1;
         }
         else
@@ -117,7 +130,7 @@ t_list *ms_tokenize(char *line, char **envp)
             else
                 node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
         }
-        // [ ] add W_SPACE
+        // [x] add W_SPACE
         i++;
     }
     return (head);

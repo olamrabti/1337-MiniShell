@@ -6,14 +6,13 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/17 14:29:52 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:25:14 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-// [x] do not include single quotes in the word.
-int  handle_sq(t_list **list)
+int handle_sq(t_list **list)
 {
     t_list *curr;
     char *tmp;
@@ -30,30 +29,30 @@ int  handle_sq(t_list **list)
             i++;
             while (curr && curr->type != S_QUOTE)
             {
-                if (!curr->nxt)
+                // [x] : to fix : doesnt work when its only whitespace inside (doesnt change type to word)!!
+                if (curr->nxt && curr->nxt->type != S_QUOTE)
                 {
-                    curr->type = _WORD;
-                    break ;
+                    tmp = ft_strjoin(curr->value, curr->nxt->value);
+                    free(curr->value);
+                    curr->value = tmp;
+                    delete_node(curr->nxt);
                 }
-                if (curr->nxt && curr->nxt->type == S_QUOTE)
-                    break ;
-                tmp = ft_strjoin(curr->value, curr->nxt->value);
-                free(curr->value);
-                delete_node(curr->nxt);
-                curr->value = tmp;
                 curr->type = _WORD;
+                if (!curr->nxt || curr->nxt->type == S_QUOTE)
+                    break;
             }
         }
         if (curr && curr->type == S_QUOTE && i % 2 != 0)
+        {
+            delete_node(curr);
             i++;
-        else if (curr)
-            curr = curr->nxt;
+        }
+        curr = curr->nxt;
     }
     return i;
 }
 
-// [ ] do not include double quotes in the word.
-// [ ] WHEN $ is proceeded by none double quote it doesnt expand (figure out why) 
+// [x] WHEN $ is proceeded by none double quote it doesnt expand (figure out why)
 int handle_dq(t_list **list, char **envp)
 {
     t_list *curr;
@@ -71,34 +70,63 @@ int handle_dq(t_list **list, char **envp)
             i++;
             while (curr && curr->type != D_QUOTE)
             {
-                printf("cuurr value -%s-  type : %d\n",curr->value, curr->type);
-                if (curr && curr->type == _DOLLAR)
+                if (curr->nxt && curr->nxt->type != D_QUOTE)
                 {
-                    tmp = ft_strdup(ft_expand(curr->value, envp));
-                    printf("tmp : %s\n", tmp);
+                    if (curr->nxt && curr->nxt->type == _DOLLAR)
+                    {
+                        tmp = ft_expand(curr->nxt->value, envp);
+                        free(curr->nxt->value);
+                        curr->nxt->value = tmp;
+                    }
+                    tmp = ft_strjoin(curr->value, curr->nxt->value);
                     free(curr->value);
                     curr->value = tmp;
+                    delete_node(curr->nxt);
                 }
-                if (!curr->nxt)
-                {
-                    curr->type = _WORD;
-                    break ;
-                }
-                if (curr->nxt && curr->nxt->type == D_QUOTE)
-                    break ;
-                tmp = ft_strjoin(curr->value, curr->nxt->value);
-                free(curr->value);
-                delete_node(curr->nxt);
-                curr->value = tmp;
                 curr->type = _WORD;
+                if (!curr->nxt || curr->nxt->type == D_QUOTE)
+                    break;
             }
         }
         if (curr && curr->type == D_QUOTE && i % 2 != 0)
+        {
+            delete_node(curr);
             i++;
-        else if (curr)
-            curr = curr->nxt;
+        }
+        curr = curr->nxt;
     }
     return i;
+}
+void remove_w_space(t_list **list)
+{
+    t_list	*temp;
+
+	temp = *list;
+	while (temp)
+	{
+		if (temp->type == W_SPACE)
+            delete_node(temp);
+		temp = temp->nxt;
+	}
+}
+
+void expand_all(t_list **list, char **envp)
+{
+    t_list	*curr;
+    char *tmp;
+
+	curr = *list;
+	while (curr)
+	{
+		if (curr->type == _DOLLAR)
+        {
+            tmp = ft_expand(curr->value, envp);
+            free(curr->value);
+            curr->value = tmp;
+            curr->type = _WORD;
+        }
+		curr = curr->nxt;
+	}
 }
 
 void ms_parse(t_list **list, char **envp)
@@ -107,11 +135,14 @@ void ms_parse(t_list **list, char **envp)
     if (handle_sq(list) % 2 != 0)
     {
         printf("quote>\n");
-        return ;
+        return;
     }
+    // [x] expand right after handling single quote. remove it from Double quotes.
     // handle double quotes
     if (handle_dq(list, envp) == 1)
-        return ;
+        return;
+    expand_all(list, envp);
+    remove_w_space(list);
     // if (check_tokens(*list) == 1)
     //     return ;
 }
@@ -123,8 +154,8 @@ void ms_parse(t_list **list, char **envp)
 //     current = list;
 //     while (current)
 //     {
-//         // if | .. 
-//         // throw syntax error 
+//         // if | .. must have a word before and after
+//         // throw syntax error
 //     }
 //     return 0;
 // }

@@ -6,106 +6,97 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/03/03 18:09:53 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 14:29:52 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-int  handle_single_quotes(t_list **list)
+// [x] do not include single quotes in the word.
+int  handle_sq(t_list **list)
 {
-    t_list *current;
+    t_list *curr;
     char *tmp;
     int i;
 
-
-    current = *list;
+    curr = *list;
     i = 2;
-    while (current)
+    while (curr)
     {
-        if (current->type == S_QUOTE && i % 2 == 0)
+        if (curr->type == S_QUOTE && i % 2 == 0)
         {
+            delete_node(curr); // frees but doesnt move to the next node
+            curr = curr->nxt;
             i++;
-            while (current->nxt && current->nxt->type != S_QUOTE)
+            while (curr && curr->type != S_QUOTE)
             {
-                tmp = ft_strjoin(current->value, current->nxt->value);
-                free(current->value);
-                free(current->nxt->value);
-                free(current->nxt);
-                current->value = tmp;
-                current->type = _WORD;
-                current->nxt = current->nxt->nxt;
-            }
-            if (current->nxt->type == S_QUOTE)
-            {
-                tmp = ft_strjoin(current->value, current->nxt->value);
-                free(current->value);
-                free(current->nxt->value);
-                free(current->nxt);
-                current->value = tmp;
-                current->type = _WORD;
-                current->nxt = current->nxt->nxt;
+                if (!curr->nxt)
+                {
+                    curr->type = _WORD;
+                    break ;
+                }
+                if (curr->nxt && curr->nxt->type == S_QUOTE)
+                    break ;
+                tmp = ft_strjoin(curr->value, curr->nxt->value);
+                free(curr->value);
+                delete_node(curr->nxt);
+                curr->value = tmp;
+                curr->type = _WORD;
             }
         }
-        if (current->type == S_QUOTE && i % 2 != 0)
+        if (curr && curr->type == S_QUOTE && i % 2 != 0)
             i++;
-        else
-            current = current->nxt;
+        else if (curr)
+            curr = curr->nxt;
     }
     return i;
 }
 
-int handle_double_quotes(t_list **list, char **envp)
+// [ ] do not include double quotes in the word.
+// [ ] WHEN $ is proceeded by none double quote it doesnt expand (figure out why) 
+int handle_dq(t_list **list, char **envp)
 {
-    t_list *current;
+    t_list *curr;
     char *tmp;
     int i;
 
-    current = *list;
+    curr = *list;
     i = 0;
-    while (current)
+    while (curr)
     {
-        if (current->type == D_QUOTE && i % 2 == 0)
+        if (curr->type == D_QUOTE && i % 2 == 0)
         {
+            delete_node(curr); // frees but doesnt move to the next node
+            curr = curr->nxt;
             i++;
-            while (current->nxt && current->nxt->type != D_QUOTE)
+            while (curr && curr->type != D_QUOTE)
             {
-                if (current->nxt && current->nxt->type == _DOLLAR)
+                printf("cuurr value -%s-  type : %d\n",curr->value, curr->type);
+                if (curr && curr->type == _DOLLAR)
                 {
-                    tmp = ft_strjoin(current->value, ft_expand_dollar(current->nxt->value, envp));
-                    free(current->value);
-                    free(current->nxt->value);
-                    free(current->nxt);
-                    current->value = tmp;
-                    current->type = _WORD;
-                    current->nxt = current->nxt->nxt;
+                    tmp = ft_strdup(ft_expand(curr->value, envp));
+                    printf("tmp : %s\n", tmp);
+                    free(curr->value);
+                    curr->value = tmp;
                 }
-                else
+                if (!curr->nxt)
                 {
-                    tmp = ft_strjoin(current->value, current->nxt->value);
-                    free(current->value);
-                    free(current->nxt->value);
-                    free(current->nxt);
-                    current->value = tmp;
-                    current->type = _WORD;
-                    current->nxt = current->nxt->nxt;
+                    curr->type = _WORD;
+                    break ;
                 }
-            }
-            if (current->nxt && current->nxt->type == D_QUOTE)
-            {
-                tmp = ft_strjoin(current->value, current->nxt->value);
-                free(current->value);
-                free(current->nxt->value);
-                free(current->nxt);
-                current->value = tmp;
-                current->type = _WORD;
-                current->nxt = current->nxt->nxt;
+                if (curr->nxt && curr->nxt->type == D_QUOTE)
+                    break ;
+                tmp = ft_strjoin(curr->value, curr->nxt->value);
+                free(curr->value);
+                delete_node(curr->nxt);
+                curr->value = tmp;
+                curr->type = _WORD;
             }
         }
-        if (current->type == D_QUOTE && i % 2 != 0)
+        if (curr && curr->type == D_QUOTE && i % 2 != 0)
             i++;
-        else
-            current = current->nxt;
+        else if (curr)
+            curr = curr->nxt;
     }
     return i;
 }
@@ -113,10 +104,13 @@ int handle_double_quotes(t_list **list, char **envp)
 void ms_parse(t_list **list, char **envp)
 {
     // handle single quotes
-    if (handle_single_quotes(list) == 1)
+    if (handle_sq(list) % 2 != 0)
+    {
+        printf("quote>\n");
         return ;
+    }
     // handle double quotes
-    if (handle_double_quotes(list, envp) == 1)
+    if (handle_dq(list, envp) == 1)
         return ;
     // if (check_tokens(*list) == 1)
     //     return ;

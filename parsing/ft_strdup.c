@@ -67,11 +67,11 @@ char *ft_strndup(char *s, int n)
     if (!copy)
         return (NULL);
     i = 0;
+    copy[n] = '\0';
     while (i < n)
     {
         copy[i] = s[i];
         i++;
     }
-    copy[i] = '\0';
     return (copy);
 }

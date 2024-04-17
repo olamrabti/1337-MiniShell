@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/03/03 18:35:04 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:27:48 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *ft_memcpy(void *dst, const void *src, size_t n);
 char *ft_memmove(void *dst, const void *src, size_t len);
 int ft_strlen(const char *s);
 char *ft_getvalue(char *key, char **envp);
-char *ft_expand_dollar(char *line, char **envp);
+char *ft_expand(char *line, char **envp);
 t_list *ms_tokenize(char *line, char **envp);
 void ms_parse(t_list **list, char **envp);
 t_list	*create_node(char *value, token type);

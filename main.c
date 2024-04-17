@@ -16,6 +16,7 @@ int main( int ac , char *av[], char**envp)
         printf("%s\n", line);
         list = ms_tokenize(line, envp);
         print_list(list);
+        printf("-------Parsing:--------\n");
         ms_parse(&list, envp);
         printf("-------Parsed:--------\n");
         print_list(list);

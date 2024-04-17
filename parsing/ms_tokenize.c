@@ -6,11 +6,31 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/03/04 15:37:12 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/17 14:13:02 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+
+int	ft_isdigit(int d)
+{
+	if (d >= '0' && d <= '9')
+		return (1);
+	return (0);
+}
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}
+
+int	ft_isalnum(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
+	return (0);
+}
 
 char *ft_getvalue(char *key, char **envp)
 {
@@ -34,10 +54,10 @@ char *ft_getvalue(char *key, char **envp)
     return (NULL);
 }
 
-char *ft_expand_dollar(char *key, char **envp)
+char *ft_expand(char *key, char **envp)
 {
     char *value;
-    if (key && key[1] == '\0')
+    if (key && key[1] == '\0') // seems ghalat, can lead to a SEGFAULT
         return (key);
     value = ft_getvalue(key + 1, envp);
     if (!value)
@@ -83,10 +103,9 @@ t_list *ms_tokenize(char *line, char **envp)
         else if (line[i] == '$')
         {
             j = 1;
-            while (line [i + j] && (line[i + j] != ' ' || line[i + j] != '"'))
+            while ((line [i + j]) && ft_isalnum(line[i + j]))
                 j++;
-            printf("j: %d\n", j); 
-            // still not fixed yet 
+            // [x] storing variable name still not fixed yet 
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
             i += j - 1;
         }
@@ -98,6 +117,7 @@ t_list *ms_tokenize(char *line, char **envp)
             else
                 node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
         }
+        // [ ] add W_SPACE
         i++;
     }
     return (head);

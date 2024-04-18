@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/03/04 15:37:12 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/18 08:46:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-// [ ] the function that will fill the linked list with the values from the av[].
 t_list ft_fill_list(int ac, char **av)
 {
     int i;
@@ -26,7 +25,6 @@ t_list ft_fill_list(int ac, char **av)
 }
 char *ft_expand(char *str);
 
-//[ ] the function that will assign each node in the linked list to its type (token)
 //NOTE ft_tokenize will be called for each node while filling the linked list.
 void ft_tokenize(t_list **list, char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/17 11:48:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/18 08:58:11 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int ft_strncmp(char *s1, char *s2, unsigned int n)
     }
     return (0);
 }
-
 
 void ft_echo(char **str)
 {

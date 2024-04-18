@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 22:52:40 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/17 11:30:26 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:09:18 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
 int ft_strncmp(char *s1, char *s2, unsigned int n);
 char *ft_strdup(char *str);
+char	**ft_split(char const *s, char c);
 
 #endif

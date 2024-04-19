@@ -5,7 +5,6 @@ int main( int ac , char *av[], char**envp)
 {
     (void)ac;
     (void)av;
-    (void)envp;
     t_list *list;
 
     while (1)
@@ -13,10 +12,13 @@ int main( int ac , char *av[], char**envp)
         char *line = readline("minishell$ ");
         if (line == NULL)
             break;
+        if (*line)
+            add_history(line);
         printf("%s\n", line);
         list = ms_tokenize(line, envp);
+        if (!list)
+            break ;
         print_list(list);
-        printf("-------Parsing:--------\n");
         ms_parse(&list, envp);
         printf("-------Parsed:--------\n");
         print_list(list);

@@ -6,51 +6,131 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/18 08:46:16 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:45:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-t_list ft_fill_list(int ac, char **av)
+int	ft_isdigit(int d)
 {
-    int i;
-    t_list **list;
-    i = 0;
-    while (av[i])
-    {
-        ft_tokenize(list, av[i++]);
-    }
-    
+	if (d >= '0' && d <= '9')
+		return (1);
+	return (0);
 }
-char *ft_expand(char *str);
-
-//NOTE ft_tokenize will be called for each node while filling the linked list.
-void ft_tokenize(t_list **list, char *str)
+int	ft_isspace(int d)
 {
-    char *tmp;
+	if (d == ' ' || (d >= 9 && d <= 13))
+		return (1);
+	return (0);
+}
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}
+
+int	ft_isalnum(int c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
+	return (0);
+}
+
+char *ft_getvalue(char *key, char **envp)
+{
     int i;
+    int j;
     
-    tmp = str;
     i = 0;
-    if (str[i] == '|')
+    printf("key: -%s-\n", key);
+    while (envp[i])
     {
-        if (str[i + 1] && *list)
-            node_addback("|", _PIPE);
+        if(ft_strncmp(key, envp[i], ft_strlen(key)) == 0)
+        {
+            j = 0;
+            while (envp[i][j] != '=')
+                j++;
+            return (ft_strdup(&envp[i][j + 1]));
+        }
+        i++;
     }
-    else if (str[i] == '$')
+    return (NULL);
+}
+
+char *ft_expand(char *key, char **envp)
+{
+    char *value;
+    
+    if (key && key[1] == '\0')
+        return (NULL);
+    value = ft_getvalue(key + 1, envp);
+    if (!value)
+        return (key);
+    return (value);
+}
+
+
+t_list *ms_tokenize(char *line, char **envp)
+{
+    (void ) envp;
+    t_list *head;
+    t_list *current;
+    int i;
+    int j;
+
+    head = create_node(NULL, NULL_TOKEN);
+    current = head;
+    i = 0;
+    j = 0;
+    while (line[i])
     {
-        tmp = ft_expand(str);
-        node_addback(tmp, _DOLLAR); 
+        if (line[i]== '<' && line[i + 1] == '<')
+        {
+            node_addback(&current, create_node(ft_strdup("<<"), H_DOC_TRUNC));
+            i++;
+        }
+        else if (line[i] == '>' && line[i + 1] == '>')
+        {
+           node_addback(&current, create_node(ft_strdup(">>"), H_DOC_APPEND));
+           i++;
+        }
+        else if (line[i] == '>')
+            node_addback(&current, create_node(ft_strdup(">"), RED_OUT));
+        else if (line[i] == '<')
+            node_addback(&current, create_node(ft_strdup("<"), RED_IN));
+        else if (line[i] == '|')
+            node_addback(&current, create_node(ft_strdup("|"), _PIPE));
+        else if (line[i] == '"')
+            node_addback(&current, create_node(ft_strdup("\""), D_QUOTE));
+        else if (line[i] == '\'')
+            node_addback(&current, create_node(ft_strdup("'"), S_QUOTE));
+        else if (line[i] == '$')
+        {
+            j = 1;
+            while ((line [i + j]) && ft_isalnum(line[i + j]) && line[i+j] != '$')
+                j++;
+            node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
+            i += j - 1;
+        }
+        else if (ft_isspace(line[i]))
+        {
+            j = 1;
+            while ((line [i + j]) && ft_isspace(line[i + j]))
+                j++;
+            node_addback(&current, create_node(ft_strndup(&line[i], j), W_SPACE));
+            i += j - 1;
+        }
+        else
+        {
+            current = get_last_node(current);
+            if (current && current->type == _WORD)
+                current->value = ft_charjoin(current->value, line[i]);
+            else
+                node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
+        }
+        i++;
     }
-    else if (str[i] == '>')
-        node_addback(">", RED_OUT);
-    else if (str[i] == '<')
-        node_addback("<", RED_IN);
-    else if (str[i] == '>>')
-        node_addback("<<", H_DOC_OUT);
-    else if (str[i] == '<<')
-        node_addback("<<", H_DOC_IN);
-    else
-        ft_store_word(); //stores the non special characters as _word token.
+    return (head);
 }

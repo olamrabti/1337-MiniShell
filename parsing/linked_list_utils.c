@@ -6,11 +6,11 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/03/03 18:34:40 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:52:56 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parse.h>
+#include "parse.h"
 
 t_list	*create_node(char *value, token type)
 {
@@ -96,4 +96,25 @@ void	remove_list(t_list **list)
 		curr = next;
 	}
 	*list = NULL;
+}
+
+void print_list(t_list *list)
+{
+	t_list	*temp;
+
+	temp = list;
+	while (temp)
+	{
+		printf("value: -%s-  token : %d\n", temp->value, temp->type);
+		temp = temp->nxt;
+	}
+}
+
+t_list *get_last_node(t_list *list)
+{
+	if (!list)
+		return (NULL);
+	while (list->nxt)
+		list = list->nxt;
+	return (list);
 }

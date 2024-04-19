@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/19 10:26:36 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:55:52 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ void ms_parse(t_list **list, char **envp)
 // [x] add history
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
 // [x] join args when no W_space is between ex : l""s should be -ls-
+// NOTE ''$HOME should expand 
 
 // int check_tokens(t_list *list)
 // {

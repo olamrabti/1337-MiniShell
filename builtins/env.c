@@ -6,11 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 11:08:49 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/19 09:09:39 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+// [ ] OLDENV
+// [ ] update env in the case of inset 
 
 char *ft_strdup(char *str)
 {

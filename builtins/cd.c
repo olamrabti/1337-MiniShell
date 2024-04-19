@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 08:54:16 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/19 09:08:38 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 // TODO creating cd
 // TODO testing cd
+//  [ ] cd with no argument
 
 void	ft_putstr_fd(char *s, int fd)
 {

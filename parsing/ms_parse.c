@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/19 10:55:52 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:49:45 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void ft_join_q(char *tmp, t_list *curr)
 {
     if (curr && curr->prv && curr->prv->type == _WORD)
     {
-        // NOTE same functionality #1
         tmp = ft_strjoin(curr->prv->value, curr->value);
         curr->prv->value = tmp;
         delete_node(curr);
@@ -50,7 +49,10 @@ int handle_sq(t_list **list)
                 curr->type = _WORD;
                 if (!curr->nxt || curr->nxt->type == S_QUOTE)
                 {
+                    printf("->>>>>> curr -%s- type : %d\n", curr->value, curr->type);
+                    // here ends the quote, but  it should not merge if s quote encountered
                     ft_join_q(tmp, curr);
+                    printf("->>>>>> curr -%s- type : %d\n", curr->value, curr->type);
                     break;
                 }
             }
@@ -60,7 +62,8 @@ int handle_sq(t_list **list)
             delete_node(curr);
             i++;
             curr = curr->nxt;
-            ft_join_q(tmp, curr);
+            if (curr->type != D_QUOTE)
+                ft_join_q(tmp, curr);
         }
         else
             curr = curr->nxt;
@@ -74,6 +77,7 @@ int handle_dq(t_list **list, char **envp)
     char *tmp;
     int i;
 
+    (void)envp;
     curr = *list;
     i = 0;
     while (curr)
@@ -87,12 +91,12 @@ int handle_dq(t_list **list, char **envp)
             {
                 if (curr->nxt && curr->nxt->type != D_QUOTE)
                 {
-                    if (curr->nxt && curr->nxt->type == _DOLLAR)
-                    {
-                        tmp = ft_expand(curr->nxt->value, envp);
-                        free(curr->nxt->value);
-                        curr->nxt->value = tmp;
-                    }
+                    // if (curr->nxt && curr->nxt->type == _DOLLAR)
+                    // {
+                    //     tmp = ft_expand(curr->nxt->value, envp);
+                    //     free(curr->nxt->value);
+                    //     curr->nxt->value = tmp;
+                    // }
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
                     free(curr->value);
                     curr->value = tmp;
@@ -113,7 +117,7 @@ int handle_dq(t_list **list, char **envp)
             curr = curr->nxt;
             ft_join_q(tmp, curr);
         }
-        else
+        else if (curr)
             curr = curr->nxt;
     }
     return i;
@@ -159,13 +163,13 @@ void ms_parse(t_list **list, char **envp)
         printf("quote>\n");
         return;
     }
+    expand_all(list, envp);
     // handle double quotes
     if (handle_dq(list, envp) % 2 != 0)
     {
         printf("quote>\n");
         return;
     }
-    expand_all(list, envp);
     remove_w_space(list);
     // if (check_tokens(*list) == 1)
     //     return ;
@@ -173,11 +177,9 @@ void ms_parse(t_list **list, char **envp)
 
 // [ ] check for syntax errors in pipe and so ...
 // [ ] handle redirections and open files
-// [x] add history
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
-// [x] join args when no W_space is between ex : l""s should be -ls-
-// NOTE ''$HOME should expand 
-
+// NOTE ''"$HOME" should expand (done)
+// NOTE 'ff'"gg" should be joined properly
 // int check_tokens(t_list *list)
 // {
 //     t_list *current;

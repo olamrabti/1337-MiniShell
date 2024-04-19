@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/19 10:45:59 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:54:49 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ t_list *ms_tokenize(char *line, char **envp)
         else if (line[i] == '$')
         {
             j = 1;
-            while ((line [i + j]) && ft_isalnum(line[i + j]) && line[i+j] != '$')
+            // FIXME isprint
+            while ((line [i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '?') && line[i+j] != '$')
                 j++;
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
             i += j - 1;

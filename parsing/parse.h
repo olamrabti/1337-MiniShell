@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/17 13:27:48 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:02:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+typedef struct s_env
+{
+    char *key;
+    char *value;
+    char *env;
+    struct s_env *next;
+} t_env;
 
 
 typedef enum token {

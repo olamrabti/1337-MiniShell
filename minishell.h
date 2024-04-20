@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 22:52:40 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 09:09:18 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:05:06 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,20 @@ typedef enum token
 
 typedef struct s_list
 {
-    char *value;
+    char *cmd;
+    char *args;
     token type;
+    int infile;
+    int outfile;
     struct s_list *prv;
-    struct s_list *nxt;
+    struct s_list *next;
 } t_list;
 
 typedef struct s_env
 {
     char *key;
     char *value;
+    char *env;
     struct s_env *next;
 } t_env;
 
@@ -90,5 +94,19 @@ int ft_strcmp(char *s1, char *s2);
 int ft_strncmp(char *s1, char *s2, unsigned int n);
 char *ft_strdup(char *str);
 char	**ft_split(char const *s, char c);
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////
+
+void ft_env(char **envp);
+
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:08:23 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 09:08:58 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 static int	count_str(const char *str, char c)
 {

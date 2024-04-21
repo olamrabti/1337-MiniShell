@@ -1,48 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/27 22:52:40 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 09:09:18 by oumimoun         ###   ########.fr       */
+/*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
+/*   Updated: 2024/04/21 15:49:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#ifndef EXECUTION_H
 
+# define EXECUTION_H
 
-#include <readline/readline.h>     // readline
-#include <readline/history.h>      // rl_clear_history, add_history
 #include <stdio.h>                  // printf, perror
 #include <stdlib.h>                 // malloc, free, exit, getenv
 #include <unistd.h>                 // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
 #include <fcntl.h>                  // open
 #include <sys/wait.h>               // wait, waitpid, wait3, wait4
-#include <signal.h>                 // signal, sigaction, sigemptyset, sigaddset, kill
-#include <sys/stat.h>               // stat, lstat, fstat
-#include <dirent.h>                 // opendir, readdir, closedir
 #include <string.h>                 // strerror
-#include <termios.h>                // tcsetattr, tcgetattr
-#include <sys/ioctl.h>              // ioctl
-#include <curses.h>                 // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
-
-#define PROMPT "minishell$ "
-
-#define BUILTINS "echo cd pwd export unset env exit"
-
-#define RED "\033[0;31m"
-#define GREEN "\033[0;32m"
-#define YELLOW "\033[0;33m"
-#define BLUE "\033[0;34m"
-#define PURPLE "\033[0;35m"
-#define CYAN "\033[0;36m"
-#define WHITE "\033[0;37m"
-#define RESET "\033[0m"
-
+typedef struct s_data
+{
+    char *cmd;
+    char *args;
+    int infile;
+    int outfile;
+    struct s_data *next;
+    struct s_data *prev;
+} t_data;
 
 typedef enum token
 {
@@ -59,18 +46,11 @@ typedef enum token
     _WORD
 } token;
 
-typedef struct s_list
-{
-    char *value;
-    token type;
-    struct s_list *prv;
-    struct s_list *nxt;
-} t_list;
-
 typedef struct s_env
 {
     char *key;
     char *value;
+    char *env;
     struct s_env *next;
 } t_env;
 
@@ -90,5 +70,7 @@ int ft_strcmp(char *s1, char *s2);
 int ft_strncmp(char *s1, char *s2, unsigned int n);
 char *ft_strdup(char *str);
 char	**ft_split(char const *s, char c);
+
+void ft_env(char **envp);
 
 #endif

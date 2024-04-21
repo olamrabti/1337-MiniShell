@@ -22,6 +22,7 @@ int main( int ac , char *av[], char**envp)
         ms_parse(&list, envp);
         printf("-------Parsed:--------\n");
         print_list(list);
+        // execute_commands(data, envp);
         remove_list(&list);
         free(line);
     }

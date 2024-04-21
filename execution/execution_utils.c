@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/20 11:36:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 // [ ]: check if the command is a builtin
 // [ ]: execute the builtin
@@ -29,7 +29,7 @@ void ft_execute_builtin(char *cmd, t_env *env)
     if (ft_strncmp(cmd, "unset", 5) == 0)
         ft_unset();
     if (ft_strncmp(cmd, "env", 3) == 0)
-        ft_env();
+        // ft_env();
     if (ft_strncmp(cmd, "exit", 4) == 0)
         ft_exit();
 }

@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/20 12:04:39 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 // [ ]: start the execution of the commands
 

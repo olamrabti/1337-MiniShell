@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/18 08:58:11 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 // TODO testing echo
 

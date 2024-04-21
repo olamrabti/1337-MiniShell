@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/20 11:35:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 // [ ] OLDENV
 // [ ] update env in the case of inset 

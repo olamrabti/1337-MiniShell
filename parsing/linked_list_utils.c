@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 10:49:13 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:48:28 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "../minishell.h"
+
 
 t_list	*create_node(char *value, token type)
 {

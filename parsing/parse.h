@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/20 12:02:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:33:19 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_env
-{
-    char *key;
-    char *value;
-    char *env;
-    struct s_env *next;
-} t_env;
-
-
 typedef enum token {
         W_SPACE = 1,
-        _NL,
         RED_IN,
         RED_OUT,
         H_DOC_TRUNC,
@@ -42,14 +32,28 @@ typedef enum token {
         _WORD,
         NULL_TOKEN,
 } token;
-    
+
+
 typedef struct s_list
 {
 	char *value;
+    char *args;
+    int infile; // open()... <
+    int outfile; // open() when > >>(trunc)
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;
 }	t_list;
+
+typedef struct s_data
+{
+    t_list *cmd;
+    int status;
+    int *fds;
+    struct s_data *next;
+    struct s_data *prev;
+} t_data;
+
 
 char	*ft_strdup(const char *s);
 char *ft_strndup(char *s, int n);

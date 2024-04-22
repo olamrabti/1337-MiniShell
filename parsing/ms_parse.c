@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/21 13:55:20 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:52:12 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int handle_sq(t_list **list)
             delete_node(curr);
             i++;
             curr = curr->nxt;
-            if (curr->type != D_QUOTE)
+            if (curr && curr->type != D_QUOTE)
                 ft_join_q(tmp, curr);
         }
         else
@@ -120,14 +120,14 @@ int handle_dq(t_list **list, char **envp)
     return i;
 }
 
-void remove_w_space(t_list **list)
+void remove_token(t_list **list, token token)
 {
     t_list *temp;
 
     temp = *list;
     while (temp)
     {
-        if (temp->type == W_SPACE)
+        if (temp->type == token)
             delete_node(temp);
         temp = temp->nxt;
     }
@@ -152,27 +152,12 @@ void expand_all(t_list **list, char **envp)
     }
 }
 
-// [ ] check for syntax errors in pipe and so ...
+// [x] check for syntax errors in pipe and so ...
+// [x] add arguments to each cmd 
+// [x] remove pipe nodes at the end
 // [ ] handle redirections and open files
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
-// NOTE ''"$HOME" should expand (done)
-// NOTE 'ff'"gg" should be joined properly
 
-// Pipe (|) Syntax:
-// There should be commands on both sides of the pipe symbol (|).
-// The pipe symbol should not be the first or last token in the command.
-
-// Input Redirection (<) Syntax:
-// The < symbol should be followed by a valid file name or descriptor.
-// The < symbol should not be the first or last token in the command.
-
-// Output Redirection (>, >>) Syntax:
-// The > or >> symbols should be followed by a valid file name or descriptor.
-// The > or >> symbols should not be the first or last token in the command.
-
-// Here Document (<<) Syntax:
-// The << symbol should be followed by a valid delimiter.
-// The << symbol should not be the first or last token in the command.
 
 int check_syntax(t_list **list)
 {
@@ -190,9 +175,7 @@ int check_syntax(t_list **list)
         if (curr->type == RED_IN || curr->type == RED_OUT 
             || curr->type == H_DOC_APPEND)
         {
-            // still dont know specific invalid cases to set proper condition for redirections
-            if ((!curr->prv || curr->prv->type != _WORD) 
-                || (!curr->nxt || curr->nxt->type != _WORD))
+            if ((!curr->nxt || curr->nxt->type != _WORD))
                 return printf("invalid RED or H_DOC_APP syntax\n"), -1;
         }
         if (curr->type == H_DOC_TRUNC 
@@ -202,6 +185,31 @@ int check_syntax(t_list **list)
     }
     return 0;
 }
+void handle_args(t_list **list)
+{
+    t_list *curr;
+
+    curr = *list;
+    
+    while(curr)
+    {
+        if (curr->type == _WORD && curr->prv && curr->prv->type == _WORD)
+        {
+            if (curr->prv->args)
+            {
+                curr->prv->args = ft_strjoin(curr->prv->args, " ");
+                curr->prv->args = ft_strjoin(curr->prv->args, curr->value);
+            }
+            else
+                curr->prv->args = ft_strdup(curr->value);
+            free(curr->value);
+            delete_node(curr);
+        }
+        curr = curr->nxt;
+    }
+    
+}
+
 
 void ms_parse(t_list **list, char **envp)
 {
@@ -216,12 +224,13 @@ void ms_parse(t_list **list, char **envp)
         printf("quote>\n");
         return;
     }
-    remove_w_space(list);
+    remove_token(list, W_SPACE);
     if (check_syntax(list) == 1)
         return;
+    // open_fds();
+    handle_args(list);
+    remove_token(list, _PIPE);
 }
-
-
 
 //  printf("--\n");
 //             if (curr->nxt)

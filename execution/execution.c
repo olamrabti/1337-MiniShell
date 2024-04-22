@@ -6,68 +6,69 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:40:36 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "../minishell.h"
 
 // [ ]: start the execution of the commands
 
-int ft_is_one_cmd(t_list *list)
+int ft_is_one_cmd(t_data *data)
 {
     t_list *temp;
 
-    temp = list;
-    if (temp->next == NULL)
+    temp = data->cmd->nxt;
+    if (temp && temp->value && temp->nxt)
+        return 0;
+    return 1;
+}
+
+int ft_is_builtin(char *value)
+{
+    if (ft_strncmp(value, "echo", 4) == 0)
+        return (1);
+    if (ft_strncmp(value, "cd", 2) == 0)
+        return (1);
+    if (ft_strncmp(value, "pwd", 3) == 0)
+        return (1);
+    if (ft_strncmp(value, "export", 6) == 0)
+        return (1);
+    if (ft_strncmp(value, "unset", 5) == 0)
+        return (1);
+    if (ft_strncmp(value, "env", 3) == 0)
+        return (1);
+    if (ft_strncmp(value, "exit", 4) == 0)
         return (1);
     return (0);
 }
 
-int ft_is_builtin(t_list *list)
+int execute_commands(t_data *data, char **envp)
 {
-    if (ft_strncmp(list->cmd, "echo", 4) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "cd", 2) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "pwd", 3) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "export", 6) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "unset", 5) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "env", 3) == 0)
-        return (1);
-    if (ft_strncmp(list->cmd, "exit", 4) == 0)
-        return (1);
-    return (0);
-}
-
-
-void execute_commands(t_list *list, char **envp)
-{
+    t_env *env;
     t_list *temp;
-    t_env env;
 
-    env = ft_env(envp);
+    if (!data || !envp)
+        return 1;
 
-    temp = list;
-    if (ft_is_one_cmd(temp))
+    // env = ft_env(envp);
+    temp = data->cmd;
+    if (ft_is_one_cmd(data))
     {
-        if (ft_is_builtin(temp))
-            execute_builtin(list->cmd, env);
+        if (ft_is_builtin(temp->value))
+            execute_builtin(data->cmd, env);
         else
-            execute_command(list->cmd, env);
+            execute_command(data->cmd, env);
+        return (data->status);
     }
-    else
+    while (temp)
     {
-        while (list)
-        {
-            if (ft_is_builtin(list->cmd))
-                execute_builtin(list->cmd, env);
-            else
-                execute_command(list->cmd, env);
-            list = list->next;
-        }
+        if (ft_is_builtin(temp->value))
+            execute_builtin(data->cmd, env);
+        else
+            execute_command(data->cmd, env);
+        temp = temp->nxt;
     }
+    return (data->status);
 }

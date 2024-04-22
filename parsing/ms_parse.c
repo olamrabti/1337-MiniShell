@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 11:52:12 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:09:46 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,10 @@ void expand_all(t_list **list, char **envp)
     }
 }
 
-// [x] check for syntax errors in pipe and so ...
-// [x] add arguments to each cmd 
-// [x] remove pipe nodes at the end
-// [ ] handle redirections and open files
-// [ ] since quotes should escape special characters, should i include a isascii condition ?
 
+// [ ] handle redirections and open files (last in assign to infile and last out assign it to outfile for each command)
+// [ ] handle heredoc 
+// [ ] since quotes should escape special characters, should i include a isascii condition ?
 
 int check_syntax(t_list **list)
 {

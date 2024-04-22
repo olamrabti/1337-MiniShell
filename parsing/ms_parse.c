@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/19 10:26:36 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:52:12 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void ft_join_q(char *tmp, t_list *curr)
 {
     if (curr && curr->prv && curr->prv->type == _WORD)
     {
-        // NOTE same functionality #1
         tmp = ft_strjoin(curr->prv->value, curr->value);
         curr->prv->value = tmp;
         delete_node(curr);
@@ -60,7 +59,8 @@ int handle_sq(t_list **list)
             delete_node(curr);
             i++;
             curr = curr->nxt;
-            ft_join_q(tmp, curr);
+            if (curr && curr->type != D_QUOTE)
+                ft_join_q(tmp, curr);
         }
         else
             curr = curr->nxt;
@@ -74,6 +74,7 @@ int handle_dq(t_list **list, char **envp)
     char *tmp;
     int i;
 
+    (void)envp;
     curr = *list;
     i = 0;
     while (curr)
@@ -87,12 +88,12 @@ int handle_dq(t_list **list, char **envp)
             {
                 if (curr->nxt && curr->nxt->type != D_QUOTE)
                 {
-                    if (curr->nxt && curr->nxt->type == _DOLLAR)
-                    {
-                        tmp = ft_expand(curr->nxt->value, envp);
-                        free(curr->nxt->value);
-                        curr->nxt->value = tmp;
-                    }
+                    // if (curr->nxt && curr->nxt->type == _DOLLAR)
+                    // {
+                    //     tmp = ft_expand(curr->nxt->value, envp);
+                    //     free(curr->nxt->value);
+                    //     curr->nxt->value = tmp;
+                    // }
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
                     free(curr->value);
                     curr->value = tmp;
@@ -113,20 +114,20 @@ int handle_dq(t_list **list, char **envp)
             curr = curr->nxt;
             ft_join_q(tmp, curr);
         }
-        else
+        else if (curr)
             curr = curr->nxt;
     }
     return i;
 }
 
-void remove_w_space(t_list **list)
+void remove_token(t_list **list, token token)
 {
     t_list *temp;
 
     temp = *list;
     while (temp)
     {
-        if (temp->type == W_SPACE)
+        if (temp->type == token)
             delete_node(temp);
         temp = temp->nxt;
     }
@@ -151,41 +152,88 @@ void expand_all(t_list **list, char **envp)
     }
 }
 
+// [x] check for syntax errors in pipe and so ...
+// [x] add arguments to each cmd 
+// [x] remove pipe nodes at the end
+// [ ] handle redirections and open files
+// [ ] since quotes should escape special characters, should i include a isascii condition ?
+
+
+int check_syntax(t_list **list)
+{
+    t_list *curr;
+
+    curr = *list;
+    while (curr)
+    {
+        if (curr->type == _PIPE)
+        {
+            if ((!curr->prv || curr->prv->type != _WORD) 
+                || (!curr->nxt || curr->nxt->type != _WORD))
+                return printf("invalid PIPE syntax\n"), -1;
+        }
+        if (curr->type == RED_IN || curr->type == RED_OUT 
+            || curr->type == H_DOC_APPEND)
+        {
+            if ((!curr->nxt || curr->nxt->type != _WORD))
+                return printf("invalid RED or H_DOC_APP syntax\n"), -1;
+        }
+        if (curr->type == H_DOC_TRUNC 
+            && (!curr->nxt || curr->nxt->type != _WORD))
+            return printf("invalid H_DOC_TRUNC syntax\n"), -1;
+        curr = curr->nxt;
+    }
+    return 0;
+}
+void handle_args(t_list **list)
+{
+    t_list *curr;
+
+    curr = *list;
+    
+    while(curr)
+    {
+        if (curr->type == _WORD && curr->prv && curr->prv->type == _WORD)
+        {
+            if (curr->prv->args)
+            {
+                curr->prv->args = ft_strjoin(curr->prv->args, " ");
+                curr->prv->args = ft_strjoin(curr->prv->args, curr->value);
+            }
+            else
+                curr->prv->args = ft_strdup(curr->value);
+            free(curr->value);
+            delete_node(curr);
+        }
+        curr = curr->nxt;
+    }
+    
+}
+
+
 void ms_parse(t_list **list, char **envp)
 {
-    // handle single quotes
     if (handle_sq(list) % 2 != 0)
     {
         printf("quote>\n");
         return;
     }
-    // handle double quotes
+    expand_all(list, envp);
     if (handle_dq(list, envp) % 2 != 0)
     {
         printf("quote>\n");
         return;
     }
-    expand_all(list, envp);
-    remove_w_space(list);
-    // if (check_tokens(*list) == 1)
-    //     return ;
+    remove_token(list, W_SPACE);
+    if (check_syntax(list) == 1)
+        return;
+    // open_fds();
+    handle_args(list);
+    remove_token(list, _PIPE);
 }
 
-// [ ] check for syntax errors in pipe and so ...
-// [ ] handle redirections and open files
-// [x] add history
-// [ ] since quotes should escape special characters, should i include a isascii condition ?
-// [x] join args when no W_space is between ex : l""s should be -ls-
-
-// int check_tokens(t_list *list)
-// {
-//     t_list *current;
-
-//     current = list;
-//     while (current)
-//     {
-//         // if | .. must have a word before and after
-//         // throw syntax error return -1;
-//     }
-//     return 0;
-// }
+//  printf("--\n");
+//             if (curr->nxt)
+//                 printf("curr nxt -%s- type: %d\n", curr->nxt->value, curr->nxt->type);
+//             if (curr->prv)
+//                 printf("curr prv -%s- type: %d\n", curr->prv->value, curr->prv->type);

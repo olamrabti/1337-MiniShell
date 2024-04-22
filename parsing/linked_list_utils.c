@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/18 16:52:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:49:13 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ t_list	*create_node(char *value, token type)
 	node->nxt = NULL;
 	node->value = value;
 	node->type = type;
+	node->args = NULL;
+	node->infile = 0;
+	node->outfile = 1;
 	return (node);
 }
 
@@ -105,7 +108,7 @@ void print_list(t_list *list)
 	temp = list;
 	while (temp)
 	{
-		printf("value: -%s-  token : %d\n", temp->value, temp->type);
+		printf("value: -%s- args : -%s- token : %d\n", temp->value, temp->args, temp->type);
 		temp = temp->nxt;
 	}
 }

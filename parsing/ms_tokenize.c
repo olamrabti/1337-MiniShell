@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/19 10:45:59 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:27:26 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char *ft_getvalue(char *key, char **envp)
     int j;
     
     i = 0;
-    printf("key: -%s-\n", key);
     while (envp[i])
     {
         if(ft_strncmp(key, envp[i], ft_strlen(key)) == 0)
@@ -109,7 +108,8 @@ t_list *ms_tokenize(char *line, char **envp)
         else if (line[i] == '$')
         {
             j = 1;
-            while ((line [i + j]) && ft_isalnum(line[i + j]) && line[i+j] != '$')
+            // FIXME isprint maybe!
+            while ((line [i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '?') && line[i+j] != '$')
                 j++;
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
             i += j - 1;
@@ -132,5 +132,7 @@ t_list *ms_tokenize(char *line, char **envp)
         }
         i++;
     }
+    get_last_node(current);
+    node_addback(&current, create_node(NULL, NULL_TOKEN));
     return (head);
 }

@@ -6,11 +6,12 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 12:09:46 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:49:09 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "../minishell.h"
 
 void ft_join_q(char *tmp, t_list *curr)
 {

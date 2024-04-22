@@ -3,56 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 10:33:19 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:50:27 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
+#include "../minishell.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef enum token {
-        W_SPACE = 1,
-        RED_IN,
-        RED_OUT,
-        H_DOC_TRUNC,
-        H_DOC_APPEND,
-        _PIPE,
-        _DOLLAR,
-        D_QUOTE,
-        S_QUOTE,
-        _WORD,
-        NULL_TOKEN,
-} token;
-
-
-typedef struct s_list
-{
-	char *value;
-    char *args;
-    int infile; // open()... <
-    int outfile; // open() when > >>(trunc)
-    token type;
-	struct s_list	*prv;
-	struct s_list	*nxt;
-}	t_list;
-
-typedef struct s_data
-{
-    t_list *cmd;
-    int status;
-    int *fds;
-    struct s_data *next;
-    struct s_data *prev;
-} t_data;
 
 
 char	*ft_strdup(const char *s);

@@ -1,28 +1,26 @@
-
-#include "parsing/parse.h"
+#include "minishell.h"
 
 int main( int ac , char *av[], char**envp)
 {
+    t_list *list;
+    t_data *data = NULL;
+    char *line;
+
     (void)ac;
     (void)av;
-    t_list *list;
-
     while (1)
     {
-        char *line = readline("minishell$ ");
+        line = readline("minishell$ ");
         if (line == NULL)
             break;
         if (*line)
             add_history(line);
-        printf("%s\n", line);
         list = ms_tokenize(line, envp);
         if (!list)
             break ;
-        print_list(list);
         ms_parse(&list, envp);
-        printf("-------Parsed:--------\n");
         print_list(list);
-        // execute_commands(data, envp);
+        execute_commands(data, envp);
         remove_list(&list);
         free(line);
     }

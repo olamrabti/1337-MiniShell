@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:56:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,129 +57,5 @@ void ft_execute_command(char *cmd, t_env *env)
     exit(1);
 }
 
-void ft_execute_pipex(t_list *list, t_env *env)
-{
-    t_list *temp;
-    int fd[2];
-    int pid;
 
-    temp = list;
-    pipe(fd);
-    pid = fork();
-    if (pid == 0)
-    {
-        close(fd[0]);
-        dup2(fd[1], 1);
-        close(fd[1]);
-        ft_execute_command(temp->cmd, env);
-    }
-    else
-    {
-        waitpid(pid, NULL, 0);
-        close(fd[1]);
-        dup2(fd[0], 0);
-        close(fd[0]);
-        temp = temp->next;
-        ft_execute_command(temp->cmd, env);
-    }
-}
-
-void ft_execute(t_list *list, t_env *env)
-{
-    t_list *temp;
-
-    temp = list;
-    if (ft_is_one_cmd(temp))
-    {
-        if (ft_is_builtin(temp))
-            ft_execute_builtin(list->cmd, env);
-        else
-            ft_execute_command(list->cmd, env);
-    }
-    else
-    {
-        while (list)
-        {
-            if (ft_is_builtin(list->cmd))
-                ft_execute_builtin(list->cmd, env);
-            else
-                ft_execute_command(list->cmd, env);
-            list = list->next;
-        }
-    }
-}
-
-void ft_execute_redirection(t_list *list, t_env *env)
-{
-    t_list *temp;
-    int fd;
-
-    temp = list;
-    if (temp->type == RED_IN)
-    {
-        fd = open(temp->args, O_RDONLY);
-        dup2(fd, 0);
-        close(fd);
-        ft_execute(temp, env);
-    }
-    if (temp->type == RED_OUT)
-    {
-        fd = open(temp->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        dup2(fd, 1);
-        close(fd);
-        ft_execute(temp, env);
-    }
-    if (temp->type == H_DOC_IN)
-    {
-        fd = open(temp->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        dup2(fd, 1);
-        close(fd);
-        ft_execute(temp, env);
-    }
-    if (temp->type == H_DOC_OUT)
-    {
-        fd = open(temp->args, O_RDONLY);
-        dup2(fd, 0);
-        close(fd);
-        ft_execute(temp, env);
-    }
-}
-
-void ft_execute_pipe(t_list *list, t_env *env)
-{
-    t_list *temp;
-    int fd[2];
-    int pid;
-
-    temp = list;
-    pipe(fd);
-    pid = fork();
-    if (pid == 0)
-    {
-        close(fd[0]);
-        dup2(fd[1], 1);
-        close(fd[1]);
-        ft_execute_redirection(temp, env);
-    }
-    else
-    {
-        waitpid(pid, NULL, 0);
-        close(fd[1]);
-        dup2(fd[0], 0);
-        close(fd[0]);
-        temp = temp->next;
-        ft_execute_redirection(temp, env);
-    }
-}
-
-void ft_execute_list(t_list *list, t_env *env)
-{
-    t_list *temp;
-
-    temp = list;
-    if (temp->type == _PIPE)
-        ft_execute_pipe(temp, env);
-    else
-        ft_execute_redirection(temp, env);
-}
 

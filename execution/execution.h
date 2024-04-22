@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/21 15:49:24 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:02:45 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 # define EXECUTION_H
 
-#include <stdio.h>                  // printf, perror
-#include <stdlib.h>                 // malloc, free, exit, getenv
-#include <unistd.h>                 // write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
-#include <fcntl.h>                  // open
-#include <sys/wait.h>               // wait, waitpid, wait3, wait4
-#include <string.h>                 // strerror
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <string.h>
 
 typedef struct s_data
 {
     char *cmd;
-    char *args;
+    char *opt;
     int infile;
     int outfile;
+    int status;
     struct s_data *next;
     struct s_data *prev;
 } t_data;
@@ -45,6 +46,8 @@ typedef enum token
     S_QUOTE,
     _WORD
 } token;
+
+
 
 typedef struct s_env
 {

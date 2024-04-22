@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:07:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void ft_parce_env(char **envp, t_env **env)
     }
 }
 
-void ft_env(char **envp)
+t_env ft_env(char **envp)
 {
     t_env *env;
 
@@ -125,6 +125,7 @@ void ft_env(char **envp)
         printf("%s=%s\n", env->key, env->value);
         env = env->next;
     }
+    return (env);
 }
 
 void ft_fill_env(t_env *env)

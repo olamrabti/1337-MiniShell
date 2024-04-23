@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 14:49:09 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:39:44 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int handle_sq(t_list **list)
     {
         if (curr->type == S_QUOTE && i % 2 == 0)
         {
-            delete_node(curr); // frees but doesnt move to the next node
+            // delete_node(curr); // frees but doesnt move to the next node
+            curr->type = _RM;
             curr = curr->nxt;
             i++;
             while (curr && curr->type != S_QUOTE)
@@ -45,14 +46,17 @@ int handle_sq(t_list **list)
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
                     free(curr->value);
                     curr->value = tmp;
-                    delete_node(curr->nxt);
+                    // delete_node(curr->nxt);
+                    curr->nxt->type = _RM;
+                    curr->type = _WORD;
+                    curr = curr->nxt;
                 }
-                curr->type = _WORD;
-                if (!curr->nxt || curr->nxt->type == S_QUOTE)
+                if (curr->type == S_QUOTE)
                 {
                     ft_join_q(tmp, curr);
                     break;
                 }
+                curr->type = _WORD;
             }
         }
         if (curr && curr->type == S_QUOTE && i % 2 != 0)
@@ -77,13 +81,14 @@ int handle_dq(t_list **list, char **envp)
 
     (void)envp;
     curr = *list;
-    i = 0;
+    i = 2;
     while (curr)
     {
         if (curr->type == D_QUOTE && i % 2 == 0)
         {
-            delete_node(curr); // frees but doesnt move to the next node
+            delete_node(curr);
             curr = curr->nxt;
+            printf("curr >> -%s- \n" , curr->value);
             i++;
             while (curr && curr->type != D_QUOTE)
             {
@@ -96,6 +101,7 @@ int handle_dq(t_list **list, char **envp)
                     //     curr->nxt->value = tmp;
                     // }
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
+                    printf("tmp ->> -%s- \n" , tmp);
                     free(curr->value);
                     curr->value = tmp;
                     delete_node(curr->nxt);
@@ -153,11 +159,6 @@ void expand_all(t_list **list, char **envp)
     }
 }
 
-
-// [ ] handle redirections and open files (last in assign to infile and last out assign it to outfile for each command)
-// [ ] handle heredoc 
-// [ ] since quotes should escape special characters, should i include a isascii condition ?
-
 int check_syntax(t_list **list)
 {
     t_list *curr;
@@ -184,51 +185,87 @@ int check_syntax(t_list **list)
     }
     return 0;
 }
+
+int fill_args(t_list *curr, int count)
+{
+    char **tmp;
+    int i;
+
+    tmp = malloc((count) * sizeof(char *));
+    if (!tmp)
+        return 1;
+    tmp[--count] = NULL;
+    i = 0;
+    while (count)
+    {
+        tmp[--count] = curr->value;
+        curr->type = _RM;
+        curr = curr->prv;
+    }
+    curr->args = tmp;
+    return 0;
+}
+
 void handle_args(t_list **list)
 {
     t_list *curr;
+    int count;
 
     curr = *list;
-    
     while(curr)
     {
-        if (curr->type == _WORD && curr->prv && curr->prv->type == _WORD)
+        count = 0;
+        while (curr && curr->type == _WORD)
         {
-            if (curr->prv->args)
-            {
-                curr->prv->args = ft_strjoin(curr->prv->args, " ");
-                curr->prv->args = ft_strjoin(curr->prv->args, curr->value);
-            }
-            else
-                curr->prv->args = ft_strdup(curr->value);
-            free(curr->value);
-            delete_node(curr);
+            count++;
+            curr = curr->nxt;
         }
-        curr = curr->nxt;
+        if (!curr && count == 1)
+            break ;
+        if (count > 1 && fill_args(curr->prv, count))
+            printf("parsing : filling args failed\n");
+        if (curr)
+            curr = curr->nxt;
     }
     
 }
 
 
-void ms_parse(t_list **list, char **envp)
+int ms_parse(t_data *data, char *line, char **envp)
 {
-    if (handle_sq(list) % 2 != 0)
+    t_list *list;
+    
+    list = ms_tokenize(line, envp);
+    if (!list)
+        return -1;
+    print_list(list);
+    if (handle_sq(&list) % 2 != 0)
     {
         printf("quote>\n");
-        return;
+        return -1;
     }
-    expand_all(list, envp);
-    if (handle_dq(list, envp) % 2 != 0)
+    remove_token(&list, _RM);
+    expand_all(&list, envp);
+    if (handle_dq(&list, envp) % 2 != 0)
     {
         printf("quote>\n");
-        return;
+        return -1;
     }
-    remove_token(list, W_SPACE);
-    if (check_syntax(list) == 1)
-        return;
+    remove_token(&list, W_SPACE);
+    if (check_syntax(&list) == 1)
+        return -1;
     // open_fds();
-    handle_args(list);
-    remove_token(list, _PIPE);
+    handle_args(&list);
+    remove_token(&list, _PIPE);
+    remove_token(&list, _RM);
+    data = malloc(sizeof(t_data));
+    if(!data)
+        return -1;
+    data->cmd = list;
+    data->fds = NULL;
+    data->status = 0;
+    print_list(list);
+    return 0;
 }
 
 //  printf("--\n");

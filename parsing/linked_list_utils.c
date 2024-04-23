@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/22 13:48:28 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:29:52 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,20 @@ void	remove_list(t_list **list)
 void print_list(t_list *list)
 {
 	t_list	*temp;
+	char **arg;
 
+	printf("\n===================\n");
 	temp = list;
 	while (temp)
 	{
-		printf("value: -%s- args : -%s- token : %d\n", temp->value, temp->args, temp->type);
+		printf("value: -%s- args : ", temp->value);
+	   	if (temp->args)
+        {
+            arg = temp->args;
+            while (*arg)
+                printf(" -%s- , ", *(arg++));
+        }
+		printf("type: %d\n", temp->type);
 		temp = temp->nxt;
 	}
 }

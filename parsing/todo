@@ -1,0 +1,18 @@
+// FIXME l's'
+        value: -(null)- args : type: 11
+        value: -(null)- args : type: 10
+// FIXME l"s"
+        value: -(null)- args : type: 11
+        value: -(null)- args : type: 10
+// FIXME $$ | $1 |  no var found
+// FIXME maybe a space after single quotes added, check for that
+// [x] **args
+    //cmd[0]= -la
+    //cmd[1]=-n 
+    //cmd[2]=-n 
+    //cmd[2]=" "
+
+// [ ] heredoc expansion for quotes
+// [ ] handle redirections and open files (last in assign to infile and last out assign it to outfile for each command)
+// [ ] handle heredoc 
+// [ ] since quotes should escape special characters, should i include a isascii condition ?

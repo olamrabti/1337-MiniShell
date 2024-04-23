@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/22 14:15:00 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:51:09 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,15 @@ typedef enum token {
         S_QUOTE,
         _WORD,
         NULL_TOKEN,
+        _RM
 } token;
 
 typedef struct s_list
 {
 	char *value;
-    char *args;
+    char **args;
     int infile; // open()... <
-    int outfile; // open() when > >>(trunc)
+    int outfile; // open() when > >> (trunc) 
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;
@@ -49,6 +50,7 @@ typedef struct s_data
     t_list *cmd;
     int status;
     int *fds;
+    
 
 } t_data;
 
@@ -57,7 +59,7 @@ typedef struct s_data
 
 
 t_list *ms_tokenize(char *line, char **envp);
-void ms_parse(t_list **list, char **envp);
+int ms_parse(t_data *data, char *line, char **envp);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 

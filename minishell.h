@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/22 14:15:00 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/23 10:17:23 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ typedef enum token {
 typedef struct s_list
 {
 	char *value;
-    char *args;
-    int infile; // open()... <
+    char **args;
+    int infile; // open()... < <<
     int outfile; // open() when > >>(trunc)
     token type;
 	struct s_list	*prv;
@@ -52,7 +52,7 @@ typedef struct s_data
 
 } t_data;
 
-////////////////////// parcing
+////////////////////// parcing ////////////////////////////////
 
 
 
@@ -65,10 +65,10 @@ void print_list(t_list *list);
 
 
 
-////////////////////// execution
+////////////////////// execution ////////////////////////////////
 
 
-void execute_commands(t_data *data, char **envp);
+int execute_commands(t_data *data, char **envp);
 
 
 

@@ -19,7 +19,7 @@ int main( int ac , char *av[], char**envp)
         if (!list)
             break ;
         ms_parse(&list, envp);
-        print_list(list);
+        // print_list(list);
         execute_commands(data, envp);
         remove_list(&list);
         free(line);

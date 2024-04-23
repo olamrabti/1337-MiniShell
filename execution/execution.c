@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/22 14:40:36 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:59:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 
 // [ ]: start the execution of the commands
 
-int ft_is_one_cmd(t_data *data)
-{
-    t_list *temp;
-
-    temp = data->cmd->nxt;
-    if (temp && temp->value && temp->nxt)
-        return 0;
-    return 1;
-}
 
 int ft_is_builtin(char *value)
 {
@@ -44,31 +35,43 @@ int ft_is_builtin(char *value)
     return (0);
 }
 
+
+
 int execute_commands(t_data *data, char **envp)
 {
     t_env *env;
     t_list *temp;
 
     if (!data || !envp)
-        return 1;
-
-    // env = ft_env(envp);
+        return (-1);
+    data->status = 0;
+    env = ft_parce_env(envp);
     temp = data->cmd;
     if (ft_is_one_cmd(data))
     {
         if (ft_is_builtin(temp->value))
-            execute_builtin(data->cmd, env);
+            ft_execute_builtin(data->cmd, env);
         else
-            execute_command(data->cmd, env);
+            execute_one_command(data->cmd, env);
         return (data->status);
     }
     while (temp)
     {
         if (ft_is_builtin(temp->value))
-            execute_builtin(data->cmd, env);
+            ft_execute_builtin(data->cmd, env);
         else
             execute_command(data->cmd, env);
         temp = temp->nxt;
     }
     return (data->status);
 }
+
+// int main()
+// {
+//     t_list *list = malloc(sizeof(t_list *));
+//     t_data *data = NULL;
+
+    
+    
+//     return 0;
+// }

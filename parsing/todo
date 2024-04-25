@@ -1,9 +1,8 @@
 // FIXME l's'
         value: -(null)- args : type: 11
         value: -(null)- args : type: 10
-// FIXME l"s"
-        value: -(null)- args : type: 11
-        value: -(null)- args : type: 10
+// FIXME echo -n "" "" must return space &&  echo -n  """ """ must not return quote>
+// FIXME did not join ls in  "l""""""s"
 // FIXME $$ | $1 |  no var found
 // FIXME maybe a space after single quotes added, check for that
 // [x] **args
@@ -17,3 +16,11 @@
 // [ ] handle heredoc 
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
 // [x] expansion in single quotes doesnt work properly
+// [ ] merging words
+
+
+
+loop on the list, once a quote is encoutered all what's after it is a word until is closed, 
+if qd $ stays $ and expanded after handling all quotes then concat words if no wspace found
+
+     // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);

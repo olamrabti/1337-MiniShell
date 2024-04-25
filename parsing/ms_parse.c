@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/23 16:39:44 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:26:38 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void ft_join_q(char *tmp, t_list *curr)
     {
         tmp = ft_strjoin(curr->prv->value, curr->value);
         curr->prv->value = tmp;
-        delete_node(curr);
+        // delete_node(curr);
     }
 }
 
-int handle_sq(t_list **list)
+int handle_quote(t_list **list, token quote)
 {
     t_list *curr;
     char *tmp;
@@ -33,93 +33,38 @@ int handle_sq(t_list **list)
     i = 2;
     while (curr)
     {
-        if (curr->type == S_QUOTE && i % 2 == 0)
+        if (curr->type == quote && i % 2 == 0)
         {
-            // delete_node(curr); // frees but doesnt move to the next node
-            curr->type = _RM;
+            delete_node(curr); // frees but doesnt move to the next node
             curr = curr->nxt;
             i++;
-            while (curr && curr->type != S_QUOTE)
+            while (curr && curr->type != quote)
             {
-                if (curr->nxt && curr->nxt->type != S_QUOTE)
+                if (curr->nxt && curr->nxt->type != quote && curr->nxt->type != W_SPACE)
                 {
+                    // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
                     tmp = ft_strjoin(curr->value, curr->nxt->value);
-                    free(curr->value);
-                    curr->value = tmp;
-                    // delete_node(curr->nxt);
-                    curr->nxt->type = _RM;
-                    curr->type = _WORD;
-                    curr = curr->nxt;
-                }
-                if (curr->type == S_QUOTE)
-                {
-                    ft_join_q(tmp, curr);
-                    break;
-                }
-                curr->type = _WORD;
-            }
-        }
-        if (curr && curr->type == S_QUOTE && i % 2 != 0)
-        {
-            delete_node(curr);
-            i++;
-            curr = curr->nxt;
-            if (curr && curr->type != D_QUOTE)
-                ft_join_q(tmp, curr);
-        }
-        else
-            curr = curr->nxt;
-    }
-    return i;
-}
-
-int handle_dq(t_list **list, char **envp)
-{
-    t_list *curr;
-    char *tmp;
-    int i;
-
-    (void)envp;
-    curr = *list;
-    i = 2;
-    while (curr)
-    {
-        if (curr->type == D_QUOTE && i % 2 == 0)
-        {
-            delete_node(curr);
-            curr = curr->nxt;
-            printf("curr >> -%s- \n" , curr->value);
-            i++;
-            while (curr && curr->type != D_QUOTE)
-            {
-                if (curr->nxt && curr->nxt->type != D_QUOTE)
-                {
-                    // if (curr->nxt && curr->nxt->type == _DOLLAR)
-                    // {
-                    //     tmp = ft_expand(curr->nxt->value, envp);
-                    //     free(curr->nxt->value);
-                    //     curr->nxt->value = tmp;
-                    // }
-                    tmp = ft_strjoin(curr->value, curr->nxt->value);
-                    printf("tmp ->> -%s- \n" , tmp);
                     free(curr->value);
                     curr->value = tmp;
                     delete_node(curr->nxt);
                 }
                 curr->type = _WORD;
-                if (!curr->nxt || curr->nxt->type == D_QUOTE)
-                {
-                    ft_join_q(tmp, curr);
-                    break;
-                }
+                curr = curr->nxt;
+            }
+            while (curr && curr->type == quote)
+            {
+                delete_node(curr);
+                i++;
+                curr = curr->nxt;
             }
         }
-        if (curr && curr->type == D_QUOTE && i % 2 != 0)
+        if (curr && curr->type == quote && i % 2 != 0)
         {
-            delete_node(curr);
+            // delete_node(curr);
             i++;
-            curr = curr->nxt;
-            ft_join_q(tmp, curr);
+            // curr = curr->nxt;
+            // if (curr && curr->type != D_QUOTE && curr->type != W_SPACE) // <<<
+            //     ft_join_q(tmp, curr);
         }
         else if (curr)
             curr = curr->nxt;
@@ -135,7 +80,10 @@ void remove_token(t_list **list, token token)
     while (temp)
     {
         if (temp->type == token)
+        {
+            // free(temp->value); this could be necessary 
             delete_node(temp);
+        }
         temp = temp->nxt;
     }
 }
@@ -215,19 +163,19 @@ void handle_args(t_list **list)
     while(curr)
     {
         count = 0;
-        while (curr && curr->type == _WORD)
+        while (curr && curr->type == _WORD && curr->type != NULL_TOKEN)
         {
             count++;
             curr = curr->nxt;
         }
-        if (!curr && count == 1)
-            break ;
-        if (count > 1 && fill_args(curr->prv, count))
+        // if (!curr || count == 1)
+        //     break ;
+        if (curr && count > 1 && fill_args(curr->prv, count))
             printf("parsing : filling args failed\n");
         if (curr)
             curr = curr->nxt;
     }
-    
+    remove_token(list, _RM);
 }
 
 
@@ -239,25 +187,17 @@ int ms_parse(t_data *data, char *line, char **envp)
     if (!list)
         return -1;
     print_list(list);
-    if (handle_sq(&list) % 2 != 0)
-    {
-        printf("quote>\n");
-        return -1;
-    }
-    remove_token(&list, _RM);
+    if (handle_quote(&list, S_QUOTE) % 2 != 0)
+        return printf("quote>\n"), -1;
     expand_all(&list, envp);
-    if (handle_dq(&list, envp) % 2 != 0)
-    {
-        printf("quote>\n");
-        return -1;
-    }
+    if (handle_quote(&list, D_QUOTE) % 2 != 0)
+        return printf("quote>\n"), -1;
     remove_token(&list, W_SPACE);
     if (check_syntax(&list) == 1)
         return -1;
     // open_fds();
     handle_args(&list);
     remove_token(&list, _PIPE);
-    remove_token(&list, _RM);
     data = malloc(sizeof(t_data));
     if(!data)
         return -1;

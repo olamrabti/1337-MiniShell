@@ -12,7 +12,8 @@
     //cmd[2]=-n 
     //cmd[2]=" "
 
-// [ ] heredoc expansion for quotes
+// [ ] heredoc exp  ansion for quotes
 // [ ] handle redirections and open files (last in assign to infile and last out assign it to outfile for each command)
 // [ ] handle heredoc 
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
+// [x] expansion in single quotes doesnt work properly

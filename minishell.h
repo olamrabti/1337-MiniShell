@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/23 17:07:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:57:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ typedef struct s_data
     t_list *cmd;
     int status;
     int *fds;
-    
+    int save;
+    pid_t pid;
+    int pd[2];
 
 } t_data;
 
@@ -59,7 +61,7 @@ typedef struct s_data
 
 
 t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data *data, char *line, char **envp);
+int ms_parse(t_data **data, char *line, char **envp);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
@@ -70,7 +72,7 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data *data, char **envp);
+int execute_commands(t_data **data, char **envp);
 
 
 

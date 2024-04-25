@@ -11,17 +11,20 @@ SRCS = main.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_strjoin.c \
 	parsing/ft_strdup.c \
-	# execution/execution.c \
-	# execution/execution_utils.c \
+	execution/execution.c \
+	execution/execution_utils.c \
+	execution/pipex.c \
+	execution/one_cmd.c \
+	execution/helpers.c \
+	execution/parce_env.c \
+	execution/ft_split.c \
 	# execution/cd.c \
 	# execution/echo.c \
-	# execution/env.c \
 	# execution/exit.c \
 	# execution/export.c \
-	# execution/ft_split.c \
-	# execution/helpers.c \
 	# execution/pwd.c \
 	# execution/unset.c \
+	# execution/env.c \
 
 OBJS = $(SRCS:.c=.o)
 

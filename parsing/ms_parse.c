@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/23 16:39:44 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:12:23 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,14 +231,14 @@ void handle_args(t_list **list)
 }
 
 
-int ms_parse(t_data *data, char *line, char **envp)
+int ms_parse(t_data **data, char *line, char **envp)
 {
     t_list *list;
     
     list = ms_tokenize(line, envp);
     if (!list)
         return -1;
-    print_list(list);
+    // print_list(list);
     if (handle_sq(&list) % 2 != 0)
     {
         printf("quote>\n");
@@ -258,13 +258,12 @@ int ms_parse(t_data *data, char *line, char **envp)
     handle_args(&list);
     remove_token(&list, _PIPE);
     remove_token(&list, _RM);
-    data = malloc(sizeof(t_data));
-    if(!data)
-        return -1;
-    data->cmd = list;
-    data->fds = NULL;
-    data->status = 0;
-    print_list(list);
+    // 
+    (*data)->cmd = list;
+    (*data)->fds = NULL;
+    (*data)->status = 0;
+    // printf("\nhere\n\n");
+    // print_list((*data)->cmd);
     return 0;
 }
 

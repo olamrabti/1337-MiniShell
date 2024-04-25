@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/23 10:17:59 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/24 15:44:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void ft_echo(char **str)
         printf("\n");
 }
 
-int main(int argc, char *argv[])
-{
-    ft_echo(argv);
-    return 0;
-}
+// int main(int argc, char *argv[])
+// {
+//     ft_echo(argv);
+//     return 0;
+// }

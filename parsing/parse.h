@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/23 13:55:32 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:14:00 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,10 @@ void	remove_list(t_list **list);
 void print_list(t_list *list);
 t_list *get_last_node(t_list *list);
 
+
+int	ft_isspace(int d);
+int	ft_isdigit(int d);
+int	ft_isalpha(int c);
+int	ft_isalnum(int c);
 
 #endif

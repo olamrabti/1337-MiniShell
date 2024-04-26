@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 17:31:32 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:13:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-char	**ft_get_paths(t_env *env)
+char **ft_get_paths(t_env *env)
 {
     t_env *temp;
     char **path;
@@ -56,17 +56,16 @@ char *ft_get_path(t_list *cmd, t_env *env)
     paths = ft_get_paths(env);
     // printf("path --> %s", paths[0]);
     while (paths && paths[++i])
-	{
-		full_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(full_path, cmd->value);
-		if (access(full_path, F_OK | R_OK | X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		full_path = NULL;
-	}
+    {
+        full_path = ft_strjoin(paths[i], "/");
+        full_path = ft_strjoin(full_path, cmd->value);
+        if (access(full_path, F_OK | R_OK | X_OK) == 0)
+            return (full_path);
+        free(full_path);
+        full_path = NULL;
+    }
     return (NULL);
 }
-
 
 // char **ft_join_for_execve(t_list *cmd)
 // {
@@ -74,7 +73,7 @@ char *ft_get_path(t_list *cmd, t_env *env)
 //     int total;
 //     int i;
 //     int j;
-    
+
 //     total = 0;
 //     while (cmd->args[total])
 //         total++;
@@ -108,7 +107,6 @@ char *ft_get_path(t_list *cmd, t_env *env)
 //     return (NULL);
 // }
 
-
 char **ft_join_for_execve(t_list *cmd)
 {
     char **command;
@@ -117,8 +115,11 @@ char **ft_join_for_execve(t_list *cmd)
     int j;
 
     total = 0;
-    while (cmd->args[total])
-        total++;
+    if (cmd->args)
+    {
+        while (cmd->args[total])
+            total++;
+    }
 
     // Allocate memory for total + 1 pointers (including the terminating NULL pointer)
     command = (char **)malloc(sizeof(char *) * (total + 2));
@@ -131,30 +132,30 @@ char **ft_join_for_execve(t_list *cmd)
         free(command);
         return (NULL);
     }
-
     i = 1;
     j = 0;
-    while (cmd->args[j])
+    if (cmd->args)
     {
-        command[i] = ft_strdup(cmd->args[j]);
-        if (!command[i])
+        while (cmd->args[j])
         {
-            while (i >= 0)
+            command[i] = ft_strdup(cmd->args[j]);
+            if (!command[i])
             {
-                free(command[i]);
-                i--;
+                while (i >= 0)
+                {
+                    free(command[i]);
+                    i--;
+                }
+                free(command[0]); // Free the command[0] before freeing command itself
+                free(command);
+                return (NULL);
             }
-            free(command[0]); // Free the command[0] before freeing command itself
-            free(command);
-            return (NULL);
+            i++;
+            j++;
         }
-        i++;
-        j++;
     }
-
     // Terminate the command array with a NULL pointer
     command[i] = NULL;
-
     return (command);
 }
 

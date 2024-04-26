@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 11:57:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:43:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,11 +256,11 @@ int ms_parse(t_data **data, char *line, char **envp)
     list = ms_tokenize(line, envp);
     if (!list)
         return -1;
-    print_list(list);
+    // print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
         expand_all(&list, envp);
-        print_list(list);
+        // print_list(list);
         return printf("quote>\n"), -1;
     }
     expand_all(&list, envp);
@@ -276,8 +276,8 @@ int ms_parse(t_data **data, char *line, char **envp)
     (*data)->cmd = list;
     (*data)->fds = NULL;
     (*data)->status = 0;
-    printf("\nfinal result : \n");
-    print_list(list);
+    // printf("\nfinal result : \n");
+    // print_list(list);
     return 0;
 }
 

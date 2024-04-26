@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 17:07:45 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:44:30 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ char **ft_join_for_execve(t_list *cmd);
 
 int ft_pipex(t_data *data, t_env *env);
 
-
+void ft_init_cmds(t_data *data);
 
 #endif

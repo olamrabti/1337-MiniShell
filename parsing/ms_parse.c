@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 11:57:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:42:30 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void expand_all(t_list **list, char **envp)
     }
 }
 
-int check_syntax(t_list **list)
+int check_syntax(t_list **list, int *count)
 {
     t_list *curr;
 
@@ -139,6 +139,7 @@ int check_syntax(t_list **list)
         }
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == H_DOC_APPEND)
         {
+            (*count)++;
             if ((!curr->nxt || curr->nxt->type != _WORD))
                 return printf("invalid RED or H_DOC_APP syntax\n"), -1;
         }
@@ -224,35 +225,72 @@ int is_valid_name(char *str)
         return 1;
     return 0;
 }
-int handle_redirections(t_list **list)
+int *handle_redirections(t_list **list, int *count)
 {
     t_list *curr;
-    int fd;
+    int *fds;
+    int tmp;
+    int i;
 
+    fds = malloc(sizeof(sizeof(int)) * (*count));
+    if (!fds)
+        return NULL;
+    fds[*count]= -1;
     curr = *list;
+    i = 0;
     while (curr)
     {
-        fd = -1;
+        tmp = -1;
         if (curr->type == RED_OUT || curr->type == H_DOC_APPEND) // > >> ; cmd > filename
         {
+            delete_node(curr);
+            printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
             if (!is_valid_name(curr->nxt->value))
             {
-                fd = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
-                if (fd != -1)
-                    curr->prv->outfile = fd;
+                delete_node(curr->nxt);
+                tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+                if (tmp != -1)
+                    curr->prv->outfile = tmp;
+                else
+                    return perror("outfile error :"), NULL;
+                fds[i++] = tmp;
+                printf(" outfile tmp : %d\n", tmp);
             }
             else
-                printf("invalid name for fd\n");
-        }
+                return printf("invalid name for fd\n"), NULL;
+        } 
+        else if (curr->type == RED_IN)
+        {
+            delete_node(curr);
+            printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
+            if (!is_valid_name(curr->nxt->value))
+            {
+                delete_node(curr->nxt);
+                tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+                if (tmp != -1)
+                    curr->nxt->nxt->infile = tmp;
+                else
+                    return perror("infile error :"), NULL;
+                fds[i++] = tmp;
+                printf(" infile tmp : %d\n", tmp);
+            }
+            else
+                return printf("invalid name for fd\n"), NULL;
+        } 
         curr = curr->nxt;
     }
-    return 0;
+    return fds;
 }
 
 int ms_parse(t_data **data, char *line, char **envp)
 {
     t_list *list;
+    t_list *last;
+    int count;
+    int *fds;
 
+    count  = 0;
+    fds = NULL;
     list = ms_tokenize(line, envp);
     if (!list)
         return -1;
@@ -265,16 +303,25 @@ int ms_parse(t_data **data, char *line, char **envp)
     }
     expand_all(&list, envp);
     concat_words(&list);
-    if (check_syntax(&list) == 1)
+    if (check_syntax(&list, &count) == 1)
         return -1;
-    handle_redirections(&list);
+    printf("\ncount : %d\n", count);
+    if(count)
+        fds = handle_redirections(&list, &count);
+    if (count && !fds)
+        return printf("fds prb\n"), 1;
     handle_args(&list);
     remove_token(&list, _PIPE);
     list = list->nxt;
+    list->first = 1;
     delete_node(list->prv);
     remove_token(&list, NULL_TOKEN);
+    while(fds && fds[count])
+        printf("fd : %d\n", fds[count--]);
+    last = get_last_node(list);
+    last->last = 1;
     (*data)->cmd = list;
-    (*data)->fds = NULL;
+    (*data)->fds = fds;
     (*data)->status = 0;
     printf("\nfinal result : \n");
     print_list(list);

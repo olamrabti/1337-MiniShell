@@ -2,4 +2,5 @@
 *.o
 # Ignore object files in the build directory
 parsing/*.o
+parsing/todo
 execution/*.o

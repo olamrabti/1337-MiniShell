@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 15:57:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:24:19 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct s_list
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;
+    int first;
+    int last;
 }	t_list;
 
 typedef struct s_data

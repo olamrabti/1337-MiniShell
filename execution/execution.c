@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 16:58:39 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:21:26 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int execute_commands(t_data **data, char **envp)
     // // }
     
     printf("before pipex\n");
+    ft_init_cmds((*data));
     ft_pipex((*data), env);
     printf("after pipex\n");
 

@@ -1,0 +1,5 @@
+# Ignore object files
+*.o
+# Ignore object files in the build directory
+parsing/*.o
+execution/*.o

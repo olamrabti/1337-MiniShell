@@ -7,7 +7,14 @@ int main( int ac , char *av[], char**envp)
 
     (void)ac;
     (void)av;
-    data = NULL;
+    data = malloc(sizeof(t_data));
+    if(!data)
+        return -1;
+    data->cmd = NULL;
+    data->fds = NULL;
+    data->status = 0;
+    data->save = -1;
+    // 
     while (1)
     {
         line = readline("MINISHELL$ ");
@@ -15,12 +22,10 @@ int main( int ac , char *av[], char**envp)
             break;
         if (*line)
             add_history(line);
-        // if (!ms_parse(data, line, envp))
-        // {
-        //     // execute_commands(data, envp);
-        // }
-        ms_parse(data, line, envp);
-        remove_list(&data->cmd);
+        ms_parse(&data, line, envp);
+        execute_commands(&data, envp);
+        // ms_parse(data, line, envp);
+        // remove_list((*data)->cmd);
         free(line);
         printf("\n");
     }

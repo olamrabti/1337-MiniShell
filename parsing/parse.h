@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 11:14:00 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:44:29 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int ft_strlen(const char *s);
 char *ft_getvalue(char *key, char **envp);
 char *ft_expand(char *line, char **envp);
 t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data *data, char *line, char **envp);
+int ms_parse(t_data **data, char *line, char **envp);
 t_list	*create_node(char *value, token type);
 int	node_addfront(t_list **list, t_list *new);
 int	node_addback(t_list **list, t_list *new);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/26 10:59:17 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:43:23 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_list
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;
+    int first;
+    int last;
 }	t_list;
 
 typedef struct s_data
@@ -51,16 +53,18 @@ typedef struct s_data
     t_list *cmd;
     int status;
     int *fds;
-    
+    int save;
+    pid_t pid;
+    int pd[2];
 
 } t_data;
 
-////////////////////// parcing
+////////////////////// parcing ////////////////////////////////
 
 
 
 t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data *data, char *line, char **envp);
+int ms_parse(t_data **data, char *line, char **envp);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
@@ -68,10 +72,10 @@ void print_list(t_list *list);
 
 
 
-////////////////////// execution
+////////////////////// execution ////////////////////////////////
 
 
-void execute_commands(t_data *data, char **envp);
+int execute_commands(t_data **data, char **envp);
 
 
 

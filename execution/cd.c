@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/22 14:03:15 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:05:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,7 @@
 // TODO testing cd
 //  [ ] cd with no argument
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
 
-	if (!s || fd < 0)
-		return ;
-	i = 0;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-}
 
 void ft_cd(char *str)
 {
@@ -41,15 +29,15 @@ void ft_cd(char *str)
     }
 }
 
-int main(int argc, char *argv[])
-{
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <directory>\n", argv[0]);
-        return 1;
-    }
+// int main(int argc, char *argv[])
+// {
+//     if (argc != 2)
+//     {
+//         fprintf(stderr, "Usage: %s <directory>\n", argv[0]);
+//         return 1;
+//     }
 
-    ft_cd(argv[1]);
+//     ft_cd(argv[1]);
 
-    return 0;
-}
+//     return 0;
+// }

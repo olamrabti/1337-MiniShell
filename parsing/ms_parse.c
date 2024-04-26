@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/25 14:02:16 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:31:19 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,108 +35,60 @@ int handle_quote(t_list **list, token quote)
         if (curr->type == S_QUOTE && i % 2 == 0)
             quote = S_QUOTE;
         if (curr->type == D_QUOTE && i % 2 == 0)
-            quote = D_QUOTE;
+            quote = D_QUOTE; 
         if (curr->type == quote && i % 2 == 0)
         {
-            delete_node(curr); // frees but doesnt move to the next node
+            delete_node(curr);
             curr = curr->nxt;
             i++;
-            while (quote == S_QUOTE && curr && curr->type != quote)
+            if (quote == S_QUOTE)
             {
-                if (curr->nxt && curr->nxt->type != quote)
+                while (curr && curr->type != quote)
                 {
-                    tmp = ft_strjoin(curr->value, curr->nxt->value);
-                    free(curr->value);
-                    curr->value = tmp;
-                    delete_node(curr->nxt);
-                }
-                curr->type = _WORD;
-                curr = curr->nxt;
-            }
-            while (quote == D_QUOTE && curr && curr->type != quote)
-            {
-                if (curr->type != _DOLLAR && curr->nxt && curr->nxt->type != quote)
-                {
-                    if (curr->nxt->type != _DOLLAR)
+                    if (curr->nxt && curr->nxt->type != quote)
                     {
                         tmp = ft_strjoin(curr->value, curr->nxt->value);
                         free(curr->value);
                         curr->value = tmp;
                         delete_node(curr->nxt);
-                        curr->type = _WORD;
                     }
-                }
-                if (curr->type != _DOLLAR)
                     curr->type = _WORD;
-                curr = curr->nxt;
-                // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
+                    curr = curr->nxt;
+                }
+            }
+            else
+            {
+                while (curr && curr->type != quote)
+                {
+                    if (curr->type != _DOLLAR && curr->nxt && curr->nxt->type != quote)
+                    {
+                        if (curr->nxt->type != _DOLLAR)
+                        {
+                            tmp = ft_strjoin(curr->value, curr->nxt->value);
+                            free(curr->value);
+                            curr->value = tmp;
+                            delete_node(curr->nxt);
+                            curr->type = _WORD;
+                        }
+                    }
+                    if (curr->type != _DOLLAR)
+                        curr->type = _WORD;
+                    curr = curr->nxt;
+                }
             }
             if (curr && curr->type == quote)
             {
                 delete_node(curr);
                 i++;
-                curr = curr->nxt;
             }
         }
         if (curr && curr->type == quote && i % 2 != 0)
-            i = 2;
-        else if (curr && curr->type != quote)
+            i++;
+        else if (curr)
             curr = curr->nxt;
     }
     return i;
 }
-
-// int handle_quote(t_list **list, token quote)
-// {
-//     t_list *curr;
-//     char *tmp;
-//     int i;
-
-//     curr = *list;
-//     i = 2;
-//     while (curr)
-//     {
-//         if (curr->type == quote && i % 2 == 0)
-//         {
-//             delete_node(curr); // frees but doesnt move to the next node
-//             curr = curr->nxt;
-//             i++;
-//             while (curr && curr->type != quote)
-//             {
-//                 if (curr->nxt && curr->nxt->type != quote)
-//                 {
-//                     // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
-//                     tmp = ft_strjoin(curr->value, curr->nxt->value);
-//                     free(curr->value);
-//                     curr->value = tmp;
-//                     delete_node(curr->nxt);
-//                 }
-//                 curr->type = _WORD;
-//                 curr = curr->nxt;
-//             }
-//             if (curr && curr->type == quote)
-//             {
-//                 delete_node(curr);
-//                 i++;
-//                 curr = curr->nxt;
-//             }
-//         }
-//         if (curr && curr->type == quote && i % 2 != 0)
-//         {
-//             // delete_node(curr);
-//             i++;
-//             // curr = curr->nxt;
-//             // if (curr && curr->type != D_QUOTE && curr->type != W_SPACE) // <<<
-//             //     ft_join_q(tmp, curr);
-//         }
-//         else if (curr && curr->type != quote)
-//             curr = curr->nxt;
-//         // if quote  and nxt == word
-
-//     }
-//     printf("i = %d\n", i);
-//     return i;
-// }
 
 void remove_token(t_list **list, token token)
 {
@@ -270,17 +222,16 @@ int ms_parse(t_data *data, char *line, char **envp)
     print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
+        expand_all(&list, envp);
         print_list(list);
         return printf("quote>\n"), -1;
     }
     expand_all(&list, envp);
-    printf("before concat\n");
-    print_list(list);
     concat_words(&list);
     if (check_syntax(&list) == 1)
         return -1;
     // open_fds();
-    handle_args(&list);
+    // handle_args(&list);
     remove_token(&list, _PIPE);
     data = malloc(sizeof(t_data));
     if (!data)
@@ -288,6 +239,7 @@ int ms_parse(t_data *data, char *line, char **envp)
     data->cmd = list;
     data->fds = NULL;
     data->status = 0;
+    printf("\nfinal result : \n");
     print_list(list);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 10:31:19 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:35:07 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,43 @@ void concat_words(t_list **list)
     }
     remove_token(list, W_SPACE);
 }
+int is_valid_name(char *str)
+{
+    int i;
+
+    i = 0;
+    if(!str)
+        return 1;
+    while(str[i] && ft_isalnum(str[i]) && !ft_isspace(str[i++])) // consider adding '/' if path can be passed as a valid filename
+    ;
+    if (str[i])
+        return 1;
+    return 0;
+}
+int handle_redirections(t_list **list)
+{
+    t_list *curr;
+    int fd;
+
+    curr = *list;
+    while (curr)
+    {
+        fd = -1;
+        if (curr->type == RED_OUT || curr->type == H_DOC_APPEND) // > >> ; cmd > filename
+        {
+            if (!is_valid_name(curr->nxt->value))
+            {
+                fd = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+                if (fd != -1)
+                    curr->prv->outfile = fd;
+            }
+            else
+                printf("invalid name for fd\n");
+        }
+        curr = curr->nxt;
+    }
+    return 0;
+}
 
 int ms_parse(t_data *data, char *line, char **envp)
 {
@@ -230,9 +267,12 @@ int ms_parse(t_data *data, char *line, char **envp)
     concat_words(&list);
     if (check_syntax(&list) == 1)
         return -1;
-    // open_fds();
-    // handle_args(&list);
+    handle_redirections(&list);
+    handle_args(&list);
     remove_token(&list, _PIPE);
+    list = list->nxt;
+    delete_node(list->prv);
+    remove_token(&list, NULL_TOKEN);
     data = malloc(sizeof(t_data));
     if (!data)
         return -1;

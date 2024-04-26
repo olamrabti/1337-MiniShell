@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 11:47:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:57:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ int handle_redirections(t_list **list)
     return 0;
 }
 
-int ms_parse(t_data *data, char *line, char **envp)
+int ms_parse(t_data **data, char *line, char **envp)
 {
     t_list *list;
 
@@ -273,12 +273,9 @@ int ms_parse(t_data *data, char *line, char **envp)
     list = list->nxt;
     delete_node(list->prv);
     remove_token(&list, NULL_TOKEN);
-    data = malloc(sizeof(t_data));
-    if (!data)
-        return -1;
-    data->cmd = list;
-    data->fds = NULL;
-    data->status = 0;
+    (*data)->cmd = list;
+    (*data)->fds = NULL;
+    (*data)->status = 0;
     printf("\nfinal result : \n");
     print_list(list);
     return 0;

@@ -23,9 +23,8 @@ int main( int ac , char *av[], char**envp)
         if (*line)
             add_history(line);
         ms_parse(&data, line, envp);
-        execute_commands(&data, envp);
-        // ms_parse(data, line, envp);
-        // remove_list((*data)->cmd);
+        // execute_commands(&data, envp);
+        remove_list(&data->cmd);
         free(line);
         printf("\n");
     }

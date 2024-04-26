@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 11:44:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:41:29 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_list	*create_node(char *value, token type)
 	node->args = NULL;
 	node->infile = 0;
 	node->outfile = 1;
+	node->first = 0;
+	node->last = 0;
 	return (node);
 }
 
@@ -119,7 +121,7 @@ void print_list(t_list *list)
             while (arg && *arg)
                 printf(" -%s- , ", *(arg++));
         }
-		printf("infile: %d outfile: %d type: %d\n",temp->infile, temp->outfile, temp->type);
+		printf("first : %d last: %d infile: %d outfile: %d type: %d\n",temp->first, temp->last, temp->infile, temp->outfile, temp->type);
 		temp = temp->nxt;
 	}
 }

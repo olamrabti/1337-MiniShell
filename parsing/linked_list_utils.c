@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/23 17:05:26 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:44:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ void print_list(t_list *list)
 	   	if (temp->args)
         {
             arg = temp->args;
-            while (*arg)
+            while (arg && *arg)
                 printf(" -%s- , ", *(arg++));
         }
-		printf("type: %d\n", temp->type);
+		printf("infile: %d outfile: %d type: %d\n",temp->infile, temp->outfile, temp->type);
 		temp = temp->nxt;
 	}
 }

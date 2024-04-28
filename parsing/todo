@@ -1,6 +1,6 @@
 
 
-// FIXME $$ | $1 stops at the first digit |  no var found (should return key not NULL)
+// FIXED $$ | $1 stops at the first digit |  no var found (should return key not NULL)
 // FIXED "$PWD"'why this' this case doesnt handle single quote part properly
 
 
@@ -8,12 +8,12 @@
 // [ ] handle heredoc 
 // [ ] since quotes should escape special characters, should i include a isascii condition ?
 
-
-
-     // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
+// FIXED "'$PWD'" segfaults and final result doesnt print anything, maybe i delete all the list at some poiint 
+     // handle quotes is broken !     
+// printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
 
 // [ ] handle redirections and open files (last in assign to infile and last out assign it to outfile for each command)
       // it should check syntax for valid filename (ex : case of expansion)
 
 
-      < infile cmd1 |
+// FIXED handle args doesnt work in : ls -la no pipe

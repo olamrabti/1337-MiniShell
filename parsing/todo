@@ -17,3 +17,9 @@
 
 
 // FIXED handle args doesnt work in : ls -la no pipe
+
+// < file cmd
+
+
+// < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
+// [x] this case doesnt assign opened file to cmd. (arg2)

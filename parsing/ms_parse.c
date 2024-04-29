@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/28 13:58:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:05:25 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,10 @@ int fill_args(t_list *curr, int count)
     {
         tmp[--count] = curr->value;
         curr->type = _RM;
+        if (curr->outfile != 1)
+            curr->prv->outfile = curr->outfile;
+        // if (curr->infile != 0)
+        //     curr->prv->infile = curr->infile;
         curr = curr->prv;
     }
     curr->args = tmp;
@@ -247,13 +251,14 @@ int *handle_redirections(t_list **list, int *count)
             delete_node(curr);
             if (!is_valid_name(curr->nxt->value))
             {
-                delete_node(curr->nxt);
                 tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
-                if (tmp != -1)
+                curr->nxt->type = _RM;
+                if (tmp != -1 && curr->prv)
                     curr->prv->outfile = tmp;
-                else
-                    return perror("outfile error :"), NULL;
+                else if (curr->prv)
+                    return perror("outfile error"), NULL;
                 fds[i++] = tmp;
+                delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
@@ -263,18 +268,21 @@ int *handle_redirections(t_list **list, int *count)
             delete_node(curr);
             if (!is_valid_name(curr->nxt->value))
             {
-                delete_node(curr->nxt);
+                printf(">>> curr -%s- type: %d\n", curr->nxt->value, curr->type);
                 tmp = open(curr->nxt->value, O_RDWR);
-                if (tmp != -1)
+                curr->nxt->type = _RM;
+                if (tmp != -1 && curr->nxt->nxt)
                     curr->nxt->nxt->infile = tmp;
-                else
-                    return perror("infile error :"), NULL;
+                else if (curr->nxt->nxt)
+                    return perror("infile error "), NULL;
                 fds[i++] = tmp;
+                delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
-        } 
-        curr = curr->nxt;
+        }
+        if (curr)
+            curr = curr->nxt;
     }
     return fds;
 }
@@ -300,17 +308,18 @@ int ms_parse(t_data **data, char *line, char **envp)
     }
     expand_all(&list, envp);
     concat_words(&list);
-     if (list->nxt)
-    {
-        list = list->nxt;
-        delete_node(list->prv); 
-    }
     if (check_syntax(&list, &count) == 1)
         return -1;
     if(count)
-        fds = handle_redirections(&list, &count);
+        fds = handle_redirections(&list, &count); 
+    if (list->nxt)
+    {
+        list = list->nxt;
+        remove_token(&list->prv, NULL_TOKEN); 
+    }
     if (count && !fds)
         return printf("fds prb\n"), 1;
+    remove_token(&list, _RM);
     handle_args(&list);
     remove_token(&list, _PIPE);
     while(fds && fds[count])

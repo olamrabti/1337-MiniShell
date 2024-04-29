@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 15:42:30 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:05:25 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void expand_all(t_list **list, char **envp)
         if (curr->type == _DOLLAR)
         {
             tmp = ft_expand(curr->value, envp);
-            free(curr->value);
+            // free(curr->value); // it crashes the code 
             curr->value = tmp;
             curr->type = _WORD;
         }
@@ -164,6 +164,10 @@ int fill_args(t_list *curr, int count)
     {
         tmp[--count] = curr->value;
         curr->type = _RM;
+        if (curr->outfile != 1)
+            curr->prv->outfile = curr->outfile;
+        // if (curr->infile != 0)
+        //     curr->prv->infile = curr->infile;
         curr = curr->prv;
     }
     curr->args = tmp;
@@ -178,13 +182,13 @@ void handle_args(t_list **list)
     curr = *list;
     while (curr)
     {
-        count = 0;
-        while (curr && curr->type == _WORD && curr->type != NULL_TOKEN)
+        count = 1;
+        while (curr && curr->type == _WORD && curr->nxt && curr->nxt->type == _WORD)
         {
             count++;
             curr = curr->nxt;
         }
-        if (curr && count > 1 && fill_args(curr->prv, count))
+        if (curr && count > 1 && fill_args(curr, count))
             printf("parsing : filling args failed\n");
         if (curr)
             curr = curr->nxt;
@@ -215,11 +219,12 @@ void concat_words(t_list **list)
 int is_valid_name(char *str)
 {
     int i;
-
+    
     i = 0;
     if(!str)
         return 1;
-    while(str[i] && ft_isalnum(str[i]) && !ft_isspace(str[i++])) // consider adding '/' if path can be passed as a valid filename
+    // [ ] Check for valid name rules
+    while(str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
     ;
     if (str[i])
         return 1;
@@ -244,17 +249,16 @@ int *handle_redirections(t_list **list, int *count)
         if (curr->type == RED_OUT || curr->type == H_DOC_APPEND) // > >> ; cmd > filename
         {
             delete_node(curr);
-            printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
             if (!is_valid_name(curr->nxt->value))
             {
-                delete_node(curr->nxt);
                 tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
-                if (tmp != -1)
+                curr->nxt->type = _RM;
+                if (tmp != -1 && curr->prv)
                     curr->prv->outfile = tmp;
-                else
-                    return perror("outfile error :"), NULL;
+                else if (curr->prv)
+                    return perror("outfile error"), NULL;
                 fds[i++] = tmp;
-                printf(" outfile tmp : %d\n", tmp);
+                delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
@@ -262,22 +266,23 @@ int *handle_redirections(t_list **list, int *count)
         else if (curr->type == RED_IN)
         {
             delete_node(curr);
-            printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
             if (!is_valid_name(curr->nxt->value))
             {
-                delete_node(curr->nxt);
-                tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
-                if (tmp != -1)
+                printf(">>> curr -%s- type: %d\n", curr->nxt->value, curr->type);
+                tmp = open(curr->nxt->value, O_RDWR);
+                curr->nxt->type = _RM;
+                if (tmp != -1 && curr->nxt->nxt)
                     curr->nxt->nxt->infile = tmp;
-                else
-                    return perror("infile error :"), NULL;
+                else if (curr->nxt->nxt)
+                    return perror("infile error "), NULL;
                 fds[i++] = tmp;
-                printf(" infile tmp : %d\n", tmp);
+                delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
-        } 
-        curr = curr->nxt;
+        }
+        if (curr)
+            curr = curr->nxt;
     }
     return fds;
 }
@@ -305,17 +310,18 @@ int ms_parse(t_data **data, char *line, char **envp)
     concat_words(&list);
     if (check_syntax(&list, &count) == 1)
         return -1;
-    printf("\ncount : %d\n", count);
     if(count)
-        fds = handle_redirections(&list, &count);
+        fds = handle_redirections(&list, &count); 
+    if (list->nxt)
+    {
+        list = list->nxt;
+        remove_token(&list->prv, NULL_TOKEN); 
+    }
     if (count && !fds)
         return printf("fds prb\n"), 1;
+    remove_token(&list, _RM);
     handle_args(&list);
     remove_token(&list, _PIPE);
-    list = list->nxt;
-    list->first = 1;
-    delete_node(list->prv);
-    remove_token(&list, NULL_TOKEN);
     while(fds && fds[count])
         printf("fd : %d\n", fds[count--]);
     last = get_last_node(list);

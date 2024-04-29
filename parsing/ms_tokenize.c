@@ -6,12 +6,20 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/24 15:11:47 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/28 13:27:30 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
+
+
+int	ft_isprint(int c)
+{
+	if (c >= 32 && c < 127)
+		return (1);
+	return (0);
+}
 
 int	ft_isdigit(int d)
 {
@@ -63,11 +71,18 @@ char *ft_expand(char *key, char **envp)
 {
     char *value;
     
-    if (key && key[1] == '\0')
-        return (NULL);
+    if (ft_strncmp(key, "$_", ft_strlen(key)) == 0)
+        return key;
+    if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
+        return key;
+    // if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
+    //     return strdup : ft_itoa(exitstatus);
+    if (key && (ft_strlen(key) == 1|| ft_isdigit(key[1])))
+        return (ft_strdup(""));
     value = ft_getvalue(key + 1, envp);
+    // remmember to free it before give it the new strdup value
     if (!value)
-        return (key);
+        return (ft_strdup(key + 1));
     return (value);
 }
 
@@ -109,9 +124,21 @@ t_list *ms_tokenize(char *line, char **envp)
         else if (line[i] == '$')
         {
             j = 1;
-            // FIXME isprint maybe!
-            while ((line [i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '?') && line[i+j] != '$')
+            // maybe add '_' because it's valid and dont expand it.
+            while ((line[i + j]) 
+                && (ft_isalnum(line[i + j]) || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
+            {
                 j++;
+                if (j == 2 && (line[i + j - 1] == '$' || line[i + j - 1] == '?'))
+                    break;
+                else if (j == 2 && ft_isdigit(line[i + j - 1]))
+                    break;
+                else if (j > 2 && line[i + j - 1] == '$')
+                {
+                    j--;
+                    break;
+                }
+            }
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
             i += j - 1;
         }
@@ -133,7 +160,5 @@ t_list *ms_tokenize(char *line, char **envp)
         }
         i++;
     }
-    get_last_node(current);
-    node_addback(&current, create_node(NULL, NULL_TOKEN));
     return (head);
 }

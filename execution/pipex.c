@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/29 15:43:55 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:36:50 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ int ft_pipex(t_data *data, t_env *env)
             // printf("infile--> %d\n",temp->infile);
             if (temp->infile != 0)
             {
-                printf("infile--> %d\n",temp->infile);
+                printf("infile--> %d\n", temp->infile);
                 if (dup2(temp->infile, 0) == -1)
                     perror("infile");
                 close(temp->infile);
             }
-            printf("outfile--> %d\n",temp->outfile);
+            printf("outfile--> %d\n", temp->outfile);
             if (temp->outfile != 1)
             {
                 if (dup2(temp->outfile, 1) == -1)
@@ -81,13 +81,13 @@ int ft_pipex(t_data *data, t_env *env)
             }
             if (!temp->first)
             {
-                if (dup2(data->save, 0) == -1)
+                if (dup2(data->save, temp->infile) == -1)
                     return (-1);
                 close(data->save);
             }
             if (!temp->last)
             {
-                if (dup2(data->pd[1], 1) == -1)
+                if (dup2(data->pd[1], temp->outfile) == -1)
                     return (-1);
                 close(data->pd[0]);
                 close(data->pd[1]);
@@ -119,12 +119,16 @@ int ft_pipex(t_data *data, t_env *env)
         i++;
     }
     free(tab);
-    // i = 0;
-    // while (data->fds[i] > 0)
-    // {
-    //     close(data->fds[i]);
-    //     i++;
-    // }
-    
+    if (data && data->fds)
+    {
+        i = 0;
+        while (data->fds[i] > 0)
+        {
+            printf("data->fd==%d\n",data->fds[i]);
+            close(data->fds[i]);
+            i++;
+        }
+    }
+
     return (0);
 }

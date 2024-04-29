@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/29 17:17:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:48:23 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,9 +272,6 @@ int *handle_redirections(t_list **list, int *count)
                 tmp = open(curr->nxt->value, O_RDWR);
                 curr->nxt->type = _RM;
                 if (tmp != -1 && curr->nxt->nxt)
-                delete_node(curr->nxt);
-                tmp = open(curr->nxt->value, O_RDWR);
-                if (tmp != -1)
                     curr->nxt->nxt->infile = tmp;
                 else if (curr->nxt->nxt)
                     return perror("infile error "), NULL;

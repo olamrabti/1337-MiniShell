@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+
+
 int main( int ac , char *av[], char**envp)
 {
     t_data *data;
@@ -23,10 +25,12 @@ int main( int ac , char *av[], char**envp)
         if (*line)
             add_history(line);
         ms_parse(&data, line, envp);
-        // execute_commands(&data, envp);
-        remove_list(&data->cmd);
+        if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
+            execute_commands(&data, envp);
+        // if (data->cmd)
+        //     remove_list(&data->cmd);
         free(line);
-        printf("\n");
+        // printf("\n");
     }
     return 0;
 }

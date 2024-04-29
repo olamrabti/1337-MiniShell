@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/26 15:50:05 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:14:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ int *handle_redirections(t_list **list, int *count)
             if (!is_valid_name(curr->nxt->value))
             {
                 delete_node(curr->nxt);
-                tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+                tmp = open(curr->nxt->value, O_RDWR);
                 if (tmp != -1)
                     curr->nxt->nxt->infile = tmp;
                 else
@@ -305,7 +305,6 @@ int ms_parse(t_data **data, char *line, char **envp)
     concat_words(&list);
     if (check_syntax(&list, &count) == 1)
         return -1;
-    printf("\ncount : %d\n", count);
     if(count)
         fds = handle_redirections(&list, &count);
     if (count && !fds)
@@ -324,7 +323,7 @@ int ms_parse(t_data **data, char *line, char **envp)
     (*data)->fds = fds;
     (*data)->status = 0;
     // printf("\nfinal result : \n");
-    // print_list(list);
+    print_list(list);
     return 0;
 }
 

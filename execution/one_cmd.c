@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/26 15:13:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:48:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char *ft_get_path(t_list *cmd, t_env *env)
         }
     }
     paths = ft_get_paths(env);
-    // printf("path --> %s", paths[0]);
     while (paths && paths[++i])
     {
         full_path = ft_strjoin(paths[i], "/");
@@ -67,45 +66,6 @@ char *ft_get_path(t_list *cmd, t_env *env)
     return (NULL);
 }
 
-// char **ft_join_for_execve(t_list *cmd)
-// {
-//     char **command;
-//     int total;
-//     int i;
-//     int j;
-
-//     total = 0;
-//     while (cmd->args[total])
-//         total++;
-//     command = (char **)malloc(sizeof(char *) * total + 1);
-//     if (!command)
-//         return (NULL);
-//     command[0] = ft_strdup(cmd->value);
-//     if (!command[0])
-//     {
-//         free(command);
-//         return (NULL);
-//     }
-//     i = 1;
-//     j = 0;
-//     while (cmd->args[j])
-//     {
-//         command[i] = ft_strdup(cmd->args[j]);
-//         if (!command[i])
-//         {
-//             while (i >= 0)
-//             {
-//                 free(command[i]);
-//                 i--;
-//             }
-//             free(command);
-//             return (NULL);
-//         }
-//         i++;
-//         j++;
-//     }
-//     return (NULL);
-// }
 
 char **ft_join_for_execve(t_list *cmd)
 {
@@ -120,8 +80,6 @@ char **ft_join_for_execve(t_list *cmd)
         while (cmd->args[total])
             total++;
     }
-
-    // Allocate memory for total + 1 pointers (including the terminating NULL pointer)
     command = (char **)malloc(sizeof(char *) * (total + 2));
     if (!command)
         return (NULL);
@@ -146,7 +104,7 @@ char **ft_join_for_execve(t_list *cmd)
                     free(command[i]);
                     i--;
                 }
-                free(command[0]); // Free the command[0] before freeing command itself
+                free(command[0]);
                 free(command);
                 return (NULL);
             }
@@ -154,29 +112,6 @@ char **ft_join_for_execve(t_list *cmd)
             j++;
         }
     }
-    // Terminate the command array with a NULL pointer
     command[i] = NULL;
     return (command);
 }
-
-// [ ] todo redir to outfile befor exeve() so i gotta fok() even its one cmd
-
-// int execute_one_command(t_list *cmd, t_env *env)
-// {
-//     char *path;
-//     char **command;
-
-//     if (dup2(cmd->infile, 0) == -1)
-//         return (-1);
-//     path = ft_get_path(cmd, env);
-//     if (!path)
-//         return (-1);
-//     command = ft_join_for_execve(cmd);
-//     if (!command)
-//         return (-1);
-//     execve(path, command, NULL);
-//     ft_putstr_fd("command not found: ", 2);
-//     ft_putstr_fd(cmd->value, 2);
-//     dup2(cmd->outfile, 1);
-//     return (0);
-// }

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/26 11:55:36 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:43:21 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,7 @@ int execute_commands(t_data **data, char **envp)
         return (-1);
     env = ft_parce_env(envp);
 
-    // temp = data->cmd;
-    // // if (ft_is_one_cmd(data))
-    // // {
-    // //     if (ft_is_builtin(temp->value))
-    // //         ft_execute_builtin(data->cmd, env);
-    // //     return (data->status);
-    // // }
-    
-    printf("before pipex\n");
     // ft_init_cmds((*data));
     ft_pipex((*data), env);
-    printf("after pipex\n");
-
     return (0);
 }

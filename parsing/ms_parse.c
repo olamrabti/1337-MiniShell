@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/29 17:05:25 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/04/30 09:35:56 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,16 +135,16 @@ int check_syntax(t_list **list, int *count)
         if (curr->type == _PIPE)
         {
             if ((!curr->prv || curr->prv->type != _WORD) || (!curr->nxt || curr->nxt->type != _WORD))
-                return printf("invalid PIPE syntax\n"), -1;
+                return printf("invalid PIPE syntax\n"), 1;
         }
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == H_DOC_APPEND)
         {
             (*count)++;
             if ((!curr->nxt || curr->nxt->type != _WORD))
-                return printf("invalid RED or H_DOC_APP syntax\n"), -1;
+                return printf("invalid RED or H_DOC_APP syntax\n"), 1;
         }
         if (curr->type == H_DOC_TRUNC && (!curr->nxt || curr->nxt->type != _WORD))
-            return printf("invalid H_DOC_TRUNC syntax\n"), -1;
+            return printf("invalid H_DOC_TRUNC syntax\n"), 1;
         curr = curr->nxt;
     }
     return 0;
@@ -249,9 +249,12 @@ int *handle_redirections(t_list **list, int *count)
         if (curr->type == RED_OUT || curr->type == H_DOC_APPEND) // > >> ; cmd > filename
         {
             delete_node(curr);
-            if (!is_valid_name(curr->nxt->value))
+            if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
-                tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+                if (curr->type == H_DOC_APPEND)
+                    tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
+                else
+                    tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
                 curr->nxt->type = _RM;
                 if (tmp != -1 && curr->prv)
                     curr->prv->outfile = tmp;
@@ -266,9 +269,8 @@ int *handle_redirections(t_list **list, int *count)
         else if (curr->type == RED_IN)
         {
             delete_node(curr);
-            if (!is_valid_name(curr->nxt->value))
+            if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
-                printf(">>> curr -%s- type: %d\n", curr->nxt->value, curr->type);
                 tmp = open(curr->nxt->value, O_RDWR);
                 curr->nxt->type = _RM;
                 if (tmp != -1 && curr->nxt->nxt)
@@ -299,11 +301,10 @@ int ms_parse(t_data **data, char *line, char **envp)
     list = ms_tokenize(line, envp);
     if (!list)
         return -1;
-    print_list(list);
+    // print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
         expand_all(&list, envp);
-        print_list(list);
         return printf("quote>\n"), -1;
     }
     expand_all(&list, envp);
@@ -315,6 +316,7 @@ int ms_parse(t_data **data, char *line, char **envp)
     if (list->nxt)
     {
         list = list->nxt;
+        list->first = 1;
         remove_token(&list->prv, NULL_TOKEN); 
     }
     if (count && !fds)
@@ -329,7 +331,7 @@ int ms_parse(t_data **data, char *line, char **envp)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    printf("\nfinal result : \n");
+    // printf("\nfinal result : \n");
     print_list(list);
     return 0;
 }

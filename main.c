@@ -24,7 +24,8 @@ int main( int ac , char *av[], char**envp)
             break;
         if (*line)
             add_history(line);
-        ms_parse(&data, line, envp);
+        if (ms_parse(&data, line, envp))
+            return 1;
         if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
             execute_commands(&data, envp);
         // if (data->cmd)

@@ -19,11 +19,11 @@ SRCS = main.c \
 	execution/parce_env.c \
 	execution/ft_split.c \
 	execution/ft_init_cmds.c \
-	# execution/cd.c \
+	execution/cd.c \
+	execution/pwd.c \
 	# execution/echo.c \
 	# execution/exit.c \
 	# execution/export.c \
-	# execution/pwd.c \
 	# execution/unset.c \
 	# execution/env.c \
 

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 10:05:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:47:35 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,42 @@
 // TODO creating cd
 // TODO testing cd
 //  [ ] cd with no argument
+// [ ] cd -
+// [ ] cd ~
+// [ ] cd chenge oldpwd and pwd
 
+// getcwd();
 
-
-void ft_cd(char *str)
+int ft_cd(t_list *cmd, t_env *env)
 {
-    if (chdir(str) == -1)
+    (void)env;
+    // char static cwd[1024];
+
+    // if (getcwd(cwd, sizeof(cwd)) != NULL)
+    // {
+    //     printf("Current working directory: %s\n", cwd);
+    // }
+    // else
+    // {
+    //     perror("getcwd() error");
+    //     return 1;
+    // }
+    // printf("directpry is == %s\n", cmd->args[0]);
+    if (cmd->args)
     {
-        ft_putstr_fd("cd: ", 2);
-        ft_putstr_fd(str, 2);
-        ft_putstr_fd(": no such file or directory\n", 2);
+        if (chdir(cmd->args[0]) == -1)
+        {
+            ft_putstr_fd("cd: ", 2);
+            ft_putstr_fd(cmd->args[0], 2);
+            ft_putstr_fd(": no such file or directory\n", 2);
+            return (-1);
+        }
     }
+
+    return (SUCCESS);
 }
+
+// getcwd geting PWD
 
 // int main(int argc, char *argv[])
 // {

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/30 09:35:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:58:08 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,10 @@ void expand_all(t_list **list, char **envp)
             tmp = ft_expand(curr->value, envp);
             // free(curr->value); // it crashes the code 
             curr->value = tmp;
-            curr->type = _WORD;
+            if (*tmp)
+                curr->type = _WORD;
+            else
+                curr->type = NF_VAR;
         }
         curr = curr->nxt;
     }
@@ -137,14 +140,16 @@ int check_syntax(t_list **list, int *count)
             if ((!curr->prv || curr->prv->type != _WORD) || (!curr->nxt || curr->nxt->type != _WORD))
                 return printf("invalid PIPE syntax\n"), 1;
         }
-        if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == H_DOC_APPEND)
+        if (curr->type == H_DOC || curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND)
         {
             (*count)++;
+            if (curr->nxt && curr->nxt->type == NF_VAR)
+                return printf("ambiguous redirect\n"), 1;
             if ((!curr->nxt || curr->nxt->type != _WORD))
                 return printf("invalid RED or H_DOC_APP syntax\n"), 1;
         }
-        if (curr->type == H_DOC_TRUNC && (!curr->nxt || curr->nxt->type != _WORD))
-            return printf("invalid H_DOC_TRUNC syntax\n"), 1;
+        if (curr->type == H_DOC && (!curr->nxt || curr->nxt->type != _WORD))
+            return printf("invalid H_DOC syntax\n"), 1;
         curr = curr->nxt;
     }
     return 0;
@@ -246,19 +251,19 @@ int *handle_redirections(t_list **list, int *count)
     while (curr)
     {
         tmp = -1;
-        if (curr->type == RED_OUT || curr->type == H_DOC_APPEND) // > >> ; cmd > filename
+        if (curr->type == RED_OUT || curr->type == RED_OUT_APPEND) // > >> ; cmd > filename
         {
             delete_node(curr);
             if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
-                if (curr->type == H_DOC_APPEND)
+                if (curr->type == RED_OUT_APPEND)
                     tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
                 else
                     tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
                 curr->nxt->type = _RM;
                 if (tmp != -1 && curr->prv)
                     curr->prv->outfile = tmp;
-                else if (curr->prv)
+                else if (tmp == -1)
                     return perror("outfile error"), NULL;
                 fds[i++] = tmp;
                 delete_node(curr->nxt);
@@ -271,12 +276,37 @@ int *handle_redirections(t_list **list, int *count)
             delete_node(curr);
             if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
+                if (curr->nxt->type == NF_VAR)
+                    return printf("infile : ambiguous redirect"), NULL;
                 tmp = open(curr->nxt->value, O_RDWR);
                 curr->nxt->type = _RM;
                 if (tmp != -1 && curr->nxt->nxt)
                     curr->nxt->nxt->infile = tmp;
-                else if (curr->nxt->nxt)
+                else if (tmp == -1 )
                     return perror("infile error "), NULL;
+                fds[i++] = tmp;
+                delete_node(curr->nxt);
+            }
+            else
+                return printf("invalid name for fd\n"), NULL;
+        }
+        else if (curr->type == H_DOC)
+        {
+            printf("dkhlat hna\n");
+            // delete_node(curr);
+            if (curr->nxt && !is_valid_name(curr->nxt->value))
+            {
+                if (curr->nxt->type == NF_VAR)
+                    return printf("heredoc : ambiguous redirect"), NULL;
+                printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
+                tmp = open_heredoc(tmp);
+                if (curr->nxt->value)
+                    fill_heredoc(tmp, curr->nxt->value);
+                curr->nxt->type = _RM;
+                if (tmp != -1 && curr->nxt->nxt)
+                    curr->nxt->nxt->infile = tmp;
+                else if (tmp == -1 )
+                    return perror("heredoc error "), NULL;
                 fds[i++] = tmp;
                 delete_node(curr->nxt);
             }
@@ -301,7 +331,6 @@ int ms_parse(t_data **data, char *line, char **envp)
     list = ms_tokenize(line, envp);
     if (!list)
         return -1;
-    // print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
         expand_all(&list, envp);
@@ -311,6 +340,7 @@ int ms_parse(t_data **data, char *line, char **envp)
     concat_words(&list);
     if (check_syntax(&list, &count) == 1)
         return -1;
+    print_list(list);
     if(count)
         fds = handle_redirections(&list, &count); 
     if (list->nxt)
@@ -319,13 +349,13 @@ int ms_parse(t_data **data, char *line, char **envp)
         list->first = 1;
         remove_token(&list->prv, NULL_TOKEN); 
     }
-    if (count && !fds)
-        return printf("fds prb\n"), 1;
     remove_token(&list, _RM);
     handle_args(&list);
     remove_token(&list, _PIPE);
-    while(fds && fds[count])
-        printf("fd : %d\n", fds[count--]);
+    // if (count && !fds)
+    //     return printf("fds prb\n"), 1;
+    while(fds && fds[--count])
+        printf("fd : %d\n", fds[count]);
     last = get_last_node(list);
     last->last = 1;
     (*data)->cmd = list;

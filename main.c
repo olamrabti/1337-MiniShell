@@ -16,7 +16,6 @@ int main( int ac , char *av[], char**envp)
     data->fds = NULL;
     data->status = 0;
     data->save = -1;
-    // 
     while (1)
     {
         line = readline("MINISHELL$ ");
@@ -24,10 +23,9 @@ int main( int ac , char *av[], char**envp)
             break;
         if (*line)
             add_history(line);
-        if (ms_parse(&data, line, envp))
-            return 1;
-        if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
-            execute_commands(&data, envp);
+        ms_parse(&data, line, envp);
+        // if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
+        //     execute_commands(&data, envp);
         // if (data->cmd)
         //     remove_list(&data->cmd);
         free(line);

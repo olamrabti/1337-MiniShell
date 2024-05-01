@@ -1,11 +1,14 @@
 
 
-
+// FIXME << "", in quotes handling maybe
+// FIXME << "$USER", delimiter is $USER same for  >> '$USER'
 
 // [ ] heredoc expansion for quotes
-// [ ] handle heredoc 
-
-
+// [ ] handle heredoc
+        // .heredoc file > if exists join the name with an incremented i = 1 to change the name 
+        // work with 2 files one we read from and the second we return (points at the begining).
+        // open readline and return the file when the delimiter is encountered
+        //  pass it as an infile to the command.
 // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
 
 
@@ -13,3 +16,4 @@
 
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
 // [x] this case doesnt assign opened file to cmd. (arg2)
+

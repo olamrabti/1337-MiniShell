@@ -7,6 +7,7 @@ NAME = minishell
 SRCS = main.c \
 	parsing/linked_list_utils.c \
 	parsing/ms_parse.c \
+	parsing/here_doc.c \
 	parsing/ms_tokenize.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_strjoin.c \

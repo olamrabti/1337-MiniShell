@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/28 13:27:30 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:24:16 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,14 @@ char *ft_expand(char *key, char **envp)
         return key;
     // if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
     //     return strdup : ft_itoa(exitstatus);
-    if (key && (ft_strlen(key) == 1|| ft_isdigit(key[1])))
+    if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (ft_strdup(""));
     value = ft_getvalue(key + 1, envp);
     // remmember to free it before give it the new strdup value
     if (!value)
-        return (ft_strdup(key + 1));
+        return (ft_strdup(""));
+    // if (!value)
+    //     return (ft_strdup(key + 1));
     return (value);
 }
 
@@ -103,12 +105,12 @@ t_list *ms_tokenize(char *line, char **envp)
     {
         if (line[i]== '<' && line[i + 1] == '<')
         {
-            node_addback(&current, create_node(ft_strdup("<<"), H_DOC_TRUNC));
+            node_addback(&current, create_node(ft_strdup("<<"), H_DOC));
             i++;
         }
         else if (line[i] == '>' && line[i + 1] == '>')
         {
-           node_addback(&current, create_node(ft_strdup(">>"), H_DOC_APPEND));
+           node_addback(&current, create_node(ft_strdup(">>"), RED_OUT_APPEND));
            i++;
         }
         else if (line[i] == '>')

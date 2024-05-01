@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/26 11:43:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:24:16 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,24 @@ typedef enum token {
         W_SPACE = 1,
         RED_IN,
         RED_OUT,
-        H_DOC_TRUNC,
-        H_DOC_APPEND,
+        RED_OUT_APPEND,
+        H_DOC,
         _PIPE,
         _DOLLAR,
         D_QUOTE,
         S_QUOTE,
         _WORD,
         NULL_TOKEN,
-        _RM
+        _RM,
+        NF_VAR
 } token;
 
 typedef struct s_list
 {
 	char *value;
     char **args;
-    int infile; // open()... <
-    int outfile; // open() when > >> (trunc) 
+    int infile;
+    int outfile;
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;

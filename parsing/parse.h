@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/28 10:06:51 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:31:41 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@ char *ft_memcpy(void *dst, const void *src, size_t n);
 char *ft_memmove(void *dst, const void *src, size_t len);
 int ft_strlen(const char *s);
 char *ft_getvalue(char *key, char **envp);
+
 char *ft_expand(char *line, char **envp);
 t_list *ms_tokenize(char *line, char **envp);
 int ms_parse(t_data **data, char *line, char **envp);
+int open_heredoc(int tmp);
+int fill_heredoc(int tmp, char *deli);
 t_list	*create_node(char *value, token type);
 int	node_addfront(t_list **list, t_list *new);
 int	node_addback(t_list **list, t_list *new);

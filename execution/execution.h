@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/30 15:48:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:02:18 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**ft_split(char const *s, char c);
 char *ft_substr(char *s, unsigned int start, size_t len);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 
-void ft_env(char **envp);
+int ft_env(t_list * cmd, t_env *envp);
 int execute_commands(t_data **data, char **envp);
 void ft_add_to_env(t_env **env, char *key, char *value);
 
@@ -80,6 +80,7 @@ int ft_is_builtin(char *value);
 
 int ft_cd(t_list *cmd, t_env *env);
 int ft_pwd(t_list *cmd);
+int ft_echo(t_list *cmd);
 
 
 

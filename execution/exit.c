@@ -6,9 +6,13 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/30 17:57:44 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:01:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
+int ft_exit(t_list *cmd)
+{
+    
+}

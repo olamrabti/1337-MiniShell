@@ -18,13 +18,12 @@ SRCS = main.c \
 	execution/helpers.c \
 	execution/parce_env.c \
 	execution/ft_split.c \
-	execution/ft_init_cmds.c \
 	execution/cd.c \
 	execution/pwd.c \
 	execution/env.c \
 	execution/echo.c \
+	execution/export.c \
 	# execution/exit.c \
-	# execution/export.c \
 	# execution/unset.c \
 
 OBJS = $(SRCS:.c=.o)

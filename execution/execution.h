@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/30 18:02:18 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:47:25 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define EXECUTION_H
 
 # define SUCCESS 0
-# define ERROR -1
+# define ERROR 1
 
 #include "../minishell.h"
 #include <stdio.h>
@@ -25,13 +25,13 @@
 #include <sys/wait.h>
 #include <string.h>
 
-typedef struct s_env
-{
-    char *key;
-    char *value;
-    struct s_env *next;
+// typedef struct s_env
+// {
+//     char *key;
+//     char *value;
+//     struct s_env *next;
 
-} t_env;
+// } t_env;
 
 
 // void ft_putstr(char *str);
@@ -54,13 +54,12 @@ char *ft_substr(char *s, unsigned int start, size_t len);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 
 int ft_env(t_list * cmd, t_env *envp);
-int execute_commands(t_data **data, char **envp);
+int execute_commands(t_data **data, t_env *env);
 void ft_add_to_env(t_env **env, char *key, char *value);
 
 
-int ft_execute_builtin(t_list *cmd, t_env *env);
+int ft_execute_builtin(t_list *cmd, t_env **env);
 
-void ft_add_to_env(t_env **env, char *key, char *value);
 t_env *ft_parce_env(char **envp);
 
 
@@ -71,9 +70,8 @@ char *ft_get_path(t_list *cmd, t_env *env);
 
 char **ft_join_for_execve(t_list *cmd);
 
-int ft_pipex(t_data *data, t_env *env);
+int ft_pipex(t_data *data, t_env **env);
 
-void ft_init_cmds(t_data *data);
 
 
 int ft_is_builtin(char *value);
@@ -81,8 +79,9 @@ int ft_is_builtin(char *value);
 int ft_cd(t_list *cmd, t_env *env);
 int ft_pwd(t_list *cmd);
 int ft_echo(t_list *cmd);
+int  ft_export(t_list * cmd, t_env **envp);
 
-
+void ft_print_export(t_env *envp);
 
 
 #endif

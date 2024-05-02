@@ -5,6 +5,7 @@
 int main( int ac , char *av[], char**envp)
 {
     t_data *data;
+    t_env *env;
     char *line;
 
     (void)ac;
@@ -16,6 +17,7 @@ int main( int ac , char *av[], char**envp)
     data->fds = NULL;
     data->status = 0;
     data->save = -1;
+    env = ft_parce_env(envp);
     // 
     while (1)
     {
@@ -27,7 +29,7 @@ int main( int ac , char *av[], char**envp)
         ms_parse(&data, line, envp);
             // return 1;
         if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
-            execute_commands(&data, envp);
+            execute_commands(&data, env);
         // if (data->cmd)
         //     remove_list(&data->cmd);
         free(line);

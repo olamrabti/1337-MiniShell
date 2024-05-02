@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/30 18:14:38 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:09:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int ft_execute(t_list *cmd, t_env *env)
     return (i);
 }
 
-int ft_pipex(t_data *data, t_env *env)
+int ft_pipex(t_data *data, t_env **env)
 {
     t_list *temp;
     t_list *tmp;
@@ -54,7 +54,7 @@ int ft_pipex(t_data *data, t_env *env)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, env));
-        
+
         if (!temp->last)
         {
             if (pipe(data->pd) == -1)
@@ -99,12 +99,20 @@ int ft_pipex(t_data *data, t_env *env)
                 close(data->pd[0]);
                 close(data->pd[1]);
             }
-            if (ft_execute(temp, env) == -1)
+            if (ft_is_builtin(temp->value))
             {
-                ft_putstr_fd("command not found: ", 2);
-                ft_putstr_fd(temp->value, 2);
+                ft_execute_builtin(temp, env);
+                exit(EXIT_SUCCESS);
             }
-            exit(EXIT_SUCCESS);
+            else
+            {
+                if (ft_execute(temp, *env) == -1)
+                {
+                    ft_putstr_fd("command not found: ", 2);
+                    ft_putstr_fd(temp->value, 2);
+                }
+                exit(EXIT_SUCCESS);
+            }
         }
         if (!temp->first)
             close(data->save);

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/02 17:52:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:29:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int ft_change_env(char * str, t_env *envp)
     }
     return(SUCCESS);
 }
-
-
 
 
 int ft_add_to_export(char *str, t_env **env)

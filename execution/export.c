@@ -6,20 +6,21 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/02 23:29:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:12:32 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-// [ ] var with no value
-// [ ] var with value
-// [ ] var already exist
+// [x] var with no value
+// [x] var with value
+// [x] var already exist
 // [ ] var with += value
 // [ ] var with += value already exist
-// [ ] var key="" empty value
-// [ ] var key=" " empty value
+// [x] var key="" empty value
+// [x] var key=" " empty value
+
 
 void ft_print_export(t_env *envp)
 {
@@ -32,44 +33,46 @@ void ft_print_export(t_env *envp)
         printf("%s", env->key);
         // potentiel segfault
         if (env->value)
-            printf("=\"%s\"\n", env->value);
+            printf("=\"%s\"", env->value);
+        printf("\n");
         env = env->next;
     }
 }
 static int ft_is_exist(char *str, t_env *envp)
 {
     t_env *env;
-    int len;
 
     env = envp;
-    len = ft_strlen(str);
+    int start = 0;
+    while (str[start] && (str[start] != '='))
+        start++;
     while (env)
     {
-        if ((ft_strncmp(str, env->key, len) == 0) && env->key[len] == '\0')
+        if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
             return (1);
         env = env->next;
     }
     return (0);
 }
 
-int ft_change_env(char * str, t_env *envp)
+int ft_change_env(char *str, t_env *envp)
 {
-    t_env *env;
-
-    env = envp;
+    t_env *env = envp;
     int start = 0;
-    while (str[start] != '=')
+    while (str[start] && str[start] != '=')
         start++;
     int len = ft_strlen(str);
     while (env)
     {
-        if ((ft_strncmp(str, env->key, len) == 0))
-            env->value = ft_substr(str, start, len - start);
+        if (ft_strncmp(str, env->key, start) == 0)
+        {
+            env->value = ft_substr(str, start + 1, len - start - 1);
+            return (SUCCESS);
+        }
         env = env->next;
     }
-    return(SUCCESS);
+    return (SUCCESS);
 }
-
 
 int ft_add_to_export(char *str, t_env **env)
 {
@@ -78,20 +81,15 @@ int ft_add_to_export(char *str, t_env **env)
 
     int start = 0;
     int len = ft_strlen(str);
-    printf("(len)---> %d\n", len);
     while ((str[start]) && (str[start] != '='))
         start++;
-    printf("(start)---> %d\n", start);
     if (start == len)
         value = NULL;
     else
-    {
         value = ft_substr(str, start + 1, len - start);
-        printf("(value) ---> %s\n", value);
-    }
     key = ft_substr(str, 0, start);
-    printf("(key)---> %s\n", key);
     ft_add_to_env(env, key, value);
+
     // free(key);
     // free(value);
     return (SUCCESS);
@@ -108,7 +106,7 @@ int ft_export(t_list *cmd, t_env **envp)
         i = 0;
         while (cmd->args[i])
         {
-            if (ft_is_exist(cmd->args[i], *env))
+            if (ft_is_exist(cmd->args[i], *env) == 1)
             {
                 // [ ] change its value
                 ft_change_env(cmd->args[i], *env);

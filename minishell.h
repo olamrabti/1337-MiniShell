@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/02 16:30:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:35:49 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_env
 {
     char *key;
     char *value;
+    int is_concat;
     struct s_env *next;
 
 } t_env;

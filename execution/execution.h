@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/03 16:08:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:45:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int  ft_export(t_list * cmd, t_env **envp);
 
 void ft_print_export(t_env *envp);
 
-
+int ft_change_env(char *str, t_env *envp, int concat);
 
 #endif

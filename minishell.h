@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/01 12:24:16 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:58:59 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ typedef enum token {
         _WORD,
         NULL_TOKEN,
         _RM,
-        NF_VAR
+        NF_VAR,
+        _LTRAL
 } token;
 
 typedef struct s_list
@@ -47,6 +48,7 @@ typedef struct s_list
 	struct s_list	*nxt;
     int first;
     int last;
+    int herdoc;
 }	t_list;
 
 typedef struct s_data

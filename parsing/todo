@@ -1,9 +1,38 @@
 
 
-// FIXME << "", in quotes handling maybe
+// FIXME << "", in quotes handling maybe (fixed)
 // FIXME << "$USER", delimiter is $USER same for  >> '$USER'
 
+# << "'ol'" cat
+# > $USER
+# > ol
+# > 'ol'
+# $USER
+# ol
+
+#  << "ol" cat
+# > $USER
+# > ol
+# $USER
+
+# << ol cat
+# > $USER
+# > ol
+# olamrabt
+
+#  << l cat
+# > '$PWD'
+# > L
+# > l
+# '/Users/olamrabt/Desktop/1337-MiniShell'
+# L
+
+
+# search and expand , ndup join + join 
+
 // [ ] heredoc expansion for quotes
+        // [ ] add a flag right after tokenization if ' or " is after <<
+        // [ ] handle heredoc before expanding
 // [ ] handle heredoc
         // .heredoc file > if exists join the name with an incremented i = 1 to change the name 
         // work with 2 files one we read from and the second we return (points at the begining).
@@ -17,3 +46,5 @@
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
 // [x] this case doesnt assign opened file to cmd. (arg2)
 
+// FIXME NF_VAR khrb9at concat_words
+// FIXME > $PWD segfaults

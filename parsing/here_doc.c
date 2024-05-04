@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:26:16 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/01 16:07:09 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/04 14:36:07 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ int open_heredoc(int tmp)
     {
         if (access(filename, X_OK | R_OK | F_OK) == -1)
             filename = ft_charjoin(filename, i++);
-        else 
-            break;
         if (i == 57)
-            i = 49;
+            break;
+        // i = 49;
     }
     tmp = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0777);
     free(filename);
@@ -57,6 +56,7 @@ int fill_heredoc(int tmp, char *deli)
             break;
         if (!ft_strcmp(line, deli))
             break ;
+        // if delimiter is not literal , expand before write
         line = ft_charjoin(line, '\n');
         write(tmp, line, ft_strlen(line));
         free(line);

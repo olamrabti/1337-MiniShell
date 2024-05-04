@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/04 00:10:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/04 14:38:11 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,35 @@ void ft_print_export(t_env *envp)
         env = env->next;
     }
 }
-static int ft_is_exist(char *str, t_env *envp , int concat)
+static int ft_is_exist(char *str, t_env *envp, int concat)
 {
     t_env *env;
 
-    if (concat)
-    {
-        
-    }
-    
     env = envp;
     int start = 0;
-    while (str[start] && (str[start] != '='))
-        start++;
-    while (env)
+    if (concat)
     {
-        if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
-            return (1);
-        env = env->next;
+        while (str[start] && (str[start] != '+'))
+            start++;
+        while (env)
+        {
+            if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
+                return (1);
+            env = env->next;
+        }
     }
+    else
+    {
+        while (str[start] && (str[start] != '='))
+            start++;
+        while (env)
+        {
+            if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
+                return (1);
+            env = env->next;
+        }
+    }
+
     return (0);
 }
 
@@ -66,10 +76,6 @@ int ft_change_env(char *str, t_env *envp, int concat)
     int start = 0;
 
     int len = ft_strlen(str);
-    printf("here\n");
-    printf("str ========== %s\n", str);
-    printf("concat=========%d\n", concat);
-    
     if (concat)
     {
         while (str[start] && str[start] != '+')
@@ -78,10 +84,8 @@ int ft_change_env(char *str, t_env *envp, int concat)
         {
             if (ft_strncmp(str, env->key, start) == 0)
             {
-                puts("here");
                 // env->value = ft_substr(str, start + 1, len - start - 1);
                 env->value = ft_strjoin(env->value, str + (start + 2));
-                printf("val:%s\n", env->value);
                 return (SUCCESS);
             }
             env = env->next;
@@ -94,7 +98,8 @@ int ft_change_env(char *str, t_env *envp, int concat)
 
         while (env)
         {
-            if (ft_strncmp(str, env->key, start) == 0)
+            // printf("len li khas y talloca %d\n", len - start);
+            if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
             {
                 env->value = ft_substr(str, start + 1, len - start - 1);
                 return (SUCCESS);
@@ -121,7 +126,7 @@ int ft_add_to_export(char *str, t_env **env, int concat)
         else
         {
             // value = ft_substr(str, start + 1, len - start);
-            value = ft_strjoin("" ,str + (start + 2));
+            value = ft_strjoin("", str + (start + 2));
         }
         key = ft_substr(str, 0, start);
         ft_add_to_env(env, key, value);
@@ -166,11 +171,9 @@ int ft_export(t_list *cmd, t_env **envp)
         {
             int concat = ft_is_concat(cmd->args[i]);
             printf("concat --> %d\n", concat);
-
             if (ft_is_exist(cmd->args[i], *env, concat) == 1)
             {
                 // [ ] change its value
-                printf("khass ydkhe hna \n");
                 ft_change_env(cmd->args[i], *env, concat);
             }
             else

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/04 14:38:11 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:32:58 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 // [x] var with no value
 // [x] var with value
 // [x] var already exist
-// [ ] var with += value
-// [ ] var with += value already exist
+// [x] var with += value
+// [x] var with += value already exist
 // [x] var key="" empty value
 // [x] var key=" " empty value
 // [ ] invalid var
@@ -158,6 +158,27 @@ int ft_is_concat(char *str)
     return (0);
 }
 
+
+
+int ft_export_is_valid(char *str)
+{
+    int i = 0;
+    if (ft_isalpha(str[0]) || str[0] == '_')
+    {
+        i++;
+        while (str[i] && str[i] != '=')
+        {
+            if (ft_isalnum(str[i]) || str[i] == '_')
+                i++;
+            else
+                return 0;
+        }
+    }
+    else
+        return (0);
+    return (1);
+}
+
 int ft_export(t_list *cmd, t_env **envp)
 {
     t_env **env;
@@ -169,17 +190,26 @@ int ft_export(t_list *cmd, t_env **envp)
         i = 0;
         while (cmd->args[i])
         {
-            int concat = ft_is_concat(cmd->args[i]);
-            printf("concat --> %d\n", concat);
-            if (ft_is_exist(cmd->args[i], *env, concat) == 1)
+            if (ft_export_is_valid(cmd->args[i]))
             {
-                // [ ] change its value
-                ft_change_env(cmd->args[i], *env, concat);
+                int concat = ft_is_concat(cmd->args[i]);
+                printf("concat --> %d\n", concat);
+                if (ft_is_exist(cmd->args[i], *env, concat) == 1)
+                {
+                    // [ ] change its value
+                    ft_change_env(cmd->args[i], *env, concat);
+                }
+                else
+                {
+                    // [ ] add node and if there is '=' assigne a value
+                    ft_add_to_export(cmd->args[i], env, concat);
+                }
             }
             else
             {
-                // [ ] add node and if there is '=' assigne a value
-                ft_add_to_export(cmd->args[i], env, concat);
+                ft_putstr_fd("export: ", 2);
+                ft_putstr_fd(cmd->args[i], 2);
+                ft_putstr_fd(": not a valid identifier\n", 2);
             }
             // move to next argument
             i++;

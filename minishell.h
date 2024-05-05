@@ -6,13 +6,14 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 13:38:29 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:57:18 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// # include "execution/execution.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -73,10 +74,17 @@ typedef struct s_env
 
 ////////////////////// parcing ////////////////////////////////
 
+typedef struct s_env
+{
+    char *key;
+    char *value;
+    struct s_env *next;
+
+} t_env;
 
 
-t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data **data, char *line, char **envp);
+t_list *ms_tokenize(char *line);
+int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
@@ -87,8 +95,8 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data **data, char **envp);
-
+int execute_commands(t_data **data, t_env *env);
+t_env *ft_parce_env(char **envp);
 
 
 

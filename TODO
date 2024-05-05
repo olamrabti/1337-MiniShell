@@ -1,0 +1,5 @@
+ls < red
+ls < res > red
+ls > $red
+ls >
+// [ ] echoo

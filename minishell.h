@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 13:57:18 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:59:33 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,6 @@ typedef struct s_env
 } t_env;
 
 ////////////////////// parcing ////////////////////////////////
-
-typedef struct s_env
-{
-    char *key;
-    char *value;
-    struct s_env *next;
-
-} t_env;
 
 
 t_list *ms_tokenize(char *line);

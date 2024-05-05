@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:46:17 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 13:48:01 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:13:31 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 
 char *ft_getvalue(char *key, t_env *env)
 {
-    int i;
-
     while (env)
     {
-        if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0) //// take it from env
+        if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
             return (ft_strdup(env->value));
         env = env->next;
     }
@@ -74,7 +72,7 @@ void expand_all(t_list **list, t_env *env)
     {
         if (curr->prv && curr->prv->type == H_DOC)
         {
-            if (curr->type != _LTRAL)
+            if (curr->type != _LTRAL && curr->type != W_SPACE)
                 curr->type = _WORD;
             curr = curr->nxt;
         }

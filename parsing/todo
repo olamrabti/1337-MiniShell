@@ -50,4 +50,7 @@
 
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
 
-// FIXME  "'$PWD'" uotputs PATH .
+// FIXED  "'$PWD'" uotputs PATH .
+// FIXED concats white space with word, causes prbs with heredoc.
+
+// FIXED echo "" doenst assign "" as an argument      

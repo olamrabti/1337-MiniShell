@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 13:55:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:30:33 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ void handle_args(t_list **list)
     while (curr)
     {
         count = 1;
-        while (curr && curr->type == _WORD && curr->nxt && curr->nxt->type == _WORD)
+        while (curr && (curr->type == _WORD || curr->type == _LTRAL) 
+            && curr->nxt && (curr->nxt->type == _WORD || curr->nxt->type == _LTRAL))
         {
             count++;
             curr = curr->nxt;
@@ -163,12 +164,12 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env);
         return printf("quote>\n"), -1;
     }
-    remove_token(&list, W_SPACE);
-    print_list(list);
     expand_all(&list, env);
     concat_words(&list);
+    remove_token(&list, W_SPACE);
     if (check_syntax(&list, &count) == 1)
         return remove_list(&list), -1;
+    print_list(list);
     if(count)
         fds = handle_redirections(&list, &count); 
     remove_token(&list, _RM);

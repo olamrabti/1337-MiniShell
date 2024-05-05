@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 10:32:58 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:03:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // [x] var with += value already exist
 // [x] var key="" empty value
 // [x] var key=" " empty value
-// [ ] invalid var
+// [x] invalid var
 
 void ft_print_export(t_env *envp)
 {
@@ -70,6 +70,36 @@ static int ft_is_exist(char *str, t_env *envp, int concat)
     return (0);
 }
 
+char	*ft_strjoin_export(char *s1, char *s2)
+{
+	int		i;
+	int		len;
+	char	*result;
+
+	i = 0;
+	if (!s2)
+		return (NULL);
+    if (!s1)
+        s1 = ft_strdup("");
+	len = ft_strlen(s2) + ft_strlen(s1);
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result)
+		return (0);
+	while (s1[i])
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		result[ft_strlen(s1) + i] = s2[i];
+		i++;
+	}
+	result[i + ft_strlen(s1)] = '\0';
+	return (result);
+}
+
 int ft_change_env(char *str, t_env *envp, int concat)
 {
     t_env *env = envp;
@@ -85,7 +115,7 @@ int ft_change_env(char *str, t_env *envp, int concat)
             if (ft_strncmp(str, env->key, start) == 0)
             {
                 // env->value = ft_substr(str, start + 1, len - start - 1);
-                env->value = ft_strjoin(env->value, str + (start + 2));
+                env->value = ft_strjoin_export(env->value, str + (start + 2));
                 return (SUCCESS);
             }
             env = env->next;
@@ -166,7 +196,7 @@ int ft_export_is_valid(char *str)
     if (ft_isalpha(str[0]) || str[0] == '_')
     {
         i++;
-        while (str[i] && str[i] != '=')
+        while (str[i] && (str[i] != '=' && str[i] != '+'))
         {
             if (ft_isalnum(str[i]) || str[i] == '_')
                 i++;

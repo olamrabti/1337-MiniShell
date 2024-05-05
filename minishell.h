@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/04 11:58:59 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:38:29 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,15 @@ typedef struct s_data
     int pd[2];
 
 } t_data;
+
+
+typedef struct s_env
+{
+    char *key;
+    char *value;
+    struct s_env *next;
+
+} t_env;
 
 ////////////////////// parcing ////////////////////////////////
 

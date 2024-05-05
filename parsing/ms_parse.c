@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/04 14:29:43 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:49:33 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,100 +143,9 @@ void concat_words(t_list **list)
     }
     // remove_token(list, W_SPACE);
 }
-int is_valid_name(char *str)
-{
-    int i;
-    
-    i = 0;
-    if(!str)
-        return 1;
-    // [ ] Check for valid name rules
-    while(str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
-    ;
-    if (str[i])
-        return 1;
-    return 0;
-}
-int *handle_redirections(t_list **list, int *count)
-{
-    t_list *curr;
-    int *fds;
-    int tmp;
-    int i;
 
-    fds = malloc(sizeof(sizeof(int)) * (*count));
-    if (!fds)
-        return NULL;
-    fds[*count]= -1;
-    curr = *list;
-    i = 0;
-    while (curr)
-    {
-        tmp = -1;
-        if (curr->type == RED_OUT || curr->type == RED_OUT_APPEND) // > >> ; cmd > filename
-        {
-            // delete_node(curr);
-            curr->type = _RM;
-            if (curr->nxt && !is_valid_name(curr->nxt->value))
-            {
-                if (curr->type == RED_OUT_APPEND)
-                    tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
-                else
-                    tmp = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
-                curr->nxt->type = _RM;
-                if (tmp != -1 && curr->prv)
-                    curr->prv->outfile = tmp;
-                else if (tmp == -1)
-                    return perror(curr->nxt->value), NULL;
-                fds[i++] = tmp;
-                // delete_node(curr->nxt);
-            }
-            else
-                return printf("invalid name for fd\n"), NULL;
-        } 
-        else if (curr->type == RED_IN)
-        {
-            // delete_node(curr);
-            curr->type = _RM;
-            if (curr->nxt && !is_valid_name(curr->nxt->value))
-            {
-                if (curr->nxt->type == NF_VAR)
-                    return printf("infile : ambiguous redirect"), NULL;
-                tmp = open(curr->nxt->value, O_RDWR);
-                curr->nxt->type = _RM;
-                if (tmp != -1 && curr->nxt->nxt)
-                    curr->nxt->nxt->infile = tmp;
-                else if (tmp == -1 )
-                    return perror(curr->nxt->value), NULL;
-                fds[i++] = tmp;
-                // delete_node(curr->nxt);
-            }
-            else
-                return printf("invalid name for fd\n"), NULL;
-        }
-        else if (curr->type == H_DOC)
-        {
-            // delete_node(curr);
-            printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
-            curr->type = _RM;
-            tmp = open_heredoc(tmp);
-            if (curr->nxt->value)
-                fill_heredoc(tmp, curr->nxt->value);
-            curr->nxt->type = _RM;
-            if (tmp != -1 && curr->nxt->nxt)
-                curr->nxt->nxt->infile = tmp;
-            else if (tmp == -1)
-                return perror("heredoc error "), NULL;
-            fds[i++] = tmp;
-            // delete_node(curr->nxt);
-        }
-        if (curr)
-            curr = curr->nxt;
-    }
-    return fds;
-}
 
-int ms_parse(t_data **data, char *line, char **envp)
+int ms_parse(t_data **data, char *line, t_env *env)
 {
     t_list *list;
     t_list *last;
@@ -245,20 +154,21 @@ int ms_parse(t_data **data, char *line, char **envp)
 
     count  = 0;
     fds = NULL;
-    list = ms_tokenize(line, envp);
+    list = ms_tokenize(line);
     if (!list)
         return -1;
+    print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
-        expand_all(&list, envp);
+        expand_all(&list, env);
         return printf("quote>\n"), -1;
     }
-    printf("\nhere : ");
+    remove_token(&list, W_SPACE);
     print_list(list);
-    expand_all(&list, envp);
+    expand_all(&list, env);
     concat_words(&list);
     if (check_syntax(&list, &count) == 1)
-        return -1;
+        return remove_list(&list), -1;
     if(count)
         fds = handle_redirections(&list, &count); 
     remove_token(&list, _RM);

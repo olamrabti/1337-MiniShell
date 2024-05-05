@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/04 14:18:19 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:50:04 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,20 @@ int	ft_isalpha(int c);
 int	ft_isalnum(int c);
 int	ft_isprint(int c);
 
-char *ft_getvalue(char *key, char **envp);
-char *ft_expand(char *line, char **envp);
-void expand_all(t_list **list, char **envp);
+char *ft_getvalue(char *key, t_env *env);
+char *ft_expand(char *line, t_env *env);
+void expand_all(t_list **list, t_env *env);
 int get_key(char *line, int i, int j);
 
 int handle_quote(t_list **list, token quote);
 t_list *handle_singleq(t_list *curr, int *i);
 t_list *handle_doubleq(t_list *curr, int *i);
 
-t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data **data, char *line, char **envp);
+t_list *ms_tokenize(char *line);
+int ms_parse(t_data **data, char *line, t_env *env);
+
+int *handle_redirections(t_list **list, int *count);
+int is_valid_name(char *str);
 
 int open_heredoc(int tmp);
 int fill_heredoc(int tmp, char *deli);

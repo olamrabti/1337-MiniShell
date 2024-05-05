@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/04 12:15:20 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/04 17:45:51 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,5 @@ int handle_quote(t_list **list, token quote)
             curr = curr->nxt;
     }
     remove_token(list, _RM);
-    remove_token(list, W_SPACE);
     return i;
 }

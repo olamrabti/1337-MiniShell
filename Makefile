@@ -10,6 +10,7 @@ SRCS = main.c \
 	parsing/here_doc.c \
 	parsing/quotes.c \
 	parsing/expand.c \
+	parsing/redirections.c \
 	parsing/ms_tokenize.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_strjoin.c \

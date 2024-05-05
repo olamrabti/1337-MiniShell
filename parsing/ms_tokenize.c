@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/04 13:51:36 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:49:28 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ int ft_isalnum(int c)
 }
 
 
-t_list *ms_tokenize(char *line, char **envp)
+t_list *ms_tokenize(char *line)
 {
-    (void)envp;
     t_list *head;
     t_list *current;
     int i;
@@ -58,7 +57,7 @@ t_list *ms_tokenize(char *line, char **envp)
     head = create_node(NULL, NULL_TOKEN);
     current = head;
     i = 0;
-    j = 0;
+    j = 1;
     while (line[i])
     {
         if (line[i] == '<' && line[i + 1] == '<')
@@ -83,7 +82,7 @@ t_list *ms_tokenize(char *line, char **envp)
             node_addback(&current, create_node(ft_strdup("'"), S_QUOTE));
         else if (line[i] == '$')
         {
-            j = get_key(&line[i], i, j);
+            j = get_key(line, i, j);
             node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
             i += j - 1;
         }

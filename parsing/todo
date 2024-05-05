@@ -1,15 +1,56 @@
 
 
+// FIXME << "", in quotes handling maybe (fixed)
+// FIXME << "$USER", delimiter is $USER same for  >> '$USER'
+
+# << "'ol'" cat
+# > $USER
+# > ol
+# > 'ol'
+# $USER
+# ol
+
+#  << "ol" cat
+# > $USER
+# > ol
+# $USER
+
+# << ol cat
+# > $USER
+# > ol
+# olamrabt
+
+#  << l cat
+# > '$PWD'
+# > L
+# > l
+# '/Users/olamrabt/Desktop/1337-MiniShell'
+# L
 
 
-// [ ] heredoc expansion for quotes
-// [ ] handle heredoc 
+# search and expand , ndup join + join 
 
+// [ ] get variables from env list 
+// [ ] Exit status 
+// [ ] signals
+// [ ] redirections by command if fails stop and move to next command
 
+// [x] heredoc expansion for quotes
+        // [x] handle heredoc before expanding
+        // replace expanded variables 
+// [x] handle heredoc
+        // .heredoc file > if exists join the name with an incremented i = 1 to change the name 
+        // work with 2 files one we read from and the second we return (points at the begining).
+        // open readline and return the file when the delimiter is encountered
+        //  pass it as an infile to the command.
 // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
 
 
 
 
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
-// [x] this case doesnt assign opened file to cmd. (arg2)
+
+// FIXED  "'$PWD'" uotputs PATH .
+// FIXED concats white space with word, causes prbs with heredoc.
+
+// FIXED echo "" doenst assign "" as an argument      

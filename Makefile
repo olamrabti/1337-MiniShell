@@ -7,6 +7,10 @@ NAME = minishell
 SRCS = main.c \
 	parsing/linked_list_utils.c \
 	parsing/ms_parse.c \
+	parsing/here_doc.c \
+	parsing/quotes.c \
+	parsing/expand.c \
+	parsing/redirections.c \
 	parsing/ms_tokenize.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_strjoin.c \
@@ -18,14 +22,13 @@ SRCS = main.c \
 	execution/helpers.c \
 	execution/parce_env.c \
 	execution/ft_split.c \
-	execution/ft_init_cmds.c \
-	# execution/cd.c \
-	# execution/echo.c \
+	execution/cd.c \
+	execution/pwd.c \
+	execution/env.c \
+	execution/echo.c \
+	execution/export.c \
 	# execution/exit.c \
-	# execution/export.c \
-	# execution/pwd.c \
 	# execution/unset.c \
-	# execution/env.c \
 
 OBJS = $(SRCS:.c=.o)
 

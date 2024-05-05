@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/26 11:43:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:59:33 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// # include "execution/execution.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -24,28 +25,31 @@ typedef enum token {
         W_SPACE = 1,
         RED_IN,
         RED_OUT,
-        H_DOC_TRUNC,
-        H_DOC_APPEND,
+        RED_OUT_APPEND,
+        H_DOC,
         _PIPE,
         _DOLLAR,
         D_QUOTE,
         S_QUOTE,
         _WORD,
         NULL_TOKEN,
-        _RM
+        _RM,
+        NF_VAR,
+        _LTRAL
 } token;
 
 typedef struct s_list
 {
 	char *value;
     char **args;
-    int infile; // open()... <
-    int outfile; // open() when > >> (trunc) 
+    int infile;
+    int outfile;
     token type;
 	struct s_list	*prv;
 	struct s_list	*nxt;
     int first;
     int last;
+    int herdoc;
 }	t_list;
 
 typedef struct s_data
@@ -59,12 +63,20 @@ typedef struct s_data
 
 } t_data;
 
+
+typedef struct s_env
+{
+    char *key;
+    char *value;
+    struct s_env *next;
+
+} t_env;
+
 ////////////////////// parcing ////////////////////////////////
 
 
-
-t_list *ms_tokenize(char *line, char **envp);
-int ms_parse(t_data **data, char *line, char **envp);
+t_list *ms_tokenize(char *line);
+int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
@@ -75,8 +87,8 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data **data, char **envp);
-
+int execute_commands(t_data **data, t_env *env);
+t_env *ft_parce_env(char **envp);
 
 
 

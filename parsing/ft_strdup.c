@@ -11,14 +11,13 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+
 int ft_strlen(const char *s)
 {
 	if(!s || !*s)
 		return 0;
 	return (ft_strlen(s + 1) + 1);
 }
-
-
 
 char	*ft_strdup(const char *s)
 {

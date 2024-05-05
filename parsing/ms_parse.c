@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/30 14:41:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:41:38 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int handle_quote(t_list **list, token quote)
         if (curr->type == S_QUOTE && i % 2 == 0)
             quote = S_QUOTE;
         if (curr->type == D_QUOTE && i % 2 == 0)
-            quote = D_QUOTE; 
+            quote = D_QUOTE;
         if (curr->type == quote && i % 2 == 0)
         {
             delete_node(curr);
@@ -117,7 +117,7 @@ void expand_all(t_list **list, char **envp)
         if (curr->type == _DOLLAR)
         {
             tmp = ft_expand(curr->value, envp);
-            // free(curr->value); // it crashes the code 
+            // free(curr->value); // it crashes the code
             curr->value = tmp;
             curr->type = _WORD;
         }
@@ -211,7 +211,7 @@ void concat_words(t_list **list)
             curr->value = tmp;
             delete_node(curr->nxt);
         }
-        else 
+        else
             curr = curr->nxt;
     }
     remove_token(list, W_SPACE);
@@ -219,13 +219,13 @@ void concat_words(t_list **list)
 int is_valid_name(char *str)
 {
     int i;
-    
+
     i = 0;
-    if(!str)
+    if (!str)
         return 1;
     // [ ] Check for valid name rules
-    while(str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
-    ;
+    while (str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
+        ;
     if (str[i])
         return 1;
     return 0;
@@ -240,7 +240,7 @@ int *handle_redirections(t_list **list, int *count)
     fds = malloc(sizeof(sizeof(int)) * (*count));
     if (!fds)
         return NULL;
-    fds[*count]= -1;
+    fds[*count] = -1;
     curr = *list;
     i = 0;
     while (curr)
@@ -265,7 +265,7 @@ int *handle_redirections(t_list **list, int *count)
             }
             else
                 return printf("invalid name for fd\n"), NULL;
-        } 
+        }
         else if (curr->type == RED_IN)
         {
             delete_node(curr);
@@ -296,7 +296,7 @@ int ms_parse(t_data **data, char *line, char **envp)
     int count;
     int *fds;
 
-    count  = 0;
+    count = 0;
     fds = NULL;
     list = ms_tokenize(line, envp);
     if (!list)
@@ -311,20 +311,20 @@ int ms_parse(t_data **data, char *line, char **envp)
     concat_words(&list);
     if (check_syntax(&list, &count) == 1)
         return -1;
-    if(count)
-        fds = handle_redirections(&list, &count); 
+    if (count)
+        fds = handle_redirections(&list, &count);
     if (list->nxt)
     {
         list = list->nxt;
         list->first = 1;
-        remove_token(&list->prv, NULL_TOKEN); 
+        remove_token(&list->prv, NULL_TOKEN);
     }
     if (count && !fds)
         return printf("fds prb\n"), 1;
     remove_token(&list, _RM);
     handle_args(&list);
     remove_token(&list, _PIPE);
-    while(fds && fds[count])
+    while (fds && fds[count])
         printf("fd : %d\n", fds[count--]);
     last = get_last_node(list);
     last->last = 1;

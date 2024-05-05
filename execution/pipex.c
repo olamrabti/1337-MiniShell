@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 10:49:58 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:19:34 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_execute(t_list *cmd, t_env *env)
+int ft_execute(t_list *cmd, t_env *env, char **envp)
 {
     char *path;
     char **command;
@@ -26,12 +26,10 @@ int ft_execute(t_list *cmd, t_env *env)
     command = ft_join_for_execve(cmd);
     if (!command)
         return (-1);
-    i = execve(path, command, NULL);
-    exit(127);
-    return (i);
+    return (execve(path, command, envp));
 }
 
-int ft_pipex(t_data *data, t_env **env)
+int ft_pipex(t_data *data, t_env **env, char **envp)
 {
     t_list *temp;
     t_list *tmp;
@@ -106,7 +104,7 @@ int ft_pipex(t_data *data, t_env **env)
             }
             else
             {
-                if (ft_execute(temp, *env) == -1)
+                if (ft_execute(temp, *env, envp) == -1)
                 {
                     ft_putstr_fd("command not found: ", 2);
                     ft_putstr_fd(temp->value, 2);

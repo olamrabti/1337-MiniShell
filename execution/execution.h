@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 14:05:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:22:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	**ft_split(char const *s, char c);
 char *ft_substr(char *s, unsigned int start, size_t len);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 
-int ft_env(t_list * cmd, t_env *envp);
-int execute_commands(t_data **data, t_env *env);
+int ft_env(t_list * cmd, t_env **envp);
+int execute_commands(t_data **data, t_env *env, char **envp);
 void ft_add_to_env(t_env **env, char *key, char *value);
 
 
@@ -70,7 +70,7 @@ char *ft_get_path(t_list *cmd, t_env *env);
 
 char **ft_join_for_execve(t_list *cmd);
 
-int ft_pipex(t_data *data, t_env **env);
+int ft_pipex(t_data *data, t_env **env, char **envp);
 
 
 

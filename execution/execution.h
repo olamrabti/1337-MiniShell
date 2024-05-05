@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 10:12:55 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:05:52 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int  ft_export(t_list * cmd, t_env **envp);
 void ft_print_export(t_env *envp);
 
 int ft_change_env(char *str, t_env *envp, int concat);
+int ft_unset(t_list *cmd, t_env **envp);
+
 
 int	ft_isdigit(int d);
 int	ft_isalpha(int c);

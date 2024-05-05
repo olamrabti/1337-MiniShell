@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/02 16:09:59 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:49:58 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int ft_pipex(t_data *data, t_env **env)
                 {
                     ft_putstr_fd("command not found: ", 2);
                     ft_putstr_fd(temp->value, 2);
+                    ft_putstr_fd("\n", 2);
                 }
                 exit(EXIT_SUCCESS);
             }

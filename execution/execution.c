@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/02 17:52:45 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:35:34 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 #include "../minishell.h"
 
 // [ ]: start the execution of the commands
-
+// [ ] .
+// bash: .: filename argument required
+// .: usage: . filename [arguments]
+// bash-3.2$ 
 
 int ft_is_builtin(char *value)
 {

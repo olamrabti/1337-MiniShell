@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/27 14:17:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:24:56 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ t_list	*create_node(char *value, token type)
 	node->last = 0;
 	return (node);
 }
+
+int node_add_middle(t_list *curr, t_list *new)
+{
+    if (!curr || !new)
+        return 1;
+    new->nxt = curr->nxt;
+    new->prv = curr;
+    if (curr->nxt)
+        curr->nxt->prv = new;
+    curr->nxt = new;
+    return 0;
+}
+
 
 int	node_addfront(t_list **list, t_list *new)
 {
@@ -77,7 +90,7 @@ int	delete_node(t_list *node)
 		node->prv->nxt = node->nxt;
 	if (node->nxt)
 		node->nxt->prv = node->prv;
-	free(node);
+	// free(node);
 	node = NULL;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 14:30:33 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:08:22 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ int ms_parse(t_data **data, char *line, t_env *env)
     list = ms_tokenize(line);
     if (!list)
         return -1;
-    print_list(list);
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
         expand_all(&list, env);
@@ -169,7 +168,6 @@ int ms_parse(t_data **data, char *line, t_env *env)
     remove_token(&list, W_SPACE);
     if (check_syntax(&list, &count) == 1)
         return remove_list(&list), -1;
-    print_list(list);
     if(count)
         fds = handle_redirections(&list, &count); 
     remove_token(&list, _RM);
@@ -188,8 +186,6 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    printf("\nfinal result : \n");
-    print_list(list);
     return 0;
 }
 

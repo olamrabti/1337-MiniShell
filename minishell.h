@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 13:59:33 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:50:49 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef enum token {
         H_DOC,
         _PIPE,
         _DOLLAR,
+        Q_DOLLAR,
         D_QUOTE,
         S_QUOTE,
         _WORD,

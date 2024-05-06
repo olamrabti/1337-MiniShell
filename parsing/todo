@@ -50,7 +50,15 @@
 
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
 
-// FIXED  "'$PWD'" uotputs PATH .
-// FIXED concats white space with word, causes prbs with heredoc.
 
-// FIXED echo "" doenst assign "" as an argument      
+ // FIXME dont exit after syntax error 
+ // FIXME << kk$h 
+ // FIXME heredoc filname loop
+ // MAYBE split expanding by spaces and tabs
+
+ first one is a cmd any other thing after is an args 
+
+
+ export cmd="ls    -la"
+ $cmd
+ ctrl + c "exit"

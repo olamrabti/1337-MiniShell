@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 13:46:17 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 14:13:31 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:53:54 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,12 @@ void expand_all(t_list **list, t_env *env)
 {
     t_list *curr;
     char *tmp;
+    char **splitted;
+    int i;
 
     curr = *list;
+    splitted = NULL;
+    i = 0;
     while (curr)
     {
         if (curr->prv && curr->prv->type == H_DOC)
@@ -76,11 +80,36 @@ void expand_all(t_list **list, t_env *env)
                 curr->type = _WORD;
             curr = curr->nxt;
         }
+        else if (curr->type == Q_DOLLAR)
+        {
+            tmp = ft_expand(curr->value, env);
+            curr->value = tmp;
+            if (*tmp)
+                curr->type = _WORD;
+            else
+                curr->type = NF_VAR;
+        }
         else if (curr->type == _DOLLAR)
         {
             tmp = ft_expand(curr->value, env);
-            // free(curr->value); // it crashes the code 
-            curr->value = tmp;
+            splitted = ft_split_sp(tmp);
+            while(splitted[i])
+            {
+                if(splitted[i][0])
+                {
+                    node_add_middle(curr, create_node(splitted[i], _WORD));
+                    curr = curr->nxt;
+                    if (!i)
+                        delete_node(curr->prv);
+                    if (splitted[i + 1] && splitted[i + 1][0])
+                    {
+                        node_add_middle(curr, create_node(ft_strdup(" "), W_SPACE));
+                        curr = curr->nxt;
+                    }
+                }
+                i++;
+            }
+            // curr->value = tmp;
             if (*tmp)
                 curr->type = _WORD;
             else

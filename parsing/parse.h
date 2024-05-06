@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 14:38:54 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 13:50:04 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:13:35 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	ft_isdigit(int d);
 int	ft_isalpha(int c);
 int	ft_isalnum(int c);
 int	ft_isprint(int c);
+char	**ft_split_sp(char const *s);
 
 char *ft_getvalue(char *key, t_env *env);
 char *ft_expand(char *line, t_env *env);
@@ -57,6 +58,7 @@ int fill_heredoc(int tmp, char *deli);
 
 t_list	*create_node(char *value, token type);
 int	node_addfront(t_list **list, t_list *new);
+int node_add_middle(t_list *curr, t_list *new);
 int	node_addback(t_list **list, t_list *new);
 int	delete_node(t_list *node);
 void remove_list(t_list **list);

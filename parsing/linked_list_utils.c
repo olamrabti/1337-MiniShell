@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 11:17:35 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:07:45 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ t_list	*create_node(char *value, token type)
 	node->last = 0;
 	return (node);
 }
+
+int node_add_middle(t_list *curr, t_list *new)
+{
+    if (!curr || !new)
+        return 1;
+    new->nxt = curr->nxt;
+    new->prv = curr;
+    if (curr->nxt)
+        curr->nxt->prv = new;
+    curr->nxt = new;
+    return 0;
+}
+
 
 int	node_addfront(t_list **list, t_list *new)
 {

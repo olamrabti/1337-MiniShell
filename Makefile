@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g  
 
 NAME = minishell
 
@@ -28,8 +28,8 @@ SRCS = main.c \
 	execution/env.c \
 	execution/echo.c \
 	execution/export.c \
+	execution/unset.c \
 	# execution/exit.c \
-	# execution/unset.c \
 
 OBJS = $(SRCS:.c=.o)
 

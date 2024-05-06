@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 10:50:49 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:53:50 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_env
 {
     char *key;
     char *value;
+    int is_null;
     struct s_env *next;
 
 } t_env;
@@ -88,7 +89,7 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data **data, t_env *env);
+int execute_commands(t_data **data, t_env *env, char **envp);
 t_env *ft_parce_env(char **envp);
 
 

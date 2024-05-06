@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/01 14:45:39 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:07:13 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 // TODO testing echo
 // [x] -nnn---nnnn
-// [ ] strncmp echooooooolkkh
+// [x] strncmp echooooooolkkh
+// [x] echo -nnnnnnnnnnnnnnnnnnnnn -nnnn "." "."
 
 static int ft_is_n(char *str)
 {
@@ -39,7 +40,7 @@ int ft_echo(t_list *cmd)
     i = 0;
     if (cmd->args)
     {
-        if ((ft_strncmp(cmd->args[0], "-n", 2) == 0) && ft_is_n(cmd->args[0] + 1))
+        while ((ft_strncmp(cmd->args[i], "-n", 2) == 0) && ft_is_n(cmd->args[i] + 1))
         {
             no_newline = 1;
             i++;

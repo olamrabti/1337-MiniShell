@@ -29,7 +29,7 @@ int main( int ac , char *av[], char**envp)
         if (ms_parse(&data, line, env))
             return 1;
         if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
-            execute_commands(&data, env);
+            execute_commands(&data, env , envp);
         // if (data->cmd)
         //     remove_list(&data->cmd);
         free(line);

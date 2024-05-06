@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 15:52:12 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:54:54 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void concat_words(t_list **list)
                 curr->type = _WORD;
             delete_node(curr->nxt);
         }
-        else 
+        else
             curr = curr->nxt;
     }
     // remove_token(list, W_SPACE);
@@ -153,7 +153,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     int count;
     int *fds;
 
-    count  = 0;
+    count = 0;
     fds = NULL;
     list = ms_tokenize(line);
     if (!list)
@@ -181,7 +181,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     {
         list = list->nxt;
         list->first = 1;
-        remove_token(&list->prv, NULL_TOKEN); 
+        remove_token(&list->prv, NULL_TOKEN);
     }
     handle_args(&list);
     remove_token(&list, _PIPE);

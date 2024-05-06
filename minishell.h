@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 17:45:03 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:54:53 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,6 @@ typedef struct s_list
     int herdoc;
 }	t_list;
 
-typedef struct s_data
-{
-    t_list *cmd;
-    int status;
-    int *fds;
-    int save;
-    pid_t pid;
-    int pd[2];
-
-} t_data;
-
-
 typedef struct s_env
 {
     char *key;
@@ -72,6 +60,21 @@ typedef struct s_env
     struct s_env *next;
 
 } t_env;
+
+typedef struct s_data
+{
+    t_list *cmd;
+    int status;
+    int *fds;
+    int save;
+    pid_t pid;
+    int pd[2];
+    struct s_env *env;
+
+} t_data;
+
+
+
 
 ////////////////////// parcing ////////////////////////////////
 
@@ -88,7 +91,7 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data **data, t_env *env, char **envp);
+int execute_commands(t_data **data, char **envp);
 t_env *ft_parce_env(char **envp);
 
 

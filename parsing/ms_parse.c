@@ -23,7 +23,8 @@ void remove_token(t_list **list, token token)
             // free(temp->value); this could be necessary
             delete_node(temp);
         }
-        temp = temp->nxt;
+        if (temp)
+            temp = temp->nxt;
     }
 }
 

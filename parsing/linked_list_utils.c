@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/27 14:17:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:17:35 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	delete_node(t_list *node)
 		node->prv->nxt = node->nxt;
 	if (node->nxt)
 		node->nxt->prv = node->prv;
-	free(node);
+	// free(node);
 	node = NULL;
 	return (0);
 }

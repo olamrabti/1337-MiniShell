@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 14:28:48 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:26:31 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ t_list *handle_doubleq(t_list *curr, int *i)
                 delete_node(curr->nxt);
                 curr->type = _LTRAL;
             }
-            else
-                curr->nxt->type = Q_DOLLAR;
         }
-        if (curr->type != _DOLLAR)
+        if (curr->type == _DOLLAR)
+            curr->type = Q_DOLLAR;
+        if (curr->type != _DOLLAR && curr->type != Q_DOLLAR)
             curr->type = _LTRAL;
         curr = curr->nxt;
     }

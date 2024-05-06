@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/24 15:44:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:07:13 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,47 @@
 #include "../minishell.h"
 
 // TODO testing echo
+// [x] -nnn---nnnn
+// [x] strncmp echooooooolkkh
+// [x] echo -nnnnnnnnnnnnnnnnnnnnn -nnnn "." "."
 
-void ft_echo(char **str)
+static int ft_is_n(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if (str[i] == 'n')
+            i++;
+        else
+            return (0);
+    }
+    return (1);
+}
+
+int ft_echo(t_list *cmd)
 {
     int no_newline;
     int i;
 
     no_newline = 0;
-    i = 1;
-    if (ft_strncmp(str[1], "-n", 2) == 0)
+    i = 0;
+    if (cmd->args)
     {
-        no_newline = 1;
-        i++;
-    }
-    while (str[i])
-    {
-        printf("%s", str[i]);
-        if (str[i + 1] != NULL)
-            printf(" ");
-        i++;
+        while ((ft_strncmp(cmd->args[i], "-n", 2) == 0) && ft_is_n(cmd->args[i] + 1))
+        {
+            no_newline = 1;
+            i++;
+        }
+        while (cmd->args[i])
+        {
+            printf("%s", cmd->args[i]);
+            if (cmd->args[i + 1] != NULL)
+                printf(" ");
+            i++;
+        }
     }
 
     if (!no_newline)
         printf("\n");
+    return (SUCCESS);
 }
-
-// int main(int argc, char *argv[])
-// {
-//     ft_echo(argv);
-//     return 0;
-// }

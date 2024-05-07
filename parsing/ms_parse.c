@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 16:54:54 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:19:06 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,14 +164,14 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env);
         return printf("quote>\n"), -1;
     }
-    printf("after quotes\n");
-    print_list(list);
+    // printf("after quotes\n");
+    // print_list(list);
     expand_all(&list, env);
-    printf("after expand\n");
-    print_list(list);
+    // printf("after expand\n");
+    // print_list(list);
     concat_words(&list);
-    printf("after concat\n");
-    print_list(list);
+    // printf("after concat\n");
+    // print_list(list);
     remove_token(&list, W_SPACE);
     if (check_syntax(&list, &count) == 1)
         return remove_list(&list), -1;

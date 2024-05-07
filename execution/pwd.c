@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:32:49 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/30 16:42:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:55:10 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int ft_pwd(t_list *cmd)
     if (buf == NULL)
     {
         perror("pwd");
-        return (1);
+        return (ERROR);
     }
     printf("%s\n", buf);
     free(buf);

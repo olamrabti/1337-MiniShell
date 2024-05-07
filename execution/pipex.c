@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 16:55:49 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:27:44 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int ft_execute(t_list *cmd, t_env *env, char **envp)
     return (execve(path, command, envp));
 }
 
-int ft_pipex(t_data *data, t_env **env, char **envp)
+int ft_pipex(t_data *data, char **envp)
 {
     t_list *temp;
     t_list *tmp;
@@ -51,7 +51,7 @@ int ft_pipex(t_data *data, t_env **env, char **envp)
     while (temp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
-            return (ft_execute_builtin(temp, env));
+            return (ft_execute_builtin(temp, data));
 
         if (!temp->last)
         {
@@ -99,12 +99,12 @@ int ft_pipex(t_data *data, t_env **env, char **envp)
             }
             if (ft_is_builtin(temp->value))
             {
-                ft_execute_builtin(temp, env);
+                ft_execute_builtin(temp, data);
                 exit(EXIT_SUCCESS);
             }
             else
             {
-                if (ft_execute(temp, *env, envp) == -1)
+                if (ft_execute(temp, data->env, envp) == -1)
                 {
                     ft_putstr_fd("command not found: ", 2);
                     ft_putstr_fd(temp->value, 2);

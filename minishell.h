@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 16:53:50 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:27:02 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 typedef enum token {
         W_SPACE = 1,
         RED_IN,
-        RED_OUT,
-        RED_OUT_APPEND,
-        H_DOC,
+        RED_OUT, 
+        RED_OUT_APPEND, 
+        H_DOC, 
         _PIPE,
         _DOLLAR,
         Q_DOLLAR,
@@ -53,18 +53,6 @@ typedef struct s_list
     int herdoc;
 }	t_list;
 
-typedef struct s_data
-{
-    t_list *cmd;
-    int status;
-    int *fds;
-    int save;
-    pid_t pid;
-    int pd[2];
-
-} t_data;
-
-
 typedef struct s_env
 {
     char *key;
@@ -74,14 +62,44 @@ typedef struct s_env
 
 } t_env;
 
+typedef struct s_addr
+{
+    void *address;
+    struct s_addr *nxt;
+} t_addr;
+
+typedef struct s_data
+{
+    t_list *cmd;
+    int status;
+    int *fds;
+    int save;
+    pid_t pid;
+    int pd[2];
+    struct s_env *env;
+    struct s_addr *addr;
+
+} t_data;
+
+
+
+
 ////////////////////// parcing ////////////////////////////////
 
 
-t_list *ms_tokenize(char *line);
+t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
+
+
+void	*ft_calloc(t_addr **addr, size_t count, size_t size);
+int	add_addr(t_addr **list, t_addr *new);
+t_addr	*new_addr(char *value);
+int	delete_addr(t_addr *node);
+void    clean_all(t_addr **list);
+void print_addr(t_addr *list);
 
 
 
@@ -89,7 +107,7 @@ void print_list(t_list *list);
 ////////////////////// execution ////////////////////////////////
 
 
-int execute_commands(t_data **data, t_env *env, char **envp);
+int execute_commands(t_data **data, char **envp);
 t_env *ft_parce_env(char **envp);
 
 

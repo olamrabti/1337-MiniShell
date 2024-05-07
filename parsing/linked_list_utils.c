@@ -1,24 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   linked_list_utils.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 18:32:43 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 12:24:56 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
 
-t_list	*create_node(char *value, token type)
+t_list	*create_node(char *value, token type, t_addr **addr)
 {
 	t_list	*node;
 
-	node = malloc(sizeof(t_list));
+	node = ft_calloc(addr, 1, sizeof(t_list));
 	if (!node)
 		return (NULL);
 	node->prv = NULL;

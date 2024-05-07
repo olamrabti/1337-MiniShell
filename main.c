@@ -1,8 +1,12 @@
+
 #include "minishell.h"
 
+// void f()
+// {
+//     system("leaks minishell");
+// }
 
-
-int main( int ac , char *av[], char**envp)
+int main(int ac , char *av[], char**envp)
 {
     t_data *data;
     t_env *env;
@@ -10,6 +14,7 @@ int main( int ac , char *av[], char**envp)
 
     (void)ac;
     (void)av;
+    // atexit(f);
     data = malloc(sizeof(t_data));
     if(!data)
         return -1;
@@ -19,6 +24,7 @@ int main( int ac , char *av[], char**envp)
     data->save = -1;
     env = ft_parce_env(envp);
     data->env = env;
+    data->addr = NULL;
     // 
     while (1)
     {
@@ -31,6 +37,9 @@ int main( int ac , char *av[], char**envp)
             return 1;
         if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
             execute_commands(&data, envp);
+        print_addr(data->addr);
+        clean_all(&data->addr);
+        print_addr(data->addr);
         // if (data->cmd)
         //     remove_list(&data->cmd);
         free(line);

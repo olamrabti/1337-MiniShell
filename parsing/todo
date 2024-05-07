@@ -4,16 +4,16 @@
 =================================
 
 --> TO COMMIT :
-        // FIXED test : export cmd="ls    -la"  then: export cmd2="$cmd" and then $cmd2
-        // FIXED test : export cmd="[tab]ls [tab] -la  "
-        // [x] get variables from env list 
+        // FIXED << kk$h delimiter should be kk$h
 
-// FIXME << kk$h delimiter should be kk$h
 // [ ] syntax error ; modify messages and dont exit after 
 // [ ] Expand in herdoc if delimiter is not literal:
         # search and expand , ndup join + join 
 // [ ] heredoc name generation and placement
 
+// [ ] Garbage collector implementation
+        // applied on tokens and stores adresses well
+        // still doesnt free and remove the list properly
 
 
 =================================

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 17:06:57 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -24,11 +13,11 @@
 typedef enum token {
         W_SPACE = 1,
         RED_IN,
-        RED_OUT,
-        RED_OUT_APPEND,
-        H_DOC,
+        RED_OUT, 
+        RED_OUT_APPEND, 
+        H_DOC, 
         _PIPE,
-        _DOLLAR,
+        _DOLLAR, 
         Q_DOLLAR,
         D_QUOTE,
         S_QUOTE,
@@ -62,6 +51,12 @@ typedef struct s_env
 
 } t_env;
 
+typedef struct s_addr
+{
+    void *address;
+    struct s_addr *nxt;
+} t_addr;
+
 typedef struct s_data
 {
     t_list *cmd;
@@ -71,6 +66,7 @@ typedef struct s_data
     pid_t pid;
     int pd[2];
     struct s_env *env;
+    struct s_addr *addr;
 
 } t_data;
 
@@ -80,11 +76,19 @@ typedef struct s_data
 ////////////////////// parcing ////////////////////////////////
 
 
-t_list *ms_tokenize(char *line);
+t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
+
+
+void	*ft_calloc(t_addr **addr, size_t count, size_t size);
+int	add_addr(t_addr **list, t_addr *new);
+t_addr	*new_addr(char *value);
+int	delete_addr(t_addr *node);
+void    clean_all(t_addr **list);
+void print_addr(t_addr *list);
 
 
 

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 13:46:17 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 14:53:54 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
@@ -26,7 +15,8 @@ char *ft_getvalue(char *key, t_env *env)
 int get_key(char *line, int i, int j)
 {
     j = 1;
-    while ((line[i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
+    while ((line[i + j]) && (ft_isalnum(line[i + j])\
+     || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
     {
         
         j++;
@@ -62,7 +52,7 @@ char *ft_expand(char *key, t_env *env)
     return (value);
 }
 
-void expand_all(t_list **list, t_env *env)
+void expand_all(t_list **list, t_env *env, t_addr **addr)
 {
     t_list *curr;
     char *tmp;
@@ -97,13 +87,13 @@ void expand_all(t_list **list, t_env *env)
             {
                 if(splitted[i][0])
                 {
-                    node_add_middle(curr, create_node(splitted[i], _WORD));
+                    node_add_middle(curr, create_node(splitted[i], _WORD, addr));
                     curr = curr->nxt;
                     if (!i)
                         delete_node(curr->prv);
                     if (splitted[i + 1] && splitted[i + 1][0])
                     {
-                        node_add_middle(curr, create_node(ft_strdup(" "), W_SPACE));
+                        node_add_middle(curr, create_node(ft_strdup(" "), W_SPACE, addr));
                         curr = curr->nxt;
                     }
                 }

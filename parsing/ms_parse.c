@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_parse.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 16:54:54 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
@@ -156,22 +145,24 @@ int ms_parse(t_data **data, char *line, t_env *env)
 
     count = 0;
     fds = NULL;
-    list = ms_tokenize(line);
+    list = ms_tokenize(line, &((*data)->addr));
+    printf("after tokenzing\n");
+    print_list(list);
     if (!list)
         return -1;
     if (handle_quote(&list, S_QUOTE) % 2 != 0)
     {
-        expand_all(&list, env);
+        expand_all(&list, env, &((*data)->addr));
         return printf("quote>\n"), -1;
     }
-    printf("after quotes\n");
-    print_list(list);
-    expand_all(&list, env);
-    printf("after expand\n");
-    print_list(list);
+    // printf("after quotes\n");
+    // print_list(list);
+    expand_all(&list, env, &((*data)->addr));
+    // printf("after expand\n");
+    // print_list(list);
     concat_words(&list);
-    printf("after concat\n");
-    print_list(list);
+    // printf("after concat\n");
+    // print_list(list);
     remove_token(&list, W_SPACE);
     if (check_syntax(&list, &count) == 1)
         return remove_list(&list), -1;
@@ -193,6 +184,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
+    printf("finale ------> \n");
+    print_list(list);
     return 0;
 }
 

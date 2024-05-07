@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
+/*   Updated: 2024/05/07 18:27:02 by olamrabt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -17,7 +28,7 @@ typedef enum token {
         RED_OUT_APPEND, 
         H_DOC, 
         _PIPE,
-        _DOLLAR, 
+        _DOLLAR,
         Q_DOLLAR,
         D_QUOTE,
         S_QUOTE,

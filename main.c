@@ -1,10 +1,10 @@
 
 #include "minishell.h"
 
-// void f()
-// {
-//     system("leaks minishell");
-// }
+void f()
+{
+    system("leaks minishell");
+}
 
 int main(int ac , char *av[], char**envp)
 {

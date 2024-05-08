@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 16:41:15 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:44:21 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //     return i;
 // }
 
-// char *ft_strdup(char *str)
+// char *ft_strdup_no_free(char *str)
 // {
 //     int i;
 //     char *p;

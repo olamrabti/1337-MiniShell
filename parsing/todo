@@ -4,16 +4,18 @@
 =================================
 
 --> TO COMMIT :
-        // FIXED test : export cmd="ls    -la"  then: export cmd2="$cmd" and then $cmd2
-        // FIXED test : export cmd="[tab]ls [tab] -la  "
-        // [x] get variables from env list 
+        // FIXED << kk$h delimiter should be kk$h
 
-// FIXME << kk$h delimiter should be kk$h
 // [ ] syntax error ; modify messages and dont exit after 
 // [ ] Expand in herdoc if delimiter is not literal:
         # search and expand , ndup join + join 
 // [ ] heredoc name generation and placement
 
+// [x] Garbage collector implementation
+        // [x] applied on tokens and stores adresses well
+        // [x] frees and removes the list properly
+        // [x] should check if an address is duplicated will not be freed
+// [ ] Separate syntax check
 
 
 =================================
@@ -47,8 +49,6 @@ echo "" ""
 echo "ls" "-la" 
 
 echo "ls"'-la'
-
-echo "'$USER'" (bonus)
 
 echo "'$USER'"
 

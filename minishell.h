@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/07 16:40:43 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:52:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@
 typedef enum token {
         W_SPACE = 1,
         RED_IN,
-        RED_OUT,
-        RED_OUT_APPEND,
-        H_DOC,
-        _PIPE,
+        RED_OUT, 
+        RED_OUT_APPEND, 
+        H_DOC, 
+        PIPE,
         _DOLLAR,
         Q_DOLLAR,
         D_QUOTE,
         S_QUOTE,
-        _WORD,
+        WORD,
         NULL_TOKEN,
-        _RM,
+        RM,
         NF_VAR,
-        _LTRAL
+        LTRAL
 } token;
 
 typedef struct s_list
@@ -61,6 +61,12 @@ typedef struct s_env
 
 } t_env;
 
+typedef struct s_addr
+{
+    void *address;
+    struct s_addr *nxt;
+} t_addr;
+
 typedef struct s_data
 {
     t_list *cmd;
@@ -70,6 +76,7 @@ typedef struct s_data
     pid_t pid;
     int pd[2];
     struct s_env *env;
+    struct s_addr *addr;
 
 } t_data;
 
@@ -79,11 +86,21 @@ typedef struct s_data
 ////////////////////// parcing ////////////////////////////////
 
 
-t_list *ms_tokenize(char *line);
+t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);
 
+
+
+void	*ft_calloc(t_addr **addr, size_t count, size_t size);
+int	add_addr(t_addr **list, t_addr *new);
+t_addr	*new_addr(char *value);
+int	delete_addr(t_addr *node);
+void    clean_all(t_addr **list);
+void print_addr(t_addr *list);
+// void	ft_lstiter(t_addr *lst, void (*f)(void *));
+void	ft_lstclear(t_addr **lst, void (*del)(void *));
 
 
 

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 13:52:35 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/04/21 15:40:46 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 
@@ -40,7 +29,7 @@ char *ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char *ft_strjoin(char *s1, char *s2)
+char *ft_strjoin(char *s1, char *s2, t_addr **addr)
 {
 	char *arr;
 	char *dest;
@@ -52,7 +41,7 @@ char *ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	s1_len = ft_strlen(dest);
 	s2_len = ft_strlen(s2);
-	arr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	arr = (char *)ft_calloc(addr, (s1_len + s2_len + 1), sizeof(char));
 	if (!arr)
 		return (NULL);
 	ft_memmove(arr, dest, s1_len);
@@ -61,7 +50,7 @@ char *ft_strjoin(char *s1, char *s2)
 	return (arr);
 }
 
-char *ft_charjoin(char *s1, char c)
+char *ft_charjoin(char *s1, char c, t_addr **addr)
 {
 	char *arr;
 	char *dest;
@@ -70,7 +59,7 @@ char *ft_charjoin(char *s1, char c)
 	dest = s1;
 	if (!s1)
 	{
-		arr = (char *)malloc(sizeof(char) * 2);
+		arr = (char *)ft_calloc(addr, 2, sizeof(char));
 		if (!arr)
 			return (NULL);
 		arr[0] = c;
@@ -78,7 +67,7 @@ char *ft_charjoin(char *s1, char c)
 		return (arr);
 	}
 	s1_len = ft_strlen(dest);
-	arr = (char *)malloc(sizeof(char) * (s1_len + 2));
+	arr = (char *)ft_calloc(addr, (s1_len + 2),sizeof(char));
 	if (!arr)
 		return (NULL);
 	ft_memmove(arr, dest, s1_len);

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_tokenize.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 16:14:27 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/05 13:49:28 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
@@ -47,14 +36,14 @@ int ft_isalnum(int c)
 }
 
 
-t_list *ms_tokenize(char *line)
+t_list *ms_tokenize(char *line, t_addr **addr)
 {
     t_list *head;
     t_list *current;
     int i;
     int j;
 
-    head = create_node(NULL, NULL_TOKEN);
+    head = create_node(NULL, NULL_TOKEN, addr);
     current = head;
     i = 0;
     j = 1;
@@ -62,28 +51,29 @@ t_list *ms_tokenize(char *line)
     {
         if (line[i] == '<' && line[i + 1] == '<')
         {
-            node_addback(&current, create_node(ft_strdup("<<"), H_DOC));
+            node_addback(&current, create_node(gc_strdup("<<", addr), H_DOC, addr));
             i++;
         }
         else if (line[i] == '>' && line[i + 1] == '>')
         {
-            node_addback(&current, create_node(ft_strdup(">>"), RED_OUT_APPEND));
+            node_addback(&current, create_node(gc_strdup(">>", addr), RED_OUT_APPEND, addr));
             i++;
         }
         else if (line[i] == '>')
-            node_addback(&current, create_node(ft_strdup(">"), RED_OUT));
+            node_addback(&current, create_node(gc_strdup(">", addr), RED_OUT, addr));
         else if (line[i] == '<')
-            node_addback(&current, create_node(ft_strdup("<"), RED_IN));
+            node_addback(&current, create_node(gc_strdup("<", addr), RED_IN, addr));
         else if (line[i] == '|')
-            node_addback(&current, create_node(ft_strdup("|"), _PIPE));
+            node_addback(&current, create_node(gc_strdup("|", addr), PIPE, addr));
         else if (line[i] == '"')
-            node_addback(&current, create_node(ft_strdup("\""), D_QUOTE));
+            node_addback(&current, create_node(gc_strdup("\"", addr), D_QUOTE, addr));
         else if (line[i] == '\'')
-            node_addback(&current, create_node(ft_strdup("'"), S_QUOTE));
+            node_addback(&current, create_node(gc_strdup("'", addr), S_QUOTE, addr));
         else if (line[i] == '$')
         {
+            
             j = get_key(line, i, j);
-            node_addback(&current, create_node(ft_strndup(&line[i], j), _DOLLAR));
+            node_addback(&current, create_node(ft_strndup(&line[i], j, addr), _DOLLAR, addr));
             i += j - 1;
         }
         else if (ft_isspace(line[i]))
@@ -91,16 +81,16 @@ t_list *ms_tokenize(char *line)
             j = 1;
             while ((line[i + j]) && ft_isspace(line[i + j]))
                 j++;
-            node_addback(&current, create_node(ft_strndup(&line[i], j), W_SPACE));
+            node_addback(&current, create_node(ft_strndup(&line[i], j, addr), W_SPACE, addr));
             i += j - 1;
         }
         else
         {
             current = get_last_node(current);
-            if (current && current->type == _WORD)
-                current->value = ft_charjoin(current->value, line[i]);
+            if (current && current->type == WORD)
+                current->value = ft_charjoin(current->value, line[i], addr);
             else
-                node_addback(&current, create_node(ft_charjoin(NULL, line[i]), _WORD));
+                node_addback(&current, create_node(ft_charjoin(NULL, line[i], addr), WORD, addr));
         }
         i++;
     }

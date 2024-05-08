@@ -6,18 +6,22 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/07 15:19:06 by oumimoun         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/08 14:08:51 by olamrabt         ###   ########.fr       */
+>>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
-void ft_join_q(char *tmp, t_list *curr)
+void ft_join_q(char *tmp, t_list *curr, t_addr **addr)
 {
-    if (curr && curr->prv && curr->prv->type == _WORD)
+    if (curr && curr->prv && curr->prv->type == WORD)
     {
-        tmp = ft_strjoin(curr->prv->value, curr->value);
+        tmp = ft_strjoin(curr->prv->value, curr->value, addr);
         curr->prv->value = tmp;
     }
 }
@@ -47,9 +51,9 @@ int check_syntax(t_list **list, int *count)
     curr = *list;
     while (curr)
     {
-        if (curr->type == _PIPE)
+        if (curr->type == PIPE)
         {
-            if ((!curr->prv || curr->prv->type != _WORD) || (!curr->nxt || curr->nxt->type != _WORD))
+            if ((!curr->prv || curr->prv->type != WORD) || (!curr->nxt || curr->nxt->type != WORD))
                 return printf("invalid PIPE syntax\n"), 1;
         }
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND)
@@ -57,15 +61,15 @@ int check_syntax(t_list **list, int *count)
             (*count)++;
             if (curr->nxt && curr->nxt->type == NF_VAR)
                 return printf("ambiguous redirect\n"), 1;
-            if ((!curr->nxt || curr->nxt->type != _WORD))
+            if ((!curr->nxt || curr->nxt->type != WORD))
                 return printf("invalid RED or H_DOC_APP syntax\n"), 1;
         }
         if (curr->type == H_DOC)
         {
             (*count)++;
             if ((!curr->nxt))
-                return printf("invalid H_DOC syntax\n"), 1;
-            if ((curr->nxt && curr->nxt->type != _WORD && curr->nxt->type != _LTRAL))
+                return printf("syntax error near unexpected token `newline'\n"), 1;
+            if ((curr->nxt && curr->nxt->type != WORD && curr->nxt->type != LTRAL))
                 return printf("invalid H_DOC syntax\n"), 1;
         }
         curr = curr->nxt;
@@ -86,7 +90,7 @@ int fill_args(t_list *curr, int count)
     while (count)
     {
         tmp[--count] = curr->value;
-        curr->type = _RM;
+        curr->type = RM;
         if (curr->outfile != 1)
             curr->prv->outfile = curr->outfile;
         // if (curr->infile != 0)
@@ -106,8 +110,8 @@ void handle_args(t_list **list)
     while (curr)
     {
         count = 1;
-        while (curr && (curr->type == _WORD || curr->type == _LTRAL) 
-            && curr->nxt && (curr->nxt->type == _WORD || curr->nxt->type == _LTRAL))
+        while (curr && (curr->type == WORD || curr->type == LTRAL) 
+            && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == LTRAL))
         {
             count++;
             curr = curr->nxt;
@@ -117,10 +121,10 @@ void handle_args(t_list **list)
         if (curr)
             curr = curr->nxt;
     }
-    remove_token(list, _RM);
+    remove_token(list, RM);
 }
 
-void concat_words(t_list **list)
+void concat_words(t_list **list, t_addr **addr)
 {
     t_list *curr;
     char *tmp;
@@ -128,16 +132,16 @@ void concat_words(t_list **list)
     curr = *list;
     while (curr)
     {
-        if ((curr->type == _WORD || curr->type == NF_VAR || curr->type == _LTRAL) 
-        && curr->nxt && (curr->nxt->type == _WORD || curr->nxt->type == NF_VAR || curr->nxt->type == _LTRAL))
+        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) 
+        && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
         {
-            tmp = ft_strjoin(curr->value, curr->nxt->value);
-            free(curr->value);
+            tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+            // free(curr->value);
             curr->value = tmp;
-            if (curr->type == _LTRAL || curr->nxt->type == _LTRAL)
-                curr->type = _LTRAL;
+            if (curr->type == LTRAL || curr->nxt->type == LTRAL)
+                curr->type = LTRAL;
             else
-                curr->type = _WORD;
+                curr->type = WORD;
             delete_node(curr->nxt);
         }
         else
@@ -156,28 +160,35 @@ int ms_parse(t_data **data, char *line, t_env *env)
 
     count = 0;
     fds = NULL;
-    list = ms_tokenize(line);
+    list = ms_tokenize(line, &((*data)->addr));
+    // printf("after tokenzing\n");
+    // print_list(list);
     if (!list)
         return -1;
-    if (handle_quote(&list, S_QUOTE) % 2 != 0)
+    if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
     {
-        expand_all(&list, env);
-        return printf("quote>\n"), -1;
+        expand_all(&list, env, &((*data)->addr));
+        printf("quote>\n");
     }
     // printf("after quotes\n");
     // print_list(list);
+<<<<<<< HEAD
     expand_all(&list, env);
     // printf("after expand\n");
     // print_list(list);
     concat_words(&list);
+=======
+    expand_all(&list, env, &((*data)->addr));
+    // printf("after expand\n");
+    // print_list(list);
+    concat_words(&list, &((*data)->addr));
+>>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
     // printf("after concat\n");
     // print_list(list);
     remove_token(&list, W_SPACE);
-    if (check_syntax(&list, &count) == 1)
-        return remove_list(&list), -1;
-    if(count)
-        fds = handle_redirections(&list, &count); 
-    remove_token(&list, _RM);
+    if(!check_syntax(&list, &count) && count)
+        fds = handle_redirections(&list, &count, &((*data)->addr)); 
+    remove_token(&list, RM);
     if (list->nxt)
     {
         list = list->nxt;
@@ -185,7 +196,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
         remove_token(&list->prv, NULL_TOKEN);
     }
     handle_args(&list);
-    remove_token(&list, _PIPE);
+    remove_token(&list, PIPE);
     while(fds && fds[--count])
         printf("fd : %d\n", fds[count]);
     last = get_last_node(list);
@@ -193,6 +204,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
+    // printf("final ------> \n");
+    // print_list(list);
     return 0;
 }
 

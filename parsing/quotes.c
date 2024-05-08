@@ -6,87 +6,87 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 16:26:31 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:09:08 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
-t_list *handle_doubleq(t_list *curr, int *i)
+t_list *handle_doubleq(t_list *curr, int *i, t_addr **addr)
 {
     char *tmp;
 
     tmp = NULL;
-    curr->type = _RM;
+    curr->type = RM;
     curr = curr->nxt;
     if (curr && curr->type == D_QUOTE)
     {
         (*i)++;
-        tmp = ft_strdup("");
-        curr->type = _LTRAL;
-        free(curr->value);
+        tmp = gc_strdup("", addr);
+        curr->type = LTRAL;
+        // free(curr->value);
         curr->value = tmp;
         return curr;
     }
     else if (curr && curr->type != _DOLLAR)
-        curr->type = _LTRAL;
+        curr->type = LTRAL;
     while (curr->nxt && curr->type != D_QUOTE)
     {
         if (curr->type != _DOLLAR && curr->nxt && curr->nxt->type != D_QUOTE)
         {
             if (curr->nxt->type != _DOLLAR && curr->type != Q_DOLLAR)
             {
-                tmp = ft_strjoin(curr->value, curr->nxt->value);
-                free(curr->value);
+                tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+                // free(curr->value);
                 curr->value = tmp;
                 delete_node(curr->nxt);
-                curr->type = _LTRAL;
+                curr->type = LTRAL;
             }
         }
         if (curr->type == _DOLLAR)
             curr->type = Q_DOLLAR;
         if (curr->type != _DOLLAR && curr->type != Q_DOLLAR)
-            curr->type = _LTRAL;
+            curr->type = LTRAL;
         curr = curr->nxt;
     }
     return curr;
 }
 
-t_list *handle_singleq(t_list *curr, int *i)
+t_list *handle_singleq(t_list *curr, int *i, t_addr **addr)
 {
     char *tmp;
 
     tmp = NULL;
-    curr->type = _RM;
+    curr->type = RM;
     curr = curr->nxt;
     if (curr && curr->type == S_QUOTE)
     {
-        tmp = ft_strdup("");
+        tmp = gc_strdup("", addr);
         (*i)++;
-        curr->type = _LTRAL;
-        free(curr->value);
+        curr->type = LTRAL;
+        // free(curr->value);
         curr->value = tmp;
         return curr;
     }
     else if (curr)
-        curr->type = _LTRAL;
+        curr->type = LTRAL;
     while (curr->nxt && curr->type != S_QUOTE)
     {
         if (curr->nxt && curr->nxt->type != S_QUOTE)
         {
-            tmp = ft_strjoin(curr->value, curr->nxt->value);
-            free(curr->value);
+            tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+            // free(curr->value);
             curr->value = tmp;
             delete_node(curr->nxt);
         }
-        curr->type = _LTRAL;
+        curr->type = LTRAL;
         curr = curr->nxt;
     }
     return curr;
 }
 
-int handle_quote(t_list **list, token quote)
+int handle_quote(t_list **list, token quote, t_addr **addr)
 {
     t_list *curr;
     int i;
@@ -99,22 +99,22 @@ int handle_quote(t_list **list, token quote)
         {
             i++;
             quote = S_QUOTE;
-            curr = handle_singleq(curr, &i);
+            curr = handle_singleq(curr, &i, addr);
         }
         else if (curr->type == D_QUOTE && i % 2 == 0)
         {
             i++;
             quote = D_QUOTE;
-            curr = handle_doubleq(curr, &i);
+            curr = handle_doubleq(curr, &i, addr);
         }
         if (curr && curr->type == quote)
         {
-            curr->type = _RM;
+            curr->type = RM;
             i++;
         }
         if (curr)
             curr = curr->nxt;
     }
-    remove_token(list, _RM);
+    remove_token(list, RM);
     return i;
 }

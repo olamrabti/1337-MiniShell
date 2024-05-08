@@ -1,24 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 13:46:17 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/06 14:53:54 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
-char *ft_getvalue(char *key, t_env *env)
+char *ft_getvalue(char *key, t_env *env, t_addr **addr)
 {
     while (env)
     {
         if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
-            return (ft_strdup(env->value));
+            return (gc_strdup(env->value, addr));
         env = env->next;
     }
     return (NULL);
@@ -26,7 +15,8 @@ char *ft_getvalue(char *key, t_env *env)
 int get_key(char *line, int i, int j)
 {
     j = 1;
-    while ((line[i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
+    while ((line[i + j]) && (ft_isalnum(line[i + j])\
+     || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
     {
         
         j++;
@@ -43,7 +33,7 @@ int get_key(char *line, int i, int j)
     return j;
 }
 
-char *ft_expand(char *key, t_env *env)
+char *ft_expand(char *key, t_env *env, t_addr **addr)
 {
     char *value;
 
@@ -54,15 +44,15 @@ char *ft_expand(char *key, t_env *env)
     // if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
     //     return strdup : ft_itoa(exitstatus);
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
-        return (ft_strdup(""));
-    value = ft_getvalue(key + 1, env);
+        return (gc_strdup("", addr));
+    value = ft_getvalue(key + 1, env, addr);
     // remmember to free it before give it the new strdup value
     if (!value)
-        return (ft_strdup(""));
+        return (gc_strdup("", addr));
     return (value);
 }
 
-void expand_all(t_list **list, t_env *env)
+void expand_all(t_list **list, t_env *env, t_addr **addr)
 {
     t_list *curr;
     char *tmp;
@@ -76,34 +66,34 @@ void expand_all(t_list **list, t_env *env)
     {
         if (curr->prv && curr->prv->type == H_DOC)
         {
-            if (curr->type != _LTRAL && curr->type != W_SPACE)
-                curr->type = _WORD;
+            if (curr->type != LTRAL && curr->type != W_SPACE)
+                curr->type = WORD;
             curr = curr->nxt;
         }
         else if (curr->type == Q_DOLLAR)
         {
-            tmp = ft_expand(curr->value, env);
+            tmp = ft_expand(curr->value, env, addr);
             curr->value = tmp;
             if (*tmp)
-                curr->type = _WORD;
+                curr->type = WORD;
             else
                 curr->type = NF_VAR;
         }
         else if (curr->type == _DOLLAR)
         {
-            tmp = ft_expand(curr->value, env);
-            splitted = ft_split_sp(tmp);
+            tmp = ft_expand(curr->value, env, addr);
+            splitted = ft_split_sp(tmp, addr);
             while(splitted[i])
             {
                 if(splitted[i][0])
                 {
-                    node_add_middle(curr, create_node(splitted[i], _WORD));
+                    node_add_middle(curr, create_node(splitted[i], WORD, addr));
                     curr = curr->nxt;
                     if (!i)
                         delete_node(curr->prv);
                     if (splitted[i + 1] && splitted[i + 1][0])
                     {
-                        node_add_middle(curr, create_node(ft_strdup(" "), W_SPACE));
+                        node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
                         curr = curr->nxt;
                     }
                 }
@@ -111,7 +101,7 @@ void expand_all(t_list **list, t_env *env)
             }
             // curr->value = tmp;
             if (*tmp)
-                curr->type = _WORD;
+                curr->type = WORD;
             else
                 curr->type = NF_VAR;
         }

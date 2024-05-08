@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/05/07 15:19:06 by oumimoun         ###   ########.fr       */
+=======
 /*   Updated: 2024/05/08 14:08:51 by olamrabt         ###   ########.fr       */
+>>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,10 +172,17 @@ int ms_parse(t_data **data, char *line, t_env *env)
     }
     // printf("after quotes\n");
     // print_list(list);
+<<<<<<< HEAD
+    expand_all(&list, env);
+    // printf("after expand\n");
+    // print_list(list);
+    concat_words(&list);
+=======
     expand_all(&list, env, &((*data)->addr));
     // printf("after expand\n");
     // print_list(list);
     concat_words(&list, &((*data)->addr));
+>>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
     // printf("after concat\n");
     // print_list(list);
     remove_token(&list, W_SPACE);

@@ -12,10 +12,10 @@
 
 
 
-char    *ft_strdup(const char *s);
-char    *ft_strndup(char *s, int n);
-char    *ft_strjoin(char *s1, char *s2);
-char    *ft_charjoin(char *s1, char c);
+char    *gc_strdup(const char *s, t_addr **addr);
+char *ft_strndup(char *s, int n, t_addr **addr);
+char *ft_charjoin(char *s1, char c, t_addr **addr);
+char *ft_strjoin(char *s1, char *s2, t_addr **addr);
 char    *ft_memcpy(void *dst, const void *src, size_t n);
 char    *ft_memmove(void *dst, const void *src, size_t len);
 int     ft_strcmp(const char *s1, const char *s2);
@@ -26,24 +26,24 @@ int     ft_isdigit(int d);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
 int     ft_isprint(int c);
-char    **ft_split_sp(char const *s);
+char    **ft_split_sp(char const *s, t_addr **addr);
 
-char    *ft_getvalue(char *key, t_env *env);
-char    *ft_expand(char *line, t_env *env);
+char    *ft_getvalue(char *key, t_env *env , t_addr **addr);
+char    *ft_expand(char *line, t_env *env, t_addr **addr);
 void expand_all(t_list **list, t_env *env, t_addr **addr);
 int     get_key(char *line, int i, int j);
-int handle_quote(t_list **list, token quote);
-t_list *handle_singleq(t_list *curr, int *i);
-t_list *handle_doubleq(t_list *curr, int *i);
+int handle_quote(t_list **list, token quote,t_addr **addr);
+t_list *handle_singleq(t_list *curr, int *i, t_addr **addr);
+t_list *handle_doubleq(t_list *curr, int *i, t_addr **addr);
 
 t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 
-int *handle_redirections(t_list **list, int *count);
+int *handle_redirections(t_list **list, int *count, t_addr **addr);
 int is_valid_name(char *str);
 
-int open_heredoc(int tmp);
-int fill_heredoc(int tmp, char *deli);
+int open_heredoc(int tmp , t_addr **addr);
+int fill_heredoc(int tmp, char *deli, t_addr **addr);
 
 t_list	*create_node(char *value, token type, t_addr **addr);
 int	node_addfront(t_list **list, t_list *new);

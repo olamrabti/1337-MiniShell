@@ -14,7 +14,8 @@ int main(int ac , char *av[], char**envp)
 
     (void)ac;
     (void)av;
-    // atexit(f);
+    (void)envp;
+    atexit(f);
     data = malloc(sizeof(t_data));
     if(!data)
         return -1;
@@ -22,10 +23,10 @@ int main(int ac , char *av[], char**envp)
     data->fds = NULL;
     data->status = 0;
     data->save = -1;
-    env = ft_parce_env(envp);
+    // env = ft_parce_env(envp);
+    env = NULL;
     data->env = env;
     data->addr = NULL;
-    // 
     while (1)
     {
         line = readline("MINISHELL$ ");
@@ -35,11 +36,10 @@ int main(int ac , char *av[], char**envp)
             add_history(line);
         if (ms_parse(&data, line, env))
             return 1;
-        if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
-            execute_commands(&data, envp);
-        print_addr(data->addr);
-        clean_all(&data->addr);
-        print_addr(data->addr);
+        // if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
+        //     execute_commands(&data, envp);
+        ft_lstclear(&data->addr, free);
+        // print_addr(data->addr);
         // if (data->cmd)
         //     remove_list(&data->cmd);
         free(line);

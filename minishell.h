@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/07 18:27:02 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:36:25 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ typedef enum token {
         RED_OUT, 
         RED_OUT_APPEND, 
         H_DOC, 
-        _PIPE,
+        PIPE,
         _DOLLAR,
         Q_DOLLAR,
         D_QUOTE,
         S_QUOTE,
-        _WORD,
+        WORD,
         NULL_TOKEN,
-        _RM,
+        RM,
         NF_VAR,
-        _LTRAL
+        LTRAL
 } token;
 
 typedef struct s_list
@@ -100,6 +100,8 @@ t_addr	*new_addr(char *value);
 int	delete_addr(t_addr *node);
 void    clean_all(t_addr **list);
 void print_addr(t_addr *list);
+// void	ft_lstiter(t_addr *lst, void (*f)(void *));
+void	ft_lstclear(t_addr **lst, void (*del)(void *));
 
 
 

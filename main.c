@@ -1,10 +1,10 @@
 
 #include "minishell.h"
 
-void f()
-{
-    system("leaks minishell");
-}
+// void f()
+// {
+//     system("leaks minishell");
+// }
 
 int main(int ac , char *av[], char**envp)
 {
@@ -14,8 +14,7 @@ int main(int ac , char *av[], char**envp)
 
     (void)ac;
     (void)av;
-    (void)envp;
-    atexit(f);
+    // atexit(f);
     data = malloc(sizeof(t_data));
     if(!data)
         return -1;
@@ -23,8 +22,7 @@ int main(int ac , char *av[], char**envp)
     data->fds = NULL;
     data->status = 0;
     data->save = -1;
-    // env = ft_parce_env(envp);
-    env = NULL;
+    env = ft_parce_env(envp);
     data->env = env;
     data->addr = NULL;
     while (1)
@@ -36,8 +34,8 @@ int main(int ac , char *av[], char**envp)
             add_history(line);
         if (ms_parse(&data, line, env))
             return 1;
-        // if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
-        //     execute_commands(&data, envp);
+        if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
+            execute_commands(&data, envp);
         ft_lstclear(&data->addr, free);
         // print_addr(data->addr);
         // if (data->cmd)

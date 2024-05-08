@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/08 14:09:08 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:40:51 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_list *handle_doubleq(t_list *curr, int *i, t_addr **addr)
         {
             if (curr->nxt->type != _DOLLAR && curr->type != Q_DOLLAR)
             {
-                tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+                tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
                 // free(curr->value);
                 curr->value = tmp;
                 delete_node(curr->nxt);
@@ -75,7 +75,7 @@ t_list *handle_singleq(t_list *curr, int *i, t_addr **addr)
     {
         if (curr->nxt && curr->nxt->type != S_QUOTE)
         {
-            tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+            tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
             // free(curr->value);
             curr->value = tmp;
             delete_node(curr->nxt);

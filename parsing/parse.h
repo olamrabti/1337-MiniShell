@@ -15,7 +15,7 @@
 char    *gc_strdup(const char *s, t_addr **addr);
 char *ft_strndup(char *s, int n, t_addr **addr);
 char *ft_charjoin(char *s1, char c, t_addr **addr);
-char *ft_strjoin(char *s1, char *s2, t_addr **addr);
+char *gc_strjoin(char *s1, char *s2, t_addr **addr);
 char    *ft_memcpy(void *dst, const void *src, size_t n);
 char    *ft_memmove(void *dst, const void *src, size_t len);
 int     ft_strcmp(const char *s1, const char *s2);

@@ -29,7 +29,7 @@ char *ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char *ft_strjoin(char *s1, char *s2, t_addr **addr)
+char *gc_strjoin(char *s1, char *s2, t_addr **addr)
 {
 	char *arr;
 	char *dest;

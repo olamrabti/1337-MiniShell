@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 14:10:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:41:15 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,33 +94,33 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
 }
 
 
-// char	*ft_strjoin(char *s1, char *s2)
-// {
-// 	int		i;
-// 	int		len;
-// 	char	*result;
+char	*ft_strjoin(char *s1, char *s2)
+{
+	int		i;
+	int		len;
+	char	*result;
 
-// 	i = 0;
-// 	if (!s1 || !s2)
-// 		return (NULL);
-// 	len = ft_strlen(s2) + ft_strlen(s1);
-// 	result = (char *)malloc((len + 1) * sizeof(char));
-// 	if (!result)
-// 		return (0);
-// 	while (s1[i])
-// 	{
-// 		result[i] = s1[i];
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (s2[i])
-// 	{
-// 		result[ft_strlen(s1) + i] = s2[i];
-// 		i++;
-// 	}
-// 	result[i + ft_strlen(s1)] = '\0';
-// 	return (result);
-// }
+	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	len = ft_strlen(s2) + ft_strlen(s1);
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result)
+		return (0);
+	while (s1[i])
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		result[ft_strlen(s1) + i] = s2[i];
+		i++;
+	}
+	result[i + ft_strlen(s1)] = '\0';
+	return (result);
+}
 
 
 void	ft_putstr_fd(char *s, int fd)

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/07 17:48:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:30:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //  [x] cd with no argument
 // [ ] cd -
 // [ ] cd ~
-// [ ] cd chenge oldpwd and pwd
+// [x] cd chenge oldpwd and pwd
 
 // getcwd geting PWD
 // getcwd();

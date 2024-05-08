@@ -5,3 +5,4 @@ parsing/*.o
 parsing/todo
 execution/*.o
 .vscode/*
+.*

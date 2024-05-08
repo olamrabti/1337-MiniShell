@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/25 14:10:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:03:39 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //     return i;
 // }
 
-// char *ft_strdup(char *str)
+// char *ft_strdup_no_free(char *str)
 // {
 //     int i;
 //     char *p;

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/05/07 15:19:06 by oumimoun         ###   ########.fr       */
-=======
-/*   Updated: 2024/05/08 14:08:51 by olamrabt         ###   ########.fr       */
->>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
+/*   Updated: 2024/05/08 16:44:42 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +17,7 @@ void ft_join_q(char *tmp, t_list *curr, t_addr **addr)
 {
     if (curr && curr->prv && curr->prv->type == WORD)
     {
-        tmp = ft_strjoin(curr->prv->value, curr->value, addr);
+        tmp = gc_strjoin(curr->prv->value, curr->value, addr);
         curr->prv->value = tmp;
     }
 }
@@ -135,7 +131,7 @@ void concat_words(t_list **list, t_addr **addr)
         if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) 
         && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
         {
-            tmp = ft_strjoin(curr->value, curr->nxt->value, addr);
+            tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
             // free(curr->value);
             curr->value = tmp;
             if (curr->type == LTRAL || curr->nxt->type == LTRAL)

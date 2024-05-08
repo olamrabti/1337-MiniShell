@@ -4,7 +4,6 @@
 =================================
 
 --> TO COMMIT :
-        // FIXED << kk$h delimiter should be kk$h
 
 // [ ] syntax error ; modify messages and dont exit after 
 // [ ] Expand in herdoc if delimiter is not literal:
@@ -15,7 +14,7 @@
         // [x] applied on tokens and stores adresses well
         // [x] frees and removes the list properly
         // [x] should check if an address is duplicated will not be freed
-// [ ] Separate syntax check
+// [x] Separate syntax check
 
 
 =================================

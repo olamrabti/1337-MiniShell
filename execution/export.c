@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 18:26:17 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:56:17 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,6 @@ int ft_is_concat(char *str)
 }
 
 
-
 int ft_export_is_valid(char *str)
 {
     int i = 0;
@@ -223,15 +222,15 @@ int ft_export(t_list *cmd, t_env **envp)
             if (ft_export_is_valid(cmd->args[i]))
             {
                 int concat = ft_is_concat(cmd->args[i]);
-                printf("concat --> %d\n", concat);
+                // printf("concat --> %d\n", concat);
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {
-                    // [ ] change its value
+                    // [x] change its value
                     ft_change_env(cmd->args[i], *env, concat);
                 }
                 else
                 {
-                    // [ ] add node and if there is '=' assigne a value
+                    // [x] add node and if there is '=' assigne a value
                     ft_add_to_export(cmd->args[i], env, concat);
                 }
             }

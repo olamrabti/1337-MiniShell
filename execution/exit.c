@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/07 12:08:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:34:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,15 @@ int	ft_atoi(char *str)
 int ft_valid_exit(char *str)
 {
     int i = 0;
+    if (str[0] == '+' || str[0] == '-' || ft_isdigit(str[0]))
+        i++;
     while (str[i])
     {
         if (!ft_isdigit(str[i]))
-            return 0;
+            return (0);
         i++;
     }
-    return 1;
+    return (1);
 }
 
 int ft_exit(t_list *cmd)
@@ -66,7 +68,7 @@ int ft_exit(t_list *cmd)
         if (ft_valid_exit(cmd->args[0]) && !cmd->args[1])
         {
             int ext = ft_atoi(cmd->args[0]);
-            exit(ext % 255);
+            exit(ext % 256);
         }
         else if (ft_valid_exit(cmd->args[0]) && cmd->args[1])
         {

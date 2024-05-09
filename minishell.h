@@ -6,14 +6,13 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:52:24 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/09 21:41:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// # include "execution/execution.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -111,6 +110,7 @@ void	ft_lstclear(t_addr **lst, void (*del)(void *));
 int execute_commands(t_data **data, char **envp);
 t_env *ft_parce_env(char **envp);
 
+char *gc_strdup(const char *s, t_addr **addr);
 
 
 #endif

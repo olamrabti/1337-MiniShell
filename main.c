@@ -6,7 +6,7 @@
 //     system("leaks minishell");
 // }
 
-int main(int ac , char *av[], char**envp)
+int main(int ac , char **av, char**envp)
 {
     t_data *data;
     t_env *env;

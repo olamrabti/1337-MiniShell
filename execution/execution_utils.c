@@ -6,16 +6,16 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 12:36:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:53:44 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-// [ ]: check if the command is a builtin
-// [ ]: execute the builtin
-// [ ] pipex
+// [x]: check if the command is a builtin
+// [x]: execute the builtin
+// [x] pipex
 
 int ft_execute_builtin(t_list *cmd, t_data *data)
 {

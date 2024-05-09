@@ -6,15 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 11:47:43 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:36:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-// [ ] OLDENV
-// [ ] update env in the case of inset
 
 int ft_env(t_list *cmd, t_env **envp)
 {

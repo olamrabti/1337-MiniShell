@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:03:34 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/09 21:31:19 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char *ft_get_path(t_list *cmd, t_env *env);
 
 
-char **ft_join_for_execve(t_list *cmd);
+char **ft_join_for_execve(t_list *cmd, t_addr *addr);
 
 int ft_pipex(t_data *data, char **envp);
 
@@ -91,6 +91,8 @@ int	ft_isdigit(int d);
 int	ft_isalpha(int c);
 int	ft_isalnum(int c);
 
-// char *ft_strdup_no_free(char *str);
+int  *ft_alloc_tab(t_data *data, int *total);
+
+int ft_close_descriptors(t_data *data);
 
 #endif

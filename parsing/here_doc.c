@@ -2,7 +2,7 @@
 #include "parse.h"
 #include "../minishell.h"
 
-// create the file to write into 
+// create the file to write into
 
 int open_heredoc(int tmp, t_addr **addr)
 {
@@ -11,7 +11,7 @@ int open_heredoc(int tmp, t_addr **addr)
 
     i = '1';
     filename = gc_strdup("h_doc", addr);
-    // something wrong here, am tired 
+    // something wrong here, am tired
     while (1)
     {
         if (access(filename, X_OK | R_OK | F_OK) == -1)
@@ -24,6 +24,7 @@ int open_heredoc(int tmp, t_addr **addr)
     // free(filename);
     if (tmp < 0)
         return -1;
+    unlink(filename);
     return tmp;
 }
 

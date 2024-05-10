@@ -31,6 +31,7 @@ SRCS = main.c \
 	execution/export.c \
 	execution/unset.c \
 	execution/exit.c \
+	execution/handle_no_env.c \
 
 OBJS = $(SRCS:.c=.o)
 

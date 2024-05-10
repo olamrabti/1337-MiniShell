@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/09 15:21:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:30:55 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ int ft_is_builtin(char *value)
 
 int execute_commands(t_data **data , char **envp)
 {
-    if (!data || !(*data)->env)
+    if (!data)
         return (ERROR);
+    
+    ft_no_env(*data);
 
+    
     ft_pipex((*data) , envp);
     ft_close_descriptors(*data);
 

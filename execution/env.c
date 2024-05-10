@@ -6,18 +6,17 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/09 14:36:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 14:52:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_env(t_list *cmd, t_env **envp)
+int ft_env(t_list *cmd, t_env **envp, int flag)
 {
     t_env *env;
 
-    printf("[%p] hadi wst env \n", *envp);
     env = *envp;
     if (cmd->args != NULL)
     {
@@ -28,8 +27,15 @@ int ft_env(t_list *cmd, t_env **envp)
     }
     while (env)
     {
-        if ( env && env->key && env->value)
+        if (env && env->key && env->value)
+        {
+            if (flag == 1 && strcmp(env->key, "PATH") == 0)
+            {
+                env = env->next;
+                continue;
+            }
             printf("%s=%s\n", env->key, env->value);
+        }
         env = env->next;
     }
     return (SUCCESS);

@@ -21,6 +21,7 @@ int main(int ac , char **av, char**envp)
     data->cmd = NULL;
     data->fds = NULL;
     data->status = 0;
+    data->is_hiden = 0;
     data->save = -1;
     env = ft_parce_env(envp);
     data->env = env;

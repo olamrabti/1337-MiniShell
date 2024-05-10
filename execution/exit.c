@@ -6,11 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 18:34:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:16:31 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "../minishell.h"
 
 static int	check_overflow(int sign)
 {

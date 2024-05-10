@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/09 21:31:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:33:28 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../minishell.h"
 
 int ft_execute(t_list *cmd, t_env *env, char **envp, t_addr *addr)
-{ //t_addr **addr
+{
     char *path;
     char **command;
     int i;

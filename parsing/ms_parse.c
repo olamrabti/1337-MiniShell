@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/08 16:57:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:25:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->fds = fds;
     (*data)->status = 0;
     // printf("final ------> \n");
-    // print_list(list);
+    print_list(list);
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/09 21:41:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:10:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_data
     int save;
     pid_t pid;
     int pd[2];
+    int is_hiden;
     struct s_env *env;
     struct s_addr *addr;
 

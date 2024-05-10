@@ -3,8 +3,10 @@
 
 int ft_strlen(const char *s)
 {
-	if (!s || !*s)
+	if (!s)
 		return 0;
+	if (!*s)
+       return 0;
 	return (ft_strlen(s + 1) + 1);
 }
 

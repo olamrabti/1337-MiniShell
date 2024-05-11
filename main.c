@@ -26,6 +26,7 @@ int main(int ac , char **av, char**envp)
     env = ft_parce_env(envp);
     data->env = env;
     data->addr = NULL;
+    ft_no_env(&data);
     while (1)
     {
         line = readline("MINISHELL$ ");

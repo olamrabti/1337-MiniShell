@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 15:04:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:34:26 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int  *ft_alloc_tab(t_data *data, int *total);
 
 int ft_close_descriptors(t_data *data);
 
-int ft_no_env(t_data *data);
+int ft_no_env(t_data **data);
 
 
 int ft_env(t_list *cmd, t_env **envp, int flag);

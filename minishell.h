@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 12:10:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:33:30 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ t_env *ft_parce_env(char **envp);
 
 char *gc_strdup(const char *s, t_addr **addr);
 
+int ft_no_env(t_data **data);
 
 #endif

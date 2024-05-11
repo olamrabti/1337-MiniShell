@@ -4,18 +4,16 @@
 =================================
 
 --> TO COMMIT :
+        // None
+        // [x] heredoc name generation and placement
 
-// [ ] syntax error ; modify messages and dont exit after 
+// [ ] syntax error ; modify messages
 // [ ] Expand in herdoc if delimiter is not literal:
         # search and expand , ndup join + join 
-// [ ] heredoc name generation and placement
-
-// [x] Garbage collector implementation
-        // [x] applied on tokens and stores adresses well
-        // [x] frees and removes the list properly
-        // [x] should check if an address is duplicated will not be freed
-// [x] Separate syntax check
-
+// [ ] redirections after and before cmd 
+// FIXME args handling : 
+        // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
+// [ ] << l cat doesnt execute, will if 
 
 =================================
             LATER :

@@ -34,15 +34,18 @@ SRCS = main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME)
+all:
+	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
 
 clean :
-	rm -f $(OBJS)
+	@echo "Cleaning object files..."
+	@rm -f $(OBJS)
 
 fclean : clean
-	rm -f $(NAME)
+	@echo "Cleaning $(NAME)..."
+	@rm -f $(NAME)
 
 re : fclean all

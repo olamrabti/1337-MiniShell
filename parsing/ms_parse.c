@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_parse.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 16:04:22 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/08 16:44:42 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
@@ -30,15 +19,11 @@ void remove_token(t_list **list, token token)
     while (temp)
     {
         if (temp->type == token)
-        {
-            // free(temp->value); this could be necessary
             delete_node(temp);
-        }
         if (temp)
             temp = temp->nxt;
     }
 }
-
 
 int check_syntax(t_list **list, int *count)
 {
@@ -85,35 +70,49 @@ int fill_args(t_list *curr, int count)
     i = 0;
     while (count)
     {
-        tmp[--count] = curr->value;
-        curr->type = RM;
-        if (curr->outfile != 1)
-            curr->prv->outfile = curr->outfile;
-        // if (curr->infile != 0)
-        //     curr->prv->infile = curr->infile;
-        curr = curr->prv;
+            printf("print chi 9lwa\n");
+        if (curr && curr->prv)
+        {
+            tmp[--count] = curr->value;
+            printf("tmp[count] : %s\n", curr->value);
+            curr->type = RM;
+            if (curr->outfile != 1)
+                curr->prv->outfile = curr->outfile;
+            curr = curr->prv;
+        }
+        else
+            break;
     }
-    curr->args = tmp;
+    if (curr)
+        curr->args = tmp;
+    free(tmp);
     return 0;
 }
 
 void handle_args(t_list **list)
 {
     t_list *curr;
+    t_list *temp;
     int count;
 
     curr = *list;
     while (curr)
     {
-        count = 1;
-        while (curr && (curr->type == WORD || curr->type == LTRAL) 
-            && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == LTRAL))
+        // while it's not pipe ..
+        if (curr && curr->type != PIPE)
         {
-            count++;
-            curr = curr->nxt;
+            count = 1;
+            temp = curr->nxt;
+            while (temp && temp->type != PIPE)
+            {
+                count++;
+                temp = temp->nxt;
+            }
+            printf("count = %d\n", count);
+            fill_args(curr, count);
+            if (curr && count > 1)
+                printf("parsing : filling args failed\n");
         }
-        if (curr && count > 1 && fill_args(curr, count))
-            printf("parsing : filling args failed\n");
         if (curr)
             curr = curr->nxt;
     }
@@ -128,11 +127,9 @@ void concat_words(t_list **list, t_addr **addr)
     curr = *list;
     while (curr)
     {
-        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) 
-        && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
+        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
         {
             tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
-            // free(curr->value);
             curr->value = tmp;
             if (curr->type == LTRAL || curr->nxt->type == LTRAL)
                 curr->type = LTRAL;
@@ -146,7 +143,6 @@ void concat_words(t_list **list, t_addr **addr)
     // remove_token(list, W_SPACE);
 }
 
-
 int ms_parse(t_data **data, char *line, t_env *env)
 {
     t_list *list;
@@ -157,8 +153,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     count = 0;
     fds = NULL;
     list = ms_tokenize(line, &((*data)->addr));
-    // printf("after tokenzing\n");
-    // print_list(list);
+    printf("after tokenzing\n");
+    print_list(list);
     if (!list)
         return -1;
     if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
@@ -168,22 +164,15 @@ int ms_parse(t_data **data, char *line, t_env *env)
     }
     // printf("after quotes\n");
     // print_list(list);
-<<<<<<< HEAD
-    expand_all(&list, env);
-    // printf("after expand\n");
-    // print_list(list);
-    concat_words(&list);
-=======
     expand_all(&list, env, &((*data)->addr));
     // printf("after expand\n");
     // print_list(list);
     concat_words(&list, &((*data)->addr));
->>>>>>> 1b27e98bebe964e247bf4d243e7e7681ec932261
     // printf("after concat\n");
     // print_list(list);
     remove_token(&list, W_SPACE);
-    if(!check_syntax(&list, &count) && count)
-        fds = handle_redirections(&list, &count, &((*data)->addr)); 
+    if (!check_syntax(&list, &count) && count)
+        fds = handle_redirections(&list, &count, &((*data)->addr));
     remove_token(&list, RM);
     if (list->nxt)
     {
@@ -192,16 +181,18 @@ int ms_parse(t_data **data, char *line, t_env *env)
         remove_token(&list->prv, NULL_TOKEN);
     }
     handle_args(&list);
+    printf("after args\n");
+    print_list(list);
     remove_token(&list, PIPE);
-    while(fds && fds[--count])
+    while (fds && fds[--count])
         printf("fd : %d\n", fds[count]);
     last = get_last_node(list);
     last->last = 1;
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    // printf("final ------> \n");
-    // print_list(list);
+    printf("final ------> \n");
+    print_list(list);
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/08 16:40:51 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:41:28 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,18 @@ t_list *handle_doubleq(t_list *curr, int *i, t_addr **addr)
         (*i)++;
         tmp = gc_strdup("", addr);
         curr->type = LTRAL;
-        // free(curr->value);
         curr->value = tmp;
         return curr;
     }
     else if (curr && curr->type != _DOLLAR)
         curr->type = LTRAL;
-    while (curr->nxt && curr->type != D_QUOTE)
+    while (curr && curr->nxt && curr->type != D_QUOTE)
     {
         if (curr->type != _DOLLAR && curr->nxt && curr->nxt->type != D_QUOTE)
         {
             if (curr->nxt->type != _DOLLAR && curr->type != Q_DOLLAR)
             {
                 tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
-                // free(curr->value);
                 curr->value = tmp;
                 delete_node(curr->nxt);
                 curr->type = LTRAL;
@@ -65,18 +63,16 @@ t_list *handle_singleq(t_list *curr, int *i, t_addr **addr)
         tmp = gc_strdup("", addr);
         (*i)++;
         curr->type = LTRAL;
-        // free(curr->value);
         curr->value = tmp;
         return curr;
     }
     else if (curr)
         curr->type = LTRAL;
-    while (curr->nxt && curr->type != S_QUOTE)
+    while (curr && curr->nxt && curr->type != S_QUOTE)
     {
         if (curr->nxt && curr->nxt->type != S_QUOTE)
         {
             tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
-            // free(curr->value);
             curr->value = tmp;
             delete_node(curr->nxt);
         }
@@ -118,3 +114,4 @@ int handle_quote(t_list **list, token quote, t_addr **addr)
     remove_token(list, RM);
     return i;
 }
+

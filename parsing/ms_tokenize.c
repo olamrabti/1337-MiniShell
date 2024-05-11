@@ -71,9 +71,11 @@ t_list *ms_tokenize(char *line, t_addr **addr)
             node_addback(&current, create_node(gc_strdup("'", addr), S_QUOTE, addr));
         else if (line[i] == '$')
         {
-            
             j = get_key(line, i, j);
-            node_addback(&current, create_node(ft_strndup(&line[i], j, addr), _DOLLAR, addr));
+            if (j == 1 && line[i + 1] && (line[i + 1] == '\'' || line[i + 1] == '"' ))
+                node_addback(&current, create_node(ft_strndup(&line[i], j, addr), RM, addr));
+            else
+                node_addback(&current, create_node(ft_strndup(&line[i], j, addr), _DOLLAR, addr));
             i += j - 1;
         }
         else if (ft_isspace(line[i]))

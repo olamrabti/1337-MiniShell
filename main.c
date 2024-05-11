@@ -37,9 +37,6 @@ int main(int ac , char *av[], char**envp)
         if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
             execute_commands(&data, envp);
         ft_lstclear(&data->addr, free);
-        // print_addr(data->addr);
-        // if (data->cmd)
-        //     remove_list(&data->cmd);
         free(line);
         // printf("\n");
     }

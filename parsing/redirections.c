@@ -35,7 +35,6 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
         tmp = -1;
         if (curr->type == RED_OUT || curr->type == RED_OUT_APPEND) // > >> ; cmd > filename
         {
-            // delete_node(curr);
             curr->type = RM;
             if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
@@ -49,19 +48,17 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
                 else if (tmp == -1)
                     return perror(curr->nxt->value), NULL;
                 fds[i++] = tmp;
-                // delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
         } 
         else if (curr->type == RED_IN)
         {
-            // delete_node(curr);
             curr->type = RM;
             if (curr->nxt && !is_valid_name(curr->nxt->value))
             {
                 if (curr->nxt->type == NF_VAR)
-                    return printf("infile : ambiguous redirect"), NULL;
+                    return printf(" %s: ambiguous redirect", curr->nxt->value), NULL;
                 tmp = open(curr->nxt->value, O_RDWR);
                 curr->nxt->type = RM;
                 if (tmp != -1 && curr->nxt->nxt)
@@ -69,7 +66,6 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
                 else if (tmp == -1 )
                     return perror(curr->nxt->value), NULL;
                 fds[i++] = tmp;
-                // delete_node(curr->nxt);
             }
             else
                 return printf("invalid name for fd\n"), NULL;
@@ -78,10 +74,9 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
         {
             // delete_node(curr);
             curr->type = RM;
-            tmp = open_heredoc(tmp, addr);
             if (curr->nxt && curr->nxt->value)
             {
-                fill_heredoc(tmp, curr->nxt->value, addr);
+                fill_heredoc(curr->nxt->value, addr);
                 curr->nxt->type = RM;
             }
             if (tmp != -1 && curr->nxt->nxt)

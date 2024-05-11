@@ -42,8 +42,9 @@ int ms_parse(t_data **data, char *line, t_env *env);
 int *handle_redirections(t_list **list, int *count, t_addr **addr);
 int is_valid_name(char *str);
 
-int open_heredoc(int tmp , t_addr **addr);
-int fill_heredoc(int tmp, char *deli, t_addr **addr);
+int open_heredoc(char **filename, int tmp, t_addr **addr);
+int fill_heredoc(char *deli, t_addr **addr);
+
 
 t_list	*create_node(char *value, token type, t_addr **addr);
 int	node_addfront(t_list **list, t_list *new);

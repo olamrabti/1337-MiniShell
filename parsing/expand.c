@@ -30,6 +30,7 @@ int get_key(char *line, int i, int j)
             break;
         }
     }
+    // printf("j = %d\n", j);
     return j;
 }
 
@@ -99,7 +100,6 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
                 }
                 i++;
             }
-            // curr->value = tmp;
             if (*tmp)
                 curr->type = WORD;
             else

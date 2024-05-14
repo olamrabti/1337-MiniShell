@@ -38,8 +38,10 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/oumimoun/homebrew/opt/readline/lib
 
+%.o:%.c
+	$(CC)  -c $< -I /goinfre/oumimoun/homebrew/opt/readline/include -o $@
 clean :
 	rm -f $(OBJS)
 

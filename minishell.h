@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:52:24 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:13:44 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_data
 ////////////////////// parcing ////////////////////////////////
 
 
-t_list *ms_tokenize(char *line, t_addr **addr);
+// t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 void remove_list(t_list **list);
 void print_list(t_list *list);

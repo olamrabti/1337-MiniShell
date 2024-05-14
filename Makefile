@@ -13,6 +13,7 @@ SRCS = main.c \
 	parsing/redirections.c \
 	parsing/address_collector.c \
 	parsing/ms_tokenize.c \
+	parsing/syntax_utils.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_split_sp.c \
 	parsing/ft_strjoin.c \

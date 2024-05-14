@@ -15,10 +15,9 @@ char *ft_getvalue(char *key, t_env *env, t_addr **addr)
 int get_key(char *line, int i, int j)
 {
     j = 1;
-    while ((line[i + j]) && (ft_isalnum(line[i + j])\
-     || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
+    while ((line[i + j]) && (ft_isalnum(line[i + j]) || line[i + j] == '$' || line[i + j] == '_' || line[i + j] == '?'))
     {
-        
+
         j++;
         if (j == 2 && (line[i + j - 1] == '$' || line[i + j - 1] == '?'))
             break;
@@ -84,14 +83,22 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
         {
             tmp = ft_expand(curr->value, env, addr);
             splitted = ft_split_sp(tmp, addr);
-            while(splitted[i])
+            if (splitted && (!splitted[0] || !splitted[1]))
             {
-                if(splitted[i][0])
+                curr->value = tmp;
+                delete_node(curr->prv);
+            }
+            while (splitted[i])
+            {
+                if (splitted[i][0])
                 {
                     node_add_middle(curr, create_node(splitted[i], WORD, addr));
                     curr = curr->nxt;
-                    if (!i)
-                        delete_node(curr->prv);
+                    // if (!i)
+                    // {
+                    //     curr->value = tmp;
+                    //     delete_node(curr->prv);
+                    // }
                     if (splitted[i + 1] && splitted[i + 1][0])
                     {
                         node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
@@ -100,12 +107,15 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
                 }
                 i++;
             }
-            if (*tmp)
-                curr->type = WORD;
-            else
-                curr->type = NF_VAR;
+
+            // this is not the final shit :
+
+            // if (*tmp)
+            //     curr->type = WORD;
+            // else
+            //     curr->type = NF_VAR;
         }
-        if(curr)
+        if (curr)
             curr = curr->nxt;
     }
 }

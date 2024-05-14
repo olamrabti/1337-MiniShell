@@ -70,11 +70,9 @@ int fill_args(t_list *curr, int count)
     i = 0;
     while (count)
     {
-            printf("print chi 9lwa\n");
         if (curr && curr->prv)
         {
             tmp[--count] = curr->value;
-            printf("tmp[count] : %s\n", curr->value);
             curr->type = RM;
             if (curr->outfile != 1)
                 curr->prv->outfile = curr->outfile;
@@ -92,7 +90,6 @@ int fill_args(t_list *curr, int count)
 void handle_args(t_list **list)
 {
     t_list *curr;
-    t_list *temp;
     int count;
 
     curr = *list;
@@ -102,16 +99,13 @@ void handle_args(t_list **list)
         if (curr && curr->type != PIPE)
         {
             count = 1;
-            temp = curr->nxt;
-            while (temp && temp->type != PIPE)
+            while (curr && curr->nxt && curr->nxt->type != PIPE)
             {
                 count++;
-                temp = temp->nxt;
+                curr = curr->nxt;
             }
-            printf("count = %d\n", count);
-            fill_args(curr, count);
             if (curr && count > 1)
-                printf("parsing : filling args failed\n");
+                fill_args(curr, count);
         }
         if (curr)
             curr = curr->nxt;
@@ -152,9 +146,10 @@ int ms_parse(t_data **data, char *line, t_env *env)
 
     count = 0;
     fds = NULL;
-    list = ms_tokenize(line, &((*data)->addr));
+    list = init_list(line, &((*data)->addr));
     printf("after tokenzing\n");
     print_list(list);
+    exit(0);
     if (!list)
         return -1;
     if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
@@ -180,19 +175,17 @@ int ms_parse(t_data **data, char *line, t_env *env)
         list->first = 1;
         remove_token(&list->prv, NULL_TOKEN);
     }
+    // printf("before args\n");
+    // print_list(list);
     handle_args(&list);
-    printf("after args\n");
-    print_list(list);
     remove_token(&list, PIPE);
-    while (fds && fds[--count])
-        printf("fd : %d\n", fds[count]);
     last = get_last_node(list);
     last->last = 1;
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    printf("final ------> \n");
-    print_list(list);
+    // printf("final ------> \n");
+    // print_list(list);
     return 0;
 }
 

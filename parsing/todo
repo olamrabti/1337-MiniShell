@@ -4,16 +4,24 @@
 =================================
 
 --> TO COMMIT :
-        // None
-        // [x] heredoc name generation and placement
 
-// [ ] syntax error ; modify messages
-// [ ] Expand in herdoc if delimiter is not literal:
-        # search and expand , ndup join + join 
-// [ ] redirections after and before cmd 
-// FIXME args handling : 
-        // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
-// [ ] << l cat doesnt execute, will if 
+        // None
+        // FIXED args handling : 
+                // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
+
+--> TO DO :
+
+        // [ ] norm + refactor + drw scheema
+                // [ ] tokenization 
+                // [ ] quotes 
+                // [ ] syntax
+                        // [ ] syntax error ; modify messages
+                // [ ] expanding 
+                // [ ] redirections 
+                        // [ ] redirections after and before cmd , same for hdoc
+                        // [ ] Expand in herdoc if delimiter is not literal:
+                                # search and expand , ndup join + join 
+                // [ ] args handling 
 
 =================================
             LATER :
@@ -62,3 +70,6 @@ export cmd="[tab]ls [tab] -la  "
 "abcd"$PWD'ff'
 
 // < ./parsing/todo cmd arg1 arg2 | cmd2 arg1 arg2 > out1 > out2 
+
+
+echo $dhfgh $USER

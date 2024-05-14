@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 15:34:26 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:34:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,10 @@ int ft_env(t_list *cmd, t_env **envp, int flag);
 void ft_print_export(t_env *envp, int flag);
 
 int ft_export(t_list *cmd, t_env **envp, t_data *data);
+
+char    *ft_get_cwd(char *new_path, int mode);
+size_t ft_strlcpy(char *dest, const char *src, size_t size);
+size_t	ft_strlcat(char *dest, char *src, size_t size);
 
 
 #endif

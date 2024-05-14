@@ -34,9 +34,9 @@ int main(int ac , char **av, char**envp)
             break;
         if (*line)
             add_history(line);
-        if (ms_parse(&data, line, env))
-            return 1;
-        if (data &&  data->cmd && data->cmd->type != NULL_TOKEN)
+        ms_parse(&data, line, env);
+        // && data->cmd->type != NULL_TOKEN
+        if (data &&  data->cmd)
             execute_commands(&data, envp);
         ft_lstclear(&data->addr, free);
         // print_addr(data->addr);

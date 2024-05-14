@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/11 10:38:34 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/13 11:06:00 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ int execute_commands(t_data **data , char **envp)
 {
     if (!data)
         return (ERROR);
-    
-    ft_pipex((*data) , envp);
+
+    if ((*data)->cmd->type != NULL_TOKEN)
+        ft_pipex((*data) , envp);
     ft_close_descriptors(*data);
 
     return (SUCCESS);

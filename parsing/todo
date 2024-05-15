@@ -12,16 +12,18 @@
 --> TO DO :
 
         // [ ] norm + refactor + drw scheema
-                // [ ] tokenization 
+                // [x] tokenization 
                 // [ ] quotes 
+                // [x] expanding 
                 // [ ] syntax
                         // [ ] syntax error ; modify messages
-                // [ ] expanding 
                 // [ ] redirections 
                         // [ ] redirections after and before cmd , same for hdoc
                         // [ ] Expand in herdoc if delimiter is not literal:
                                 # search and expand , ndup join + join 
                 // [ ] args handling 
+
+                // FIXME << l see if it hangs because of tokenization logic 
 
 =================================
             LATER :

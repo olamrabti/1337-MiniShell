@@ -37,9 +37,7 @@ void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j)
     i = 0;
     while (line[i])
     {
-        if (is_operator(current, line, &i, addr))
-            ;
-        else if (line[i] == '$')
+        if (line[i] == '$')
         {
             *j = get_key(line, i, *j);
             if (*j == 1 && line[i + 1] && (line[i + 1] == '\'' || line[i + 1] == '"'))
@@ -56,7 +54,7 @@ void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j)
             node_addback(&current, create_node(ft_strndup(&line[i], *j, addr), W_SPACE, addr));
             i += *j - 1;
         }
-        else
+        else if (!is_operator(current, line, &i, addr))
             is_word(current, line, &i, addr);
         i++;
     }

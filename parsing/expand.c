@@ -12,6 +12,7 @@ char *ft_getvalue(char *key, t_env *env, t_addr **addr)
     }
     return (NULL);
 }
+
 int get_key(char *line, int i, int j)
 {
     j = 1;
@@ -29,7 +30,6 @@ int get_key(char *line, int i, int j)
             break;
         }
     }
-    // printf("j = %d\n", j);
     return j;
 }
 
@@ -46,22 +46,43 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (gc_strdup("", addr));
     value = ft_getvalue(key + 1, env, addr);
-    // remmember to free it before give it the new strdup value
     if (!value)
         return (gc_strdup("", addr));
     return (value);
 }
 
-void expand_all(t_list **list, t_env *env, t_addr **addr)
+void ft_split_value(t_list *curr, char *value, t_addr **addr)
 {
-    t_list *curr;
-    char *tmp;
     char **splitted;
     int i;
 
-    curr = *list;
-    splitted = NULL;
     i = 0;
+    splitted = ft_split_sp(value, addr);
+    if (splitted && !splitted[0])
+        delete_node(curr);
+    else
+    {
+        while (splitted[i])
+        {
+            node_add_middle(curr, create_node(splitted[i], WORD, addr));
+            curr = curr->nxt;
+            if (i == 0)
+                delete_node(curr->prv);
+            if (splitted[i + 1] && splitted[i + 1][0])
+            {
+                node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
+                curr = curr->nxt;
+            }
+            i++;
+        }
+    }
+}
+
+void expand_all(t_list **list, t_env *env, t_addr **addr)
+{
+    t_list *curr;
+
+    curr = *list;
     while (curr)
     {
         if (curr->prv && curr->prv->type == H_DOC)
@@ -72,49 +93,14 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
         }
         else if (curr->type == Q_DOLLAR)
         {
-            tmp = ft_expand(curr->value, env, addr);
-            curr->value = tmp;
-            if (*tmp)
+            curr->value = ft_expand(curr->value, env, addr);
+            if (curr->value[0])
                 curr->type = WORD;
             else
                 curr->type = NF_VAR;
         }
         else if (curr->type == _DOLLAR)
-        {
-            tmp = ft_expand(curr->value, env, addr);
-            splitted = ft_split_sp(tmp, addr);
-            if (splitted && (!splitted[0] || !splitted[1]))
-            {
-                curr->value = tmp;
-                delete_node(curr->prv);
-            }
-            while (splitted[i])
-            {
-                if (splitted[i][0])
-                {
-                    node_add_middle(curr, create_node(splitted[i], WORD, addr));
-                    curr = curr->nxt;
-                    // if (!i)
-                    // {
-                    //     curr->value = tmp;
-                    //     delete_node(curr->prv);
-                    // }
-                    if (splitted[i + 1] && splitted[i + 1][0])
-                    {
-                        node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
-                        curr = curr->nxt;
-                    }
-                }
-                i++;
-            }
-
-            // this is not the final shit :
-
-            // if (*tmp)
-            //     curr->type = WORD;
-            // else
-            //     curr->type = NF_VAR;
-        }
+            ft_split_value(curr, ft_expand(curr->value, env, addr), addr);
         if (curr)
             curr = curr->nxt;
     }

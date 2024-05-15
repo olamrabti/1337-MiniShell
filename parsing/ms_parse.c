@@ -147,9 +147,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     count = 0;
     fds = NULL;
     list = init_list(line, &((*data)->addr));
-    printf("after tokenzing\n");
-    print_list(list);
-    exit(0);
+    // printf("after tokenzing\n");
+    // print_list(list);
     if (!list)
         return -1;
     if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
@@ -184,8 +183,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    // printf("final ------> \n");
-    // print_list(list);
+    printf("final ------> \n");
+    print_list(list);
     return 0;
 }
 

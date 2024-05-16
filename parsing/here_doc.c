@@ -20,6 +20,7 @@ int open_heredoc(char **filename, int tmp, t_addr **addr)
     }
     if (tmp < 0)
         return -1;
+    // unlink(filename);
     return tmp;
 }
 

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:03:34 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:34:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**ft_split(char const *s, char c);
 char *ft_substr(char *s, unsigned int start, size_t len);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 
-int ft_env(t_list * cmd, t_env **envp);
+
 int execute_commands(t_data **data, char **envp);
 void ft_add_to_env(t_env **env, char *key, char *value);
 
@@ -68,7 +68,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char *ft_get_path(t_list *cmd, t_env *env);
 
 
-char **ft_join_for_execve(t_list *cmd);
+char **ft_join_for_execve(t_list *cmd, t_addr *addr);
 
 int ft_pipex(t_data *data, char **envp);
 
@@ -79,9 +79,9 @@ int ft_is_builtin(char *value);
 int ft_cd(t_list *cmd, t_env *env);
 int ft_pwd(t_list *cmd);
 int ft_echo(t_list *cmd);
-int  ft_export(t_list * cmd, t_env **envp);
+// int  ft_export(t_list * cmd, t_env **envp);
 
-void ft_print_export(t_env *envp);
+// void ft_print_export(t_env *envp);
 
 int ft_change_env(char *str, t_env *envp, int concat);
 int ft_unset(t_list *cmd, t_env **envp);
@@ -91,6 +91,21 @@ int	ft_isdigit(int d);
 int	ft_isalpha(int c);
 int	ft_isalnum(int c);
 
-// char *ft_strdup_no_free(char *str);
+int  *ft_alloc_tab(t_data *data, int *total);
+
+int ft_close_descriptors(t_data *data);
+
+int ft_no_env(t_data **data);
+
+
+int ft_env(t_list *cmd, t_env **envp, int flag);
+void ft_print_export(t_env *envp, int flag);
+
+int ft_export(t_list *cmd, t_env **envp, t_data *data);
+
+char    *ft_get_cwd(char *new_path, int mode);
+size_t ft_strlcpy(char *dest, const char *src, size_t size);
+size_t	ft_strlcat(char *dest, char *src, size_t size);
+
 
 #endif

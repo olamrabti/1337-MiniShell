@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 16:44:21 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:33:54 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,30 @@
 //     return i;
 // }
 
-// char *ft_strdup_no_free(char *str)
-// {
-//     int i;
-//     char *p;
+size_t	ft_strlcat(char *dest, char *src, size_t size)
+{
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	lsrc;
+	unsigned int	ldest;
 
-//     i = 0;
-//     p = (char *)malloc(ft_strlen(str) + 1 * sizeof(char));
-//     if (p == NULL)
-//         return (NULL);
-//     while (str[i] != '\0')
-//     {
-//         p[i] = str[i];
-//         i++;
-//     }
-//     p[i] = '\0';
-//     return (p);
-// }
+	if (!dest && !size)
+		return (0);
+	ldest = ft_strlen(dest);
+	lsrc = ft_strlen(src);
+	i = 0;
+	j = ldest;
+	if (size == 0 || size <= ldest)
+		return (lsrc + size);
+	while (src[i] && i < (size - 1) - ldest)
+	{
+		dest[j] = src[i];
+		j++;
+		i++;
+	}
+	dest[j] = '\0';
+	return (lsrc + ldest);
+}
 
 // int ft_strncmp(char *s1, char *s2, unsigned int n)
 // {

@@ -1,25 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/22 13:41:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/14 14:13:44 by olamrabt         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// # include "execution/execution.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 
 typedef enum token {
         W_SPACE = 1,
@@ -75,6 +64,7 @@ typedef struct s_data
     int save;
     pid_t pid;
     int pd[2];
+    int is_hiden;
     struct s_env *env;
     struct s_addr *addr;
 
@@ -111,6 +101,8 @@ void	ft_lstclear(t_addr **lst, void (*del)(void *));
 int execute_commands(t_data **data, char **envp);
 t_env *ft_parce_env(char **envp);
 
+char *gc_strdup(const char *s, t_addr **addr);
 
+int ft_no_env(t_data **data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 18:26:17 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:38:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,20 @@
 // [x] var key=" " empty value
 // [x] invalid var
 
-void ft_print_export(t_env *envp)
+void ft_print_export(t_env *envp, int flag)
 {
     t_env *env;
 
     env = envp;
     while (env)
     {
+        if (ft_strcmp(env->key, "PATH") == 0 && flag == 1)
+        {
+            env = env->next; // Skip printing PATH and move to the next environment variable
+            continue; // Skip to the next iteration of the loop
+        }
         printf("declare -x ");
         printf("%s", env->key);
-        // potentiel segfault
         if (env->value)
             printf("=\"%s\"", env->value);
         printf("\n");
@@ -189,7 +193,6 @@ int ft_is_concat(char *str)
 }
 
 
-
 int ft_export_is_valid(char *str)
 {
     int i = 0;
@@ -209,10 +212,28 @@ int ft_export_is_valid(char *str)
     return (1);
 }
 
-int ft_export(t_list *cmd, t_env **envp)
+int ft_double_check(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if (str[i] == '+')
+        {
+            i++;
+            if (str[i] == '=')
+                return 1;
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
+int ft_export(t_list *cmd, t_env **envp, t_data *data)
 {
     t_env **env;
     int i;
+    int concat;
 
     env = envp;
     if (cmd->args)
@@ -220,18 +241,22 @@ int ft_export(t_list *cmd, t_env **envp)
         i = 0;
         while (cmd->args[i])
         {
-            if (ft_export_is_valid(cmd->args[i]))
+            if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
             {
-                int concat = ft_is_concat(cmd->args[i]);
-                printf("concat --> %d\n", concat);
+                concat = ft_is_concat(cmd->args[i]);
+                if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
+                {
+                    data->is_hiden = 0;
+                }
+                // printf("concat --> %d\n", concat);
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {
-                    // [ ] change its value
+                    // [x] change its value
                     ft_change_env(cmd->args[i], *env, concat);
                 }
                 else
                 {
-                    // [ ] add node and if there is '=' assigne a value
+                    // [x] add node and if there is '=' assigne a value
                     ft_add_to_export(cmd->args[i], env, concat);
                 }
             }
@@ -246,7 +271,7 @@ int ft_export(t_list *cmd, t_env **envp)
         }
     }
     else
-        ft_print_export(*env);
+        ft_print_export(*env, data->is_hiden);
 
     return (SUCCESS);
 }

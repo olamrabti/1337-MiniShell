@@ -32,6 +32,7 @@ SRCS = main.c \
 	execution/export.c \
 	execution/unset.c \
 	execution/exit.c \
+	execution/handle_no_env.c \
 
 OBJS = $(SRCS:.c=.o)
 
@@ -39,7 +40,10 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/oumimoun/homebrew/opt/readline/lib
+
+%.o:%.c
+	$(CC)  -c $< -I /goinfre/oumimoun/homebrew/opt/readline/include -o $@
 
 clean :
 	@echo "Cleaning object files..."

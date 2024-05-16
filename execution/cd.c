@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/14 15:19:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:15:14 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 // TODO creating cd
 // TODO testing cd
 //  [x] cd with no argument
-// [ ] cd -
-// [ ] cd ~
 // [x] cd chenge oldpwd and pwd
 
 // getcwd geting PWD
@@ -81,7 +79,6 @@ int ft_cd(t_list *cmd, t_env *envp)
     if (cmd->args)
     {
         ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
-
         if (chdir(cmd->args[0]) == -1)
         {
             ft_putstr_fd("cd: ", 2);
@@ -89,7 +86,6 @@ int ft_cd(t_list *cmd, t_env *envp)
             ft_putstr_fd(": no such file or directory\n", 2);
             return (ERROR);
         }
-        
         if (!getcwd(NULL, PATH_MAX))
         {
             perror("pwd");
@@ -106,7 +102,6 @@ int ft_cd(t_list *cmd, t_env *envp)
             if (ft_strcmp(env->key, "HOME") == 0)
             {
                 ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
-            
                 if (chdir(env->value) == -1)
                 {
                     perror("cd: ");
@@ -120,6 +115,5 @@ int ft_cd(t_list *cmd, t_env *envp)
             env = env->next;
         }
     }
-
     return (SUCCESS);
 }

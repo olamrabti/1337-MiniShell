@@ -30,6 +30,7 @@ char *gc_strdup(const char *s, t_addr **addr)
 	return (copy);
 }
 
+
 char	*ft_strdup(const char *s)
 {
 	char	*copy;

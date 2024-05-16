@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 15:05:02 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:38:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,23 @@ int ft_export_is_valid(char *str)
     return (1);
 }
 
+int ft_double_check(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if (str[i] == '+')
+        {
+            i++;
+            if (str[i] == '=')
+                return 1;
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
 int ft_export(t_list *cmd, t_env **envp, t_data *data)
 {
     t_env **env;
@@ -224,14 +241,13 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
         i = 0;
         while (cmd->args[i])
         {
-            if (ft_export_is_valid(cmd->args[i]))
+            if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
             {
                 concat = ft_is_concat(cmd->args[i]);
                 if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
                 {
                     data->is_hiden = 0;
                 }
-
                 // printf("concat --> %d\n", concat);
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {

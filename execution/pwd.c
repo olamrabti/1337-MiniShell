@@ -6,28 +6,39 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:32:49 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/07 15:55:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:16:19 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-// [ ] OLDPWD
-// [ ] "~"
+// [x] OLDPWD
 
-int ft_pwd(t_list *cmd)
+char    *ft_get_cwd(char *new_path, int flag)
 {
-    (void)cmd;
-    char *buf;
+    char        path[PATH_MAX];
+    static char    static_path[PATH_MAX];
 
-    buf = getcwd(NULL, 0);
-    if (buf == NULL)
+    if (getcwd(path, PATH_MAX) != NULL)
     {
-        perror("pwd");
-        return (ERROR);
+        ft_strlcpy(static_path, path, PATH_MAX);
+        return (static_path);
     }
-    printf("%s\n", buf);
-    free(buf);
+    if (flag == 1)
+    {
+        ft_strlcat(static_path, "/", PATH_MAX);
+        ft_strlcat(static_path, new_path, PATH_MAX);
+    }
+    return (static_path);
+}
+
+int    ft_pwd(t_list *cmd)
+{
+    char    *path;
+
+    (void)cmd;
+    path = ft_get_cwd(NULL, 0);
+    printf("%s\n", path);
     return (SUCCESS);
 }

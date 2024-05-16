@@ -13,6 +13,7 @@ SRCS = main.c \
 	parsing/redirections.c \
 	parsing/address_collector.c \
 	parsing/ms_tokenize.c \
+	parsing/syntax_utils.c \
 	parsing/ft_strcmp.c \
 	parsing/ft_split_sp.c \
 	parsing/ft_strjoin.c \
@@ -31,18 +32,25 @@ SRCS = main.c \
 	execution/export.c \
 	execution/unset.c \
 	execution/exit.c \
+	execution/handle_no_env.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME)
+all:
+	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/oumimoun/homebrew/opt/readline/lib
+
+%.o:%.c
+	$(CC)  -c $< -I /goinfre/oumimoun/homebrew/opt/readline/include -o $@
 
 clean :
-	rm -f $(OBJS)
+	@echo "Cleaning object files..."
+	@rm -f $(OBJS)
 
 fclean : clean
-	rm -f $(NAME)
+	@echo "Cleaning $(NAME)..."
+	@rm -f $(NAME)
 
 re : fclean all

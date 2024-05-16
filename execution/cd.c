@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:30:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:15:14 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 // TODO creating cd
 // TODO testing cd
 //  [x] cd with no argument
-// [ ] cd -
-// [ ] cd ~
 // [x] cd chenge oldpwd and pwd
 
 // getcwd geting PWD
@@ -55,21 +53,32 @@ int ft_change_oldpwd(char *buf, t_env *envp)
     return (SUCCESS);
 }
 
+int ft_join_pwd(t_env *envp, char *str)
+{
+    t_env *env;
+
+    env = envp;
+    while (env)
+    {
+        if (ft_strcmp(env->key, "PWD") == 0)
+        {
+            env->value = ft_strjoin(env->value, str);
+        }
+        env = env->next;
+    }
+    return (SUCCESS);
+}
+
 int ft_cd(t_list *cmd, t_env *envp)
 {
     t_env *env;
-    char *oldpwd;
-    char *pwd;
+    char oldpwd[PATH_MAX];
+    char pwd[PATH_MAX];
 
     env = envp;
     if (cmd->args)
     {
-        oldpwd = getcwd(NULL, 0);
-        if (oldpwd == NULL)
-        {
-            perror("pwd");
-            return (ERROR);
-        }
+        ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
         if (chdir(cmd->args[0]) == -1)
         {
             ft_putstr_fd("cd: ", 2);
@@ -77,12 +86,12 @@ int ft_cd(t_list *cmd, t_env *envp)
             ft_putstr_fd(": no such file or directory\n", 2);
             return (ERROR);
         }
-        pwd = getcwd(NULL, 0);
-        if (pwd == NULL)
+        if (!getcwd(NULL, PATH_MAX))
         {
             perror("pwd");
-            return (ERROR);
+            ft_get_cwd(cmd->args[0], 1);
         }
+        ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
         ft_change_pwd(pwd, envp);
         ft_change_oldpwd(oldpwd, envp);
     }
@@ -92,29 +101,19 @@ int ft_cd(t_list *cmd, t_env *envp)
         {
             if (ft_strcmp(env->key, "HOME") == 0)
             {
-                oldpwd = getcwd(NULL, 0);
-                if (oldpwd == NULL)
-                {
-                    perror("pwd");
-                    return (ERROR);
-                }
+                ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
                 if (chdir(env->value) == -1)
                 {
+                    perror("cd: ");
                     ft_putstr_fd("cd: HOME not set\n", 2);
                     return (ERROR);
                 }
-                pwd = getcwd(NULL, 0);
-                if (pwd == NULL)
-                {
-                    perror("pwd");
-                    return (ERROR);
-                }
+                ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
                 ft_change_pwd(pwd, envp);
                 ft_change_oldpwd(oldpwd, envp);
             }
             env = env->next;
         }
     }
-
     return (SUCCESS);
 }

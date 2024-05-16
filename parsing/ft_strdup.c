@@ -3,8 +3,10 @@
 
 int ft_strlen(const char *s)
 {
-	if (!s || !*s)
+	if (!s)
 		return 0;
+	if (!*s)
+       return 0;
 	return (ft_strlen(s + 1) + 1);
 }
 
@@ -28,6 +30,7 @@ char *gc_strdup(const char *s, t_addr **addr)
 	return (copy);
 }
 
+
 char	*ft_strdup(const char *s)
 {
 	char	*copy;
@@ -47,6 +50,24 @@ char	*ft_strdup(const char *s)
 	copy[ft_strlen(s)] = '\0';
 	return (copy);
 }
+
+// char	*ft_strdup(const char *str)
+// {
+// 	int		i;
+// 	char	*p;
+
+// 	i = 0;
+// 	p = (char *)malloc(ft_strlen(str) + 1 * sizeof(char));
+// 	if (p == NULL)
+// 		return (NULL);
+// 	while (str[i] != '\0')
+// 	{
+// 		p[i] = str[i];
+// 		i++;
+// 	}
+// 	p[i] = '\0';
+// 	return (p);
+// }
 
 char *ft_strndup(char *s, int n, t_addr **addr)
 {

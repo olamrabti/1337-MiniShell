@@ -1,10 +1,4 @@
-
 #include "minishell.h"
-
-// void f()
-// {
-//     system("leaks minishell");
-// }
 
 void ctrl_c_handler(int signum)
 {
@@ -16,7 +10,6 @@ void ctrl_c_handler(int signum)
 		rl_redisplay();
     }
 }
-
 
 int main(int ac, char **av, char **envp)
 {
@@ -49,13 +42,9 @@ int main(int ac, char **av, char **envp)
         if (*line)
             add_history(line);
         ms_parse(&data, line, env);
-        // && data->cmd->type != NULL_TOKEN
         if (data && data->cmd)
             execute_commands(&data, envp);
         ft_lstclear(&data->addr, free);
-        // print_addr(data->addr);
-        // if (data->cmd)
-        //     remove_list(&data->cmd);
         free(line);
         // printf("\n");
     }

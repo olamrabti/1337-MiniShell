@@ -34,7 +34,7 @@ int check_syntax(t_list **list, int *count)
     {
         if (curr->type == PIPE)
         {
-            if ((!curr->prv || curr->prv->type != WORD) || (!curr->nxt || curr->nxt->type != WORD))
+            if ((!curr->prv || curr->prv->type != WORD) || !curr->nxt)
                 return printf("invalid PIPE syntax\n"), 1;
         }
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND)
@@ -162,8 +162,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     // printf("after expand\n");
     // print_list(list);
     concat_words(&list, &((*data)->addr));
-    // printf("after concat\n");
-    // print_list(list);
+    printf("after concat\n");
+    print_list(list);
     remove_token(&list, W_SPACE);
     if (!check_syntax(&list, &count) && count)
         fds = handle_redirections(&list, &count, &((*data)->addr));

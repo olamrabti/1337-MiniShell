@@ -11,7 +11,7 @@ int open_heredoc(char **filename, int tmp, t_addr **addr)
     i = '1';
     *filename = gc_strdup("/tmp/h_doc", addr);
     tmp = open(*filename, O_CREAT | O_RDWR | O_TRUNC, 0666);
-    while (tmp <  0 || access(*filename, X_OK | R_OK | F_OK))
+    while (tmp < 0 && !access(*filename, X_OK | R_OK | F_OK))
     {
         *filename = ft_charjoin(*filename, i++, addr);
         tmp = open(*filename, O_CREAT | O_RDWR | O_TRUNC, 0666);
@@ -29,6 +29,7 @@ int fill_heredoc(char *deli, t_addr **addr)
     char *line;
     char *filename;
     int fd;
+    int fd2;
 
     fd = -1;
     if (!deli)
@@ -42,10 +43,11 @@ int fill_heredoc(char *deli, t_addr **addr)
         if (!ft_strcmp(line, deli))
             break ;
         // if delimiter is not literal , expand before write
-        line = ft_charjoin(line, '\n', addr);
         write(fd, line, ft_strlen(line));
-        // free(line);
+        write(fd, "\n", 1);
+        free(line);
     }
+    fd2 = open(filename, O_RDWR, 0666);
     // unlink(filename);
-    return fd;
+    return fd2;
 }

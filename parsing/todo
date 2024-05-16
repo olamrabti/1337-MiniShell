@@ -18,7 +18,9 @@
                 // [ ] syntax
                         // [ ] syntax error ; modify messages
                 // [ ] redirections 
-                        // [ ] redirections after and before cmd , same for hdoc
+                        // [x] redirections after and before cmd
+                        # < Makefile cat > out1 > out2 | ls > out3 > out4
+                        # FIXME heredoc get stuck in infinite loop
                         // [ ] Expand in herdoc if delimiter is not literal:
                                 # search and expand , ndup join + join 
                 // [ ] args handling 
@@ -29,7 +31,7 @@
             LATER :
 =================================
 
-// [ ] Exit status 
+// [ ] Exit status $?
 // [ ] signals
 // [ ] redirections by command if fails stop and move to next command
 
@@ -46,6 +48,7 @@
 
 
 // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
+// printf(">>> tmp -%s- type: %d in: %d   out: %d\n", tmp->value, tmp->type, tmp->infile, tmp->outfile);
 
 =================================
             TESTS :

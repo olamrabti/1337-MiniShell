@@ -58,12 +58,13 @@ int check_syntax(t_list **list, int *count)
     return 0;
 }
 
-int fill_args(t_list *curr, int count)
+int fill_args(t_list *curr, int count, t_addr **addr)
 {
     char **tmp;
     int i;
 
-    tmp = malloc((count) * sizeof(char *));
+    // tmp = malloc((count) * sizeof(char *));
+    tmp = ft_calloc(addr, count, sizeof(char *));
     if (!tmp)
         return 1;
     tmp[--count] = NULL;
@@ -87,7 +88,7 @@ int fill_args(t_list *curr, int count)
     return 0;
 }
 
-void handle_args(t_list **list)
+void handle_args(t_list **list, t_addr **addr)
 {
     t_list *curr;
     int count;
@@ -103,12 +104,9 @@ void handle_args(t_list **list)
                 count++;
                 curr = curr->nxt;
             }
-            printf("count : %d, >>> curr -%s- type: %d\n",count, curr->value, curr->type);
             if (curr && count > 1)
-                fill_args(curr, count);
+                fill_args(curr, count, addr);
         }
-        else 
-            break;
         if (curr)
             curr = curr->nxt;
     }
@@ -179,7 +177,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     }
     printf("before args\n");
     print_list(list);
-    handle_args(&list);
+    handle_args(&list, &((*data)->addr));
     remove_token(&list, PIPE);
     last = get_last_node(list);
     last->last = 1;

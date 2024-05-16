@@ -1,15 +1,21 @@
 #include "minishell.h"
 
-void ctrl_c_handler(int signum)
+// void ctrl_c_handler(int signum)
+// {
+//     if(signum == SIGINT)
+//     {
+// 		write(1, "\n", 1);
+// 		rl_replace_line("", 0);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+//     }
+// }
+
+void f()
 {
-    if(signum == SIGINT)
-    {
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-    }
+    system("leaks minishell");
 }
+
 
 int main(int ac, char **av, char **envp)
 {
@@ -19,9 +25,9 @@ int main(int ac, char **av, char **envp)
 
     (void)ac;
     (void)av;
-    signal(SIGINT, ctrl_c_handler);
+    // signal(SIGINT, ctrl_c_handler);
 
-    // atexit(f);
+    atexit(f);
     data = malloc(sizeof(t_data));
     if (!data)
         return -1;

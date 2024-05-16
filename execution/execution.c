@@ -6,18 +6,12 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 16:38:46 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:15:49 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-// [ ]: start the execution of the commands
-// [ ] .
-// bash: .: filename argument required
-// .: usage: . filename [arguments]
-// bash-3.2$ 
 
 int ft_is_builtin(char *value)
 {
@@ -41,10 +35,13 @@ int ft_is_builtin(char *value)
 
 int execute_commands(t_data **data , char **envp)
 {
-    if (!data || !(*data)->env)
+    if (!data)
         return (ERROR);
 
-    ft_pipex((*data) , envp);
+    if ((*data)->cmd->type != NULL_TOKEN)
+        ft_pipex((*data) , envp);
+
+    ft_close_descriptors(*data);
 
     return (SUCCESS);
 }

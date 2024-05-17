@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/09 21:46:28 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:12:11 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,7 @@ char **ft_join_for_execve(t_list *cmd, t_addr *addr)
             total++;
     }
     command = ft_calloc(&addr, (total + 2) , sizeof(char *));
-    if (!command)
-        return (NULL);
-    // command = (char **)malloc(sizeof(char *) * (total + 2));
     command[0] = gc_strdup(cmd->value, &addr);
-    if (!command[0])
-        return (NULL);
-    // command[0] = ft_strdup(cmd->value);
     i = 1;
     j = 0;
     if (cmd->args)
@@ -95,17 +89,6 @@ char **ft_join_for_execve(t_list *cmd, t_addr *addr)
         while (cmd->args[j])
         {
             command[i] = gc_strdup(cmd->args[j], &addr);
-            if (!command[i])
-            {
-                while (i >= 0)
-                {
-                    free(command[i]);
-                    i--;
-                }
-                free(command[0]);
-                free(command);
-                return (NULL);
-            }
             i++;
             j++;
         }

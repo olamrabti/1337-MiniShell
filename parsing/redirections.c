@@ -64,7 +64,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
                 tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
             curr->nxt->type = RM;
             if (tmp->outfile == -1)
-                return perror(curr->nxt->value), NULL;
+                perror(curr->nxt->value);
             fds[i++] = tmp->outfile;
         }
         else if (curr->type == RED_IN)
@@ -75,7 +75,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
             tmp->infile = open(curr->nxt->value, O_RDWR);
             curr->nxt->type = RM;
             if (tmp->infile == -1)
-                return perror(curr->nxt->value), NULL;
+                perror(curr->nxt->value);
             fds[i++] = tmp->infile;
         }
         else if (curr->type == H_DOC)

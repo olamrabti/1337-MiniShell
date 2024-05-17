@@ -2,13 +2,20 @@
 
 void ctrl_c_handler(int signum)
 {
-    if(signum == SIGINT)
-    {
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-    }
+    // if (signum == SIGINT)
+    // {
+	// 	write(1, "\n", 1);
+	// 	rl_replace_line("", 0);
+	// 	rl_on_new_line();
+	// 	rl_redisplay();
+    // }
+}
+
+void ft_signal()
+{
+    // rl_catch_signals = 0;
+    // signal(SIGINT, ctrl_c_handler);
+    // signal(3, ctrl_c_handler);
 }
 
 int main(int ac, char **av, char **envp)
@@ -19,12 +26,12 @@ int main(int ac, char **av, char **envp)
 
     (void)ac;
     (void)av;
-    signal(SIGINT, ctrl_c_handler);
+    ft_signal();
 
     // atexit(f);
     data = malloc(sizeof(t_data));
     if (!data)
-        return -1;
+        return (-1);
     data->cmd = NULL;
     data->fds = NULL;
     data->status = 0;
@@ -38,7 +45,10 @@ int main(int ac, char **av, char **envp)
     {
         line = readline("MINISHELL$ ");
         if (line == NULL)
-            break;
+        {
+            printf("exit\n");
+            exit(0); // [ ] exit with exit_status
+        }
         if (*line)
             add_history(line);
         ms_parse(&data, line, env);

@@ -183,7 +183,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    printf("final ------> \n");
+    // printf("final ------> \n");
     print_list(list);
     return 0;
 }

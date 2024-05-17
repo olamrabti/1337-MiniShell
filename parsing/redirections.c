@@ -38,14 +38,15 @@ void assign_fd(t_list *tmp)
     }
 }
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr)
+int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
 {
     t_list *curr;
     t_list *tmp;
     int *fds;
     int i;
 
-    fds = malloc(sizeof(sizeof(int)) * (*count));
+    // fds = malloc(sizeof(sizeof(int)) * (*count));
+    fds = ft_calloc(addr, *count ,sizeof(int));
     if (!fds)
         return NULL;
     fds[*count] = -1;
@@ -83,7 +84,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
             curr->type = RM;
             if (curr->nxt && curr->nxt->value)
             {
-                tmp->infile = fill_heredoc(curr->nxt->value, addr);
+                tmp->infile = fill_heredoc(curr->nxt, addr, env);
                 curr->nxt->type = RM;
             }
             else if (tmp->infile == -1)

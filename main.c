@@ -29,6 +29,8 @@ int main(int ac, char **av, char **envp)
     ft_signal();
 
     // atexit(f);
+    // if (isatty(av[1]))
+    //     return (0);
     data = malloc(sizeof(t_data));
     if (!data)
         return (-1);

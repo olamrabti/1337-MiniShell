@@ -58,12 +58,13 @@ int check_syntax(t_list **list, int *count)
     return 0;
 }
 
-int fill_args(t_list *curr, int count)
+int fill_args(t_list *curr, int count, t_addr **addr)
 {
     char **tmp;
     int i;
 
-    tmp = malloc((count) * sizeof(char *));
+    // tmp = malloc((count) * sizeof(char *));
+    tmp = ft_calloc(addr, count, sizeof(char *));
     if (!tmp)
         return 1;
     tmp[--count] = NULL;
@@ -83,11 +84,11 @@ int fill_args(t_list *curr, int count)
     }
     if (curr)
         curr->args = tmp;
-    // free(tmp);
+    // free(tmp); it ruins everything, throw it to garbage collector
     return 0;
 }
 
-void handle_args(t_list **list)
+void handle_args(t_list **list, t_addr **addr)
 {
     t_list *curr;
     int count;
@@ -95,7 +96,6 @@ void handle_args(t_list **list)
     curr = *list;
     while (curr)
     {
-        // while it's not pipe ..
         if (curr && curr->type != PIPE)
         {
             count = 1;
@@ -105,7 +105,7 @@ void handle_args(t_list **list)
                 curr = curr->nxt;
             }
             if (curr && count > 1)
-                fill_args(curr, count);
+                fill_args(curr, count, addr);
         }
         if (curr)
             curr = curr->nxt;
@@ -121,7 +121,8 @@ void concat_words(t_list **list, t_addr **addr)
     curr = *list;
     while (curr)
     {
-        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
+        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) && curr->nxt 
+        && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
         {
             tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
             curr->value = tmp;
@@ -156,17 +157,17 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env, &((*data)->addr));
         printf("quote>\n");
     }
-    // printf("after quotes\n");
-    // print_list(list);
+    printf("before expand\n");
+    print_list(list);
     expand_all(&list, env, &((*data)->addr));
-    // printf("after expand\n");
-    // print_list(list);
+    printf("after expand \n");
+    print_list(list);
     concat_words(&list, &((*data)->addr));
     // printf("after concat\n");
     // print_list(list);
     remove_token(&list, W_SPACE);
     if (!check_syntax(&list, &count) && count)
-        fds = handle_redirections(&list, &count, &((*data)->addr));
+        fds = handle_redirections(&list, &count, &((*data)->addr), env);
     remove_token(&list, RM);
     if (list->nxt)
     {
@@ -176,7 +177,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     }
     // printf("before args\n");
     // print_list(list);
-    handle_args(&list);
+    handle_args(&list, &((*data)->addr));
     remove_token(&list, PIPE);
     last = get_last_node(list);
     last->last = 1;

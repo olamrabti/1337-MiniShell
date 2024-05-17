@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
 
@@ -43,7 +43,7 @@ $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/olamrabt/homebrew/opt/readline/lib
 
 %.o:%.c
-	$(CC)  -c $< -I /goinfre/olamrabt/homebrew/opt/readline/include -o $@
+	$(CC) $(CFLAGS)  -c $< -I /goinfre/olamrabt/homebrew/opt/readline/include -o $@
 
 clean :
 	@echo "Cleaning object files..."

@@ -157,17 +157,17 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env, &((*data)->addr));
         printf("quote>\n");
     }
-    // printf("after quotes\n");
-    // print_list(list);
+    printf("before expand\n");
+    print_list(list);
     expand_all(&list, env, &((*data)->addr));
-    // printf("after expand \n");
-    // print_list(list);
+    printf("after expand \n");
+    print_list(list);
     concat_words(&list, &((*data)->addr));
     // printf("after concat\n");
     // print_list(list);
     remove_token(&list, W_SPACE);
     if (!check_syntax(&list, &count) && count)
-        fds = handle_redirections(&list, &count, &((*data)->addr));
+        fds = handle_redirections(&list, &count, &((*data)->addr), env);
     remove_token(&list, RM);
     if (list->nxt)
     {
@@ -175,8 +175,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
         list->first = 1;
         remove_token(&list->prv, NULL_TOKEN);
     }
-    printf("before args\n");
-    print_list(list);
+    // printf("before args\n");
+    // print_list(list);
     handle_args(&list, &((*data)->addr));
     remove_token(&list, PIPE);
     last = get_last_node(list);

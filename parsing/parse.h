@@ -40,11 +40,12 @@ void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j);
 t_list *init_list( char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr);
-int is_valid_name(char *str);
+int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env);
+// int is_valid_name(char *str);
 
 int open_heredoc(char **filename, int tmp, t_addr **addr);
-int fill_heredoc(char *deli, t_addr **addr);
+int fill_heredoc(t_list *deli, t_addr **addr, t_env *env);
+
 
 
 t_list	*create_node(char *value, token type, t_addr **addr);

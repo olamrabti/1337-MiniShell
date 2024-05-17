@@ -77,6 +77,21 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
         }
     }
 }
+// it works properly so far, but maybe this function should be in syntax check !
+void find_delimiter(t_list *list)
+{
+    t_list *temp;
+
+    temp = list;
+    if(temp->nxt)
+        temp = temp->nxt;
+    while (temp && temp->type == W_SPACE)
+        temp = temp->nxt; 
+    if (temp && temp->type == Q_DOLLAR)
+        temp->type = LTRAL;
+    if (temp && temp->type == _DOLLAR)
+        temp->type = WORD;
+}
 
 void expand_all(t_list **list, t_env *env, t_addr **addr)
 {
@@ -85,12 +100,8 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
     curr = *list;
     while (curr)
     {
-        if (curr->prv && curr->prv->type == H_DOC)
-        {
-            if (curr->type != LTRAL && curr->type != W_SPACE)
-                curr->type = WORD;
-            curr = curr->nxt;
-        }
+        if (curr && curr->type == H_DOC)
+            find_delimiter(curr);
         else if (curr->type == Q_DOLLAR)
         {
             curr->value = ft_expand(curr->value, env, addr);

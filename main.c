@@ -11,10 +11,10 @@
 //     }
 // }
 
-void f()
-{
-    system("leaks minishell");
-}
+// void f()
+// {
+//     system("leaks minishell");
+// }
 
 
 int main(int ac, char **av, char **envp)
@@ -27,7 +27,9 @@ int main(int ac, char **av, char **envp)
     (void)av;
     // signal(SIGINT, ctrl_c_handler);
 
-    atexit(f);
+    // atexit(f);
+    // if (isatty(av[1]))
+    //     return (0);
     data = malloc(sizeof(t_data));
     if (!data)
         return -1;

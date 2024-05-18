@@ -157,11 +157,11 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env, &((*data)->addr));
         printf("quote>\n");
     }
-    printf("before expand\n");
-    print_list(list);
+    // printf("before expand\n");
+    // print_list(list);
     expand_all(&list, env, &((*data)->addr));
-    printf("after expand \n");
-    print_list(list);
+    // printf("after expand \n");
+    // print_list(list);
     concat_words(&list, &((*data)->addr));
     // printf("after concat\n");
     // print_list(list);
@@ -173,7 +173,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     {
         list = list->nxt;
         list->first = 1;
-        remove_token(&list->prv, NULL_TOKEN);
+        delete_node(list->prv);
+        // remove_token(&list->prv, NULL_TOKEN);
     }
     // printf("before args\n");
     // print_list(list);

@@ -34,16 +34,22 @@ int check_syntax(t_list **list, int *count)
     {
         if (curr->type == PIPE)
         {
-            if ((!curr->prv || curr->prv->type != WORD) || !curr->nxt)
-                return printf("invalid PIPE syntax\n"), 1;
+            // FIXME pipe at the beginning deos not work as it should : find a proper condition for it 
+            if ((curr->prv && !curr->prv->prv)|| !curr->nxt)
+                return printf("syntax error near unexpected token `|'\n"), 1;
+            if (curr->nxt && curr->nxt->type == PIPE)
+                return printf("syntax error near unexpected token `||'\n"), 1;
         }
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND)
         {
             (*count)++;
+            // will be handeled in expanding 
             if (curr->nxt && curr->nxt->type == NF_VAR)
                 return printf("ambiguous redirect\n"), 1;
-            if ((!curr->nxt || curr->nxt->type != WORD))
-                return printf("invalid RED or H_DOC_APP syntax\n"), 1;
+            if ((!curr->nxt))
+                return printf("syntax error near unexpected token `newline'\n"), 1;
+            if ((curr->nxt && curr->nxt->type != WORD))
+                return printf("syntax error near unexpected token `%s'\n", curr->nxt->value), 1;
         }
         if (curr->type == H_DOC)
         {
@@ -51,7 +57,7 @@ int check_syntax(t_list **list, int *count)
             if ((!curr->nxt))
                 return printf("syntax error near unexpected token `newline'\n"), 1;
             if ((curr->nxt && curr->nxt->type != WORD && curr->nxt->type != LTRAL))
-                return printf("invalid H_DOC syntax\n"), 1;
+                return printf("syntax error near unexpected token `%s'\n", curr->nxt->value), 1;
         }
         curr = curr->nxt;
     }

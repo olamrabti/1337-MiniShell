@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/17 12:13:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:32:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int ft_parent_wait(t_data *data, int *tab, int total)
         i++;
     }
     data->status = status;
+    // ft_exit_status(status);
     // printf("exit status ---> %d\n", data->status);
     return (SUCCESS);
 }
@@ -71,6 +72,7 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
+            printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }

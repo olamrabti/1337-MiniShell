@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/15 16:15:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:05:31 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,61 +21,46 @@
 // getcwd geting PWD
 // getcwd();
 
-int ft_change_pwd(char *buf, t_env *envp)
+int ft_change_pwd(char *buf, t_env **envp)
 {
     t_env *env;
 
-    env = envp;
+    env = *envp;
     while (env)
     {
-        if (ft_strcmp(env->key, "PWD") == 0)
+        if (ft_strcmp((env)->key, "PWD") == 0)
         {
-            env->value = ft_strdup(buf);
+            (env)->value = ft_strdup(buf);
         }
-        env = env->next;
+        (env) = (env)->next;
+    }
+
+    return (SUCCESS);
+}
+
+int ft_change_oldpwd(char *buf, t_env **envp)
+{
+    t_env *env;
+
+    env = *envp;
+    while (env)
+    {
+        if (ft_strcmp((env)->key, "OLDPWD") == 0)
+        {
+            (env)->value = ft_strdup(buf);
+        }
+        (env) = (env)->next;
     }
     return (SUCCESS);
 }
 
-int ft_change_oldpwd(char *buf, t_env *envp)
-{
-    t_env *env;
-
-    env = envp;
-    while (env)
-    {
-        if (ft_strcmp(env->key, "OLDPWD") == 0)
-        {
-            env->value = ft_strdup(buf);
-        }
-        env = env->next;
-    }
-    return (SUCCESS);
-}
-
-int ft_join_pwd(t_env *envp, char *str)
-{
-    t_env *env;
-
-    env = envp;
-    while (env)
-    {
-        if (ft_strcmp(env->key, "PWD") == 0)
-        {
-            env->value = ft_strjoin(env->value, str);
-        }
-        env = env->next;
-    }
-    return (SUCCESS);
-}
-
-int ft_cd(t_list *cmd, t_env *envp)
+int ft_cd(t_list *cmd, t_env **envp, t_data *data)
 {
     t_env *env;
     char oldpwd[PATH_MAX];
     char pwd[PATH_MAX];
 
-    env = envp;
+    env = *envp;
     if (cmd->args)
     {
         ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
@@ -93,16 +78,17 @@ int ft_cd(t_list *cmd, t_env *envp)
         }
         ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
         ft_change_pwd(pwd, envp);
-        ft_change_oldpwd(oldpwd, envp);
+        if (ft_change_oldpwd(oldpwd, envp) == 0)
+            (data)->oldpwd = 0;
     }
     else
     {
         while (env)
         {
-            if (ft_strcmp(env->key, "HOME") == 0)
+            if (ft_strcmp((env)->key, "HOME") == 0)
             {
                 ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
-                if (chdir(env->value) == -1)
+                if (chdir((env)->value) == -1)
                 {
                     perror("cd: ");
                     ft_putstr_fd("cd: HOME not set\n", 2);
@@ -112,7 +98,7 @@ int ft_cd(t_list *cmd, t_env *envp)
                 ft_change_pwd(pwd, envp);
                 ft_change_oldpwd(oldpwd, envp);
             }
-            env = env->next;
+            (env) = (env)->next;
         }
     }
     return (SUCCESS);

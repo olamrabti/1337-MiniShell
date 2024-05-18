@@ -1,7 +1,19 @@
 # [x] after env -i export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin
-# [ ] + in export 
+# [x] + in export 
 
 
 mkdir -p 1/2/3
-cd 1/2/3
 rm -rf 1
+
+
+## [x] unset a b c d e f!!!!!!!
+
+##cat | << cat
+
+# [ ] return 1 f ms_pars
+# [x] old pwd in -i ./minishell
+# [ ] sort export
+
+
+
+# TODO test changit is_hidden & oldpwd

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/17 12:10:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:48:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int ft_unset(t_list *cmd, t_env **envp)
         return (SUCCESS);
 
     int i = 0;
-    while (cmd->args[i])
+    while (cmd && cmd->args && cmd->args[i])
     {
         if (ft_valid_unset(cmd->args[i]))
         {
@@ -65,10 +65,10 @@ int ft_unset(t_list *cmd, t_env **envp)
                     temp->value = NULL;
                     free(temp);
                     temp = NULL;
-                    return (SUCCESS);
                 }
                 prev = head;
-                head = head->next;
+                if (head)
+                    head = head->next;
             }
         }
         else

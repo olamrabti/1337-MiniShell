@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 14:52:02 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:02:51 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_env(t_list *cmd, t_env **envp, int flag)
+int ft_env(t_list *cmd, t_env **envp, t_data *data)
 {
     t_env *env;
 
@@ -29,7 +29,12 @@ int ft_env(t_list *cmd, t_env **envp, int flag)
     {
         if (env && env->key && env->value)
         {
-            if (flag == 1 && strcmp(env->key, "PATH") == 0)
+            if (data->is_hiden == 1 && strcmp(env->key, "PATH") == 0)
+            {
+                env = env->next;
+                continue;
+            }
+            if (data->oldpwd == 1 && strcmp(env->key, "OLDPWD") == 0)
             {
                 env = env->next;
                 continue;

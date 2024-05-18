@@ -2,6 +2,7 @@
 
 void ctrl_c_handler(int signum)
 {
+    (void)signum;
     // if (signum == SIGINT)
     // {
 	// 	write(1, "\n", 1);
@@ -31,6 +32,7 @@ int main(int ac, char **av, char **envp)
     // atexit(f);
     // if (isatty(av[1]))
     //     return (0);
+
     data = malloc(sizeof(t_data));
     if (!data)
         return (-1);
@@ -38,6 +40,7 @@ int main(int ac, char **av, char **envp)
     data->fds = NULL;
     data->status = 0;
     data->is_hiden = 0;
+    data->oldpwd = 1;
     data->save = -1;
     env = ft_parce_env(envp);
     data->env = env;
@@ -53,12 +56,15 @@ int main(int ac, char **av, char **envp)
         }
         if (*line)
             add_history(line);
-        ms_parse(&data, line, env);
+        ms_parse(&data, line, data->env); // != 1
         if (data && data->cmd)
             execute_commands(&data, envp);
+        
+
         ft_lstclear(&data->addr, free);
         free(line);
         // printf("\n");
     }
     return 0;
 }
+

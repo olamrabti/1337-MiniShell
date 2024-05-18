@@ -77,6 +77,7 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
         write(fd, "\n", 1);
         free(line);
     }
+    close(fd);
     fd2 = open(filename, O_RDWR, 0666);
     // unlink(filename);
     return fd2;

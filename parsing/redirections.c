@@ -26,7 +26,7 @@ void assign_fd(t_list *tmp, t_addr **addr)
     tmp = tmp->nxt;
     while (tmp)
     {
-        if (tmp->type == PIPE || !tmp->nxt)
+        if (tmp->type == PIPE)
         {
             node_add_middle(tmp->prv, create_node(NULL, NULL_TOKEN, addr));
             break;
@@ -39,6 +39,7 @@ void assign_fd(t_list *tmp, t_addr **addr)
         }
         tmp = tmp->nxt;
     }
+    node_addback(&tmp->prv, create_node(NULL, NULL_TOKEN, addr));
 }
 
 int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)

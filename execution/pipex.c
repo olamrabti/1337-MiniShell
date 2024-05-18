@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 11:32:05 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:17:45 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int ft_execute(t_list *cmd, t_env *env, char **envp, t_addr *addr)
     return (execve(path, command, envp));
 }
 
-int  *ft_alloc_tab(t_data *data, int *total)
+int *ft_alloc_tab(t_data *data, int *total)
 {
     t_list *tmp;
     int *tab;
@@ -143,11 +143,14 @@ int ft_pipex(t_data *data, char **envp)
             }
             else
             {
-                if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                if (temp->type != NULL_TOKEN)
                 {
-                    ft_putstr_fd("command not found: ", 2);
-                    ft_putstr_fd(temp->value, 2);
-                    ft_putstr_fd("\n", 2);
+                    if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                    {
+                        ft_putstr_fd("command not found: ", 2);
+                        ft_putstr_fd(temp->value, 2);
+                        ft_putstr_fd("\n", 2);
+                    }
                 }
                 exit(EXIT_SUCCESS);
             }
@@ -167,7 +170,3 @@ int ft_pipex(t_data *data, char **envp)
 
     return (SUCCESS);
 }
-
-
-
-

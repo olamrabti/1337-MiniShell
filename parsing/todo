@@ -15,18 +15,20 @@
                 // [x] tokenization 
                 // [ ] quotes 
                 // [x] expanding 
+                        // if red before dont expand
                 // [ ] syntax
                         // [ ] syntax error ; modify messages
+                        // NOTE : ls | opens promt for next cmd , we dont have to handle it
                 // [ ] redirections 
                         // [x] redirections after and before cmd
                         # < Makefile cat > out1 > out2 | ls > out3 > out4
-                        # FIXME heredoc get stuck in infinite loop
+                        # FIXED heredoc get stuck in infinite loop
                         // [ ] Expand in herdoc if delimiter is not literal:
                                 # search and expand , ndup join + join 
-                                FIXME << "$PWD" cat => should not expand inside
+                                FIXED << "$PWD" cat => should not expand inside
                 // [ ] args handling 
 
-                // FIXME << l see if it hangs because of tokenization logic 
+                // FIXED << l see if it hangs because of tokenization logic 
 
 =================================
             LATER :

@@ -41,7 +41,6 @@ void assign_fd(t_list *tmp, t_addr **addr)
             node_addback(&tmp, create_node(NULL, NULL_TOKEN, addr));
         tmp = tmp->nxt;
     }
-    
 }
 
 int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
@@ -77,8 +76,8 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
         else if (curr->type == RED_IN)
         {
             curr->type = RM;
-            if (curr->nxt->type == NF_VAR)
-                return printf(" %s: ambiguous redirect", curr->nxt->value), NULL;
+            // if (curr->nxt->type == NF_VAR)
+            //     return printf(" %s: ambiguous redirect", curr->nxt->value), NULL;
             tmp->infile = open(curr->nxt->value, O_RDWR);
             curr->nxt->type = RM;
             if (tmp->infile == -1)
@@ -94,7 +93,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
                 curr->nxt->type = RM;
             }
             else if (tmp->infile == -1)
-                return perror("heredoc error "), NULL;
+                return perror("heredoc"), NULL;
             fds[i++] = tmp->infile;
         }
         if (curr)

@@ -37,9 +37,11 @@ void assign_fd(t_list *tmp, t_addr **addr)
             tmp->outfile = out;
             break;
         }
+        if (!tmp->nxt)
+            node_addback(&tmp, create_node(NULL, NULL_TOKEN, addr));
         tmp = tmp->nxt;
     }
-    node_addback(&tmp->prv, create_node(NULL, NULL_TOKEN, addr));
+    
 }
 
 int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)

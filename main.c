@@ -19,6 +19,17 @@ void ft_signal()
     // signal(3, ctrl_c_handler);
 }
 
+int ft_exit_status(int status)
+{
+    static int exit_status;
+
+    if (status < 0)
+        return (exit_status);
+    else
+        exit_status = status;
+    return (status);
+}
+
 int main(int ac, char **av, char **envp)
 {
     t_data *data;
@@ -32,7 +43,9 @@ int main(int ac, char **av, char **envp)
     // atexit(f);
     // if (isatty(av[1]))
     //     return (0);
-
+    ft_exit_status(0);
+    // ft_exit_status(127);
+    // printf(" exit status %d\n", ft_exit_status(-1));
     data = malloc(sizeof(t_data));
     if (!data)
         return (-1);
@@ -52,7 +65,7 @@ int main(int ac, char **av, char **envp)
         if (line == NULL)
         {
             printf("exit\n");
-            exit(0); // [ ] exit with exit_status
+            exit(ft_exit_status(-1));
         }
         if (*line)
             add_history(line);
@@ -60,7 +73,6 @@ int main(int ac, char **av, char **envp)
         if (data && data->cmd)
             execute_commands(&data, envp);
         
-
         ft_lstclear(&data->addr, free);
         free(line);
         // printf("\n");

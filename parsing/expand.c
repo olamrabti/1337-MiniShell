@@ -51,6 +51,51 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     return (value);
 }
 
+void is_after_red(t_list *curr, t_addr **addr)
+{
+    t_list *temp;
+
+    temp = curr;
+    if (temp->prv)
+        temp = temp->prv;
+    while (temp && temp->type == W_SPACE)
+        temp = temp->prv;
+    if (temp && (temp->type == RED_IN || temp->type == RED_OUT || temp->type == RED_OUT_APPEND))
+    {
+        printf(" %s :ambiguous redirect\n", curr->value);
+        // if (temp)
+        //     temp = temp->prv;
+        while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
+        {
+            // printf(">>> temp loop 1 -%s- type: %d\n", temp->value, temp->type);
+            temp->type = RM;
+            temp = temp->prv;
+        }
+        // if (temp)
+        // {
+        //     temp = temp->nxt;
+        //     printf(">>> temp cond 1 -%s- type: %d\n", temp->value, temp->type);
+        // }
+            
+        if (temp && ( temp->type == PIPE || temp->type == NULL_TOKEN ))
+        {
+            // printf(">>> temp cond 2 -%s- type: %d\n", temp->value, temp->type);
+            node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
+            temp = temp->nxt->nxt;
+        }
+        while (temp)
+        {
+            if (temp->type == PIPE)
+            {
+                temp->type = RM;
+                break;
+            }
+            temp->type = RM;
+            temp = temp->nxt;
+        }
+    }
+}
+
 void ft_split_value(t_list *curr, char *value, t_addr **addr)
 {
     char **splitted;
@@ -59,7 +104,10 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
     i = 0;
     splitted = ft_split_sp(value, addr);
     if (splitted && !splitted[0])
+    {
+        is_after_red(curr, addr);
         delete_node(curr);
+    }
     else
     {
         while (splitted[i])
@@ -83,10 +131,10 @@ void find_delimiter(t_list *list)
     t_list *temp;
 
     temp = list;
-    if(temp->nxt)
+    if (temp->nxt)
         temp = temp->nxt;
     while (temp && temp->type == W_SPACE)
-        temp = temp->nxt; 
+        temp = temp->nxt;
     if (temp && temp->type == Q_DOLLAR)
         temp->type = LTRAL;
     if (temp && temp->type == _DOLLAR)
@@ -105,10 +153,7 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
         else if (curr->type == Q_DOLLAR)
         {
             curr->value = ft_expand(curr->value, env, addr);
-            if (curr->value[0])
-                curr->type = WORD;
-            else
-                curr->type = NF_VAR;
+            curr->type = WORD;
         }
         else if (curr->type == _DOLLAR)
             ft_split_value(curr, ft_expand(curr->value, env, addr), addr);

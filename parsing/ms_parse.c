@@ -102,7 +102,7 @@ void handle_args(t_list **list, t_addr **addr)
     curr = *list;
     while (curr)
     {
-        if (curr && curr->type != PIPE)
+        if (curr && curr->type != PIPE && curr->type != NULL_TOKEN)
         {
             count = 1;
             while (curr && curr->nxt && curr->nxt->type != PIPE)
@@ -166,6 +166,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     // printf("before expand\n");
     // print_list(list);
     expand_all(&list, env, &((*data)->addr));
+    remove_token(&list, RM);
     // printf("after expand \n");
     // print_list(list);
     concat_words(&list, &((*data)->addr));
@@ -191,8 +192,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    // // printf("final ------> \n");
-    print_list(list);
+    // printf("final ------> \n");
+    // print_list(list);
     return 0;
 }
 

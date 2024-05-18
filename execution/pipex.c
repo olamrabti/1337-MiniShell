@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 09:33:28 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:17:45 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int ft_execute(t_list *cmd, t_env *env, char **envp, t_addr *addr)
     return (execve(path, command, envp));
 }
 
-int  *ft_alloc_tab(t_data *data, int *total)
+int *ft_alloc_tab(t_data *data, int *total)
 {
     t_list *tmp;
     int *tab;
@@ -57,6 +57,7 @@ int ft_parent_wait(t_data *data, int *tab, int total)
         i++;
     }
     data->status = status;
+    // ft_exit_status(status);
     // printf("exit status ---> %d\n", data->status);
     return (SUCCESS);
 }
@@ -71,7 +72,7 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
-            printf("data->fds[i]----> %d\n", data->fds[i]);
+            printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }
@@ -142,11 +143,14 @@ int ft_pipex(t_data *data, char **envp)
             }
             else
             {
-                if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                if (temp->type != NULL_TOKEN)
                 {
-                    ft_putstr_fd("command not found: ", 2);
-                    ft_putstr_fd(temp->value, 2);
-                    ft_putstr_fd("\n", 2);
+                    if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                    {
+                        ft_putstr_fd("command not found: ", 2);
+                        ft_putstr_fd(temp->value, 2);
+                        ft_putstr_fd("\n", 2);
+                    }
                 }
                 exit(EXIT_SUCCESS);
             }
@@ -166,7 +170,3 @@ int ft_pipex(t_data *data, char **envp)
 
     return (SUCCESS);
 }
-
-
-
-

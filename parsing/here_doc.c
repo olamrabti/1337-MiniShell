@@ -24,8 +24,34 @@ int open_heredoc(char **filename, int tmp, t_addr **addr)
     return tmp;
 }
 
+void expand_inside_str(char *line, t_addr **addr, t_env *env, int fd)
+{
+    int i;
+    int j; 
+    char *tmp;
 
-int fill_heredoc(char *deli, t_addr **addr)
+    i = 0;
+    j = 1;
+    tmp = NULL;
+    if (!line)
+        return ;
+    while(line[i])
+    {
+        if (line[i] == '$')
+        {
+            j = get_key(line, i, j);
+            tmp = ft_strndup(&line[i], j, addr);
+            tmp = ft_expand(tmp, env, addr);
+            if (tmp)
+                write(fd, tmp, ft_strlen(tmp));
+            i += j;
+        }
+        else 
+            write(fd, &line[i++], 1);
+    }
+}
+
+int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
 {
     char *line;
     char *filename;
@@ -41,13 +67,17 @@ int fill_heredoc(char *deli, t_addr **addr)
         line = readline("> ");
         if (line == NULL)
             break;
-        if (!ft_strcmp(line, deli))
+        if (!ft_strcmp(line, deli->value))
             break ;
         // if delimiter is not literal , expand before write
-        write(fd, line, ft_strlen(line));
+        if (deli->type != LTRAL)
+            expand_inside_str(line, addr, env, fd);
+        else
+            write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
         free(line);
     }
+    close(fd);
     fd2 = open(filename, O_RDWR, 0666);
     // unlink(filename);
     return fd2;

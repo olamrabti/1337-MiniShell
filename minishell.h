@@ -26,6 +26,7 @@ typedef enum token {
         RM,
         NF_VAR,
         LTRAL
+
 } token;
 
 typedef struct s_list
@@ -65,6 +66,7 @@ typedef struct s_data
     pid_t pid;
     int pd[2];
     int is_hiden;
+    int oldpwd;
     struct s_env *env;
     struct s_addr *addr;
 
@@ -104,5 +106,7 @@ t_env *ft_parce_env(char **envp);
 char *gc_strdup(const char *s, t_addr **addr);
 
 int ft_no_env(t_data **data);
+
+int ft_close_descriptors(t_data *data);
 
 #endif

@@ -16,7 +16,7 @@
 //     return 0;
 // }
 
-void assign_fd(t_list *tmp)
+void assign_fd(t_list *tmp, t_addr **addr)
 {
     int in;
     int out;
@@ -27,7 +27,10 @@ void assign_fd(t_list *tmp)
     while (tmp)
     {
         if (tmp->type == PIPE)
+        {
+            node_add_middle(tmp->prv, create_node(NULL, NULL_TOKEN, addr));
             break;
+        }
         if (tmp->type != RM)
         {
             tmp->infile = in;
@@ -36,16 +39,18 @@ void assign_fd(t_list *tmp)
         }
         tmp = tmp->nxt;
     }
+    node_addback(&tmp->prv, create_node(NULL, NULL_TOKEN, addr));
 }
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr)
+int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
 {
     t_list *curr;
     t_list *tmp;
     int *fds;
     int i;
 
-    fds = malloc(sizeof(sizeof(int)) * (*count));
+    // fds = malloc(sizeof(sizeof(int)) * (*count));
+    fds = ft_calloc(addr, *count ,sizeof(int));
     if (!fds)
         return NULL;
     fds[*count] = -1;
@@ -64,7 +69,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
                 tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
             curr->nxt->type = RM;
             if (tmp->outfile == -1)
-                return perror(curr->nxt->value), NULL;
+                perror(curr->nxt->value);
             fds[i++] = tmp->outfile;
         }
         else if (curr->type == RED_IN)
@@ -75,7 +80,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
             tmp->infile = open(curr->nxt->value, O_RDWR);
             curr->nxt->type = RM;
             if (tmp->infile == -1)
-                return perror(curr->nxt->value), NULL;
+                perror(curr->nxt->value);
             fds[i++] = tmp->infile;
         }
         else if (curr->type == H_DOC)
@@ -83,7 +88,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
             curr->type = RM;
             if (curr->nxt && curr->nxt->value)
             {
-                tmp->infile = fill_heredoc(curr->nxt->value, addr);
+                tmp->infile = fill_heredoc(curr->nxt, addr, env);
                 curr->nxt->type = RM;
             }
             else if (tmp->infile == -1)
@@ -94,7 +99,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr)
             curr = curr->nxt;
         if (!curr || curr->type == PIPE)
         {
-            assign_fd(tmp);
+            assign_fd(tmp, addr);
             if (curr)
                 tmp = curr;
         }

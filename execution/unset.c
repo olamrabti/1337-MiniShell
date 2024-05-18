@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/06 15:13:26 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:48:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int ft_valid_unset(char *str)
     return (1);
 }
 
-
-
 int ft_unset(t_list *cmd, t_env **envp)
 {
     t_env *prev;
@@ -44,40 +42,33 @@ int ft_unset(t_list *cmd, t_env **envp)
         return (SUCCESS);
 
     int i = 0;
-    while (cmd->args[i])
+    while (cmd && cmd->args && cmd->args[i])
     {
         if (ft_valid_unset(cmd->args[i]))
         {
             prev = NULL;
             temp = NULL;
             head = *envp;
-
             while (head)
             {
                 if (ft_strcmp(cmd->args[i], head->key) == 0)
                 {
-                    printf("[%p] mn hadi \n", *envp);
-                    printf("[%p]\n", head->next);
                     if (prev)
                         prev->next = head->next;
                     else
                         *envp = head->next;
-                    printf("[%p] it should be different\n", *envp);
                     temp = head;
                     head = head->next;
-
                     free(temp->key);
                     temp->key = NULL;
                     free(temp->value);
                     temp->value = NULL;
-                    printf("[%p]\n", temp);
                     free(temp);
                     temp = NULL;
-
-                    return (SUCCESS);
                 }
                 prev = head;
-                head = head->next;
+                if (head)
+                    head = head->next;
             }
         }
         else

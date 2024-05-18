@@ -16,7 +16,7 @@
 //     return 0;
 // }
 
-void assign_fd(t_list *tmp)
+void assign_fd(t_list *tmp, t_addr **addr)
 {
     int in;
     int out;
@@ -26,8 +26,11 @@ void assign_fd(t_list *tmp)
     tmp = tmp->nxt;
     while (tmp)
     {
-        if (tmp->type == PIPE)
+        if (tmp->type == PIPE || !tmp->nxt)
+        {
+            node_add_middle(tmp->prv, create_node(NULL, NULL_TOKEN, addr));
             break;
+        }
         if (tmp->type != RM)
         {
             tmp->infile = in;
@@ -95,7 +98,7 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
             curr = curr->nxt;
         if (!curr || curr->type == PIPE)
         {
-            assign_fd(tmp);
+            assign_fd(tmp, addr);
             if (curr)
                 tmp = curr;
         }

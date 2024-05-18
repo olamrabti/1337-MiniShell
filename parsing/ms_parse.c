@@ -173,7 +173,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     {
         list = list->nxt;
         list->first = 1;
-        remove_token(&list->prv, NULL_TOKEN);
+        delete_node(list->prv);
+        // remove_token(&list->prv, NULL_TOKEN);
     }
     // printf("before args\n");
     // print_list(list);

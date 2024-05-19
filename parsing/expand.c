@@ -63,23 +63,13 @@ void is_after_red(t_list *curr, t_addr **addr)
     if (temp && (temp->type == RED_IN || temp->type == RED_OUT || temp->type == RED_OUT_APPEND))
     {
         printf(" %s :ambiguous redirect\n", curr->value);
-        // if (temp)
-        //     temp = temp->prv;
         while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
         {
-            // printf(">>> temp loop 1 -%s- type: %d\n", temp->value, temp->type);
             temp->type = RM;
             temp = temp->prv;
         }
-        // if (temp)
-        // {
-        //     temp = temp->nxt;
-        //     printf(">>> temp cond 1 -%s- type: %d\n", temp->value, temp->type);
-        // }
-            
         if (temp && ( temp->type == PIPE || temp->type == NULL_TOKEN ))
         {
-            // printf(">>> temp cond 2 -%s- type: %d\n", temp->value, temp->type);
             node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
             temp = temp->nxt->nxt;
         }

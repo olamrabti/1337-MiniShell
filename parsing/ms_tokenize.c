@@ -21,6 +21,7 @@ int is_operator(t_list *current, char *line, int *i, t_addr **addr)
     else
         return 0;
 }
+
 void is_word(t_list *current, char *line, int *i, t_addr **addr)
 {
     current = get_last_node(current);

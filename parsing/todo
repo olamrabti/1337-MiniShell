@@ -52,7 +52,8 @@
 
 // printf(">>> curr -%s- type: %d\n", curr->value, curr->type);
 // printf(">>> tmp -%s- type: %d in: %d   out: %d\n", tmp->value, tmp->type, tmp->infile, tmp->outfile);
-
+ // printf("after tokenzing\n");
+    // print_list(list);
 =================================
             TESTS :
 =================================
@@ -109,3 +110,4 @@ $- bash-3.2$ export aa=+=
    declare -x a="oussmaa"
    declare -x aa="+="
    declare -x oussmaa="ls"
+

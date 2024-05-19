@@ -11,7 +11,7 @@
 
 
 
-
+char	*ft_itoa(int n, t_addr **addr);
 char    *gc_strdup(const char *s, t_addr **addr);
 char *ft_strndup(char *s, int n, t_addr **addr);
 char *ft_charjoin(char *s1, char c, t_addr **addr);

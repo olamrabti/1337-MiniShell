@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/19 14:40:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:01:15 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int ft_parent_wait(t_data *data, int *tab, int total)
     while (i < total)
     {
         waitpid(tab[i], &status, 0);
-        WIFEXITED(status);
-        printf("exit status : %d\n", WEXITSTATUS(status));
-        WIFSIGNALED(status);
-        printf("exit status --> %d\n", WTERMSIG(status) + 128);
+        // WIFEXITED(status);
+        // printf("exit status : %d\n", WEXITSTATUS(status));
+        // WIFSIGNALED(status);
+        // printf("exit status --> %d\n", WTERMSIG(status) + 128);
         i++;
     }
     return (SUCCESS);
@@ -151,7 +151,7 @@ int ft_pipex(t_data *data, char **envp)
                         ft_putstr_fd("command not found: ", 2);
                         ft_putstr_fd(temp->value, 2);
                         ft_putstr_fd("\n", 2);
-                        // ft_exit_status(127);
+                        ft_exit_status(127);
                     }
                 }
                 else

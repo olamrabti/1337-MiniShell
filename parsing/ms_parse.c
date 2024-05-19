@@ -160,8 +160,14 @@ int ms_parse(t_data **data, char *line, t_env *env)
     remove_token(&list, RM);
     concat_words(&list, &((*data)->addr));
     remove_token(&list, W_SPACE);
-    if (!check_syntax(&list, &count) && count)
-        fds = handle_redirections(&list, &count, &((*data)->addr), env);
+    if (check_syntax(&list, &count) == 1)
+    {
+        ft_exit_status(258);
+        return 1;
+    }
+    fds = handle_redirections(&list, &count, &((*data)->addr), env);
+    // if (!check_syntax(&list, &count) && count)
+    //     fds = handle_redirections(&list, &count, &((*data)->addr), env);
     remove_token(&list, RM);
     if (list->nxt)
     {

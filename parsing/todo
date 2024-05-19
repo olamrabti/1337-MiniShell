@@ -27,6 +27,7 @@
                         // [ ] Expand in herdoc if delimiter is not literal:
                                 # search and expand , ndup join + join 
                                 FIXED << "$PWD" cat => should not expand inside
+                        // NOTE when syntax error dont execute
                 // [x] heredoc
                 // [ ] args handling 
 

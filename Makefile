@@ -40,10 +40,10 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/olamrabt/homebrew/opt/readline/lib
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /Users/oumimoun/.brew/opt/readline/lib
 
 %.o:%.c
-	$(CC) $(CFLAGS)  -c $< -I /goinfre/olamrabt/homebrew/opt/readline/include -o $@
+	$(CC) $(CFLAGS)  -c $< -I /Users/oumimoun/.brew/opt/readline/include -o $@
 
 clean :
 	@echo "Cleaning object files..."

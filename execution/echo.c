@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/05 14:07:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:05:27 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int ft_echo(t_list *cmd)
             i++;
         }
     }
-
     if (!no_newline)
         printf("\n");
     return (SUCCESS);

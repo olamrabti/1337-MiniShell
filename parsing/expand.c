@@ -42,7 +42,7 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
         return key;
     // if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
-    //     return strdup : ft_itoa(exitstatus);
+    //     return gc_strdup(ft_exit);
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (gc_strdup("", addr));
     value = ft_getvalue(key + 1, env, addr);
@@ -115,7 +115,7 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
         }
     }
 }
-// it works properly so far, but maybe this function should be in syntax check !
+
 void find_delimiter(t_list *list)
 {
     t_list *temp;

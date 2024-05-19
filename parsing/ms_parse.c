@@ -34,7 +34,6 @@ int check_syntax(t_list **list, int *count)
     {
         if (curr->type == PIPE)
         {
-            // FIXME pipe at the beginning deos not work as it should : find a proper condition for it 
             if ((curr->prv && !curr->prv->prv)|| !curr->nxt)
                 return printf("syntax error near unexpected token `|'\n"), 1;
             if (curr->nxt && curr->nxt->type == PIPE)

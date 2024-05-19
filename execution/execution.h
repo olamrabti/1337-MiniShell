@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 11:05:56 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:49:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int ft_no_env(t_data **data);
 
 
 int ft_env(t_list *cmd, t_env **envp, t_data *data);
-void ft_print_export(t_env *envp, int flag);
+void ft_print_export(t_env **envp, int flag);
 
 int ft_export(t_list *cmd, t_env **envp, t_data *data);
 

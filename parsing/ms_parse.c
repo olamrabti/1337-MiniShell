@@ -34,7 +34,6 @@ int check_syntax(t_list **list, int *count)
     {
         if (curr->type == PIPE)
         {
-            // FIXME pipe at the beginning deos not work as it should : find a proper condition for it 
             if ((curr->prv && !curr->prv->prv)|| !curr->nxt)
                 return printf("syntax error near unexpected token `|'\n"), 1;
             if (curr->nxt && curr->nxt->type == PIPE)
@@ -43,9 +42,6 @@ int check_syntax(t_list **list, int *count)
         if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND)
         {
             (*count)++;
-            // will be handeled in expanding 
-            if (curr->nxt && curr->nxt->type == NF_VAR)
-                return printf("ambiguous redirect\n"), 1;
             if ((!curr->nxt))
                 return printf("syntax error near unexpected token `newline'\n"), 1;
             if ((curr->nxt && curr->nxt->type != WORD))
@@ -90,7 +86,6 @@ int fill_args(t_list *curr, int count, t_addr **addr)
     }
     if (curr)
         curr->args = tmp;
-    // free(tmp); it ruins everything, throw it to garbage collector
     return 0;
 }
 
@@ -141,7 +136,6 @@ void concat_words(t_list **list, t_addr **addr)
         else
             curr = curr->nxt;
     }
-    // remove_token(list, W_SPACE);
 }
 
 int ms_parse(t_data **data, char *line, t_env *env)
@@ -154,8 +148,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     count = 0;
     fds = NULL;
     list = init_list(line, &((*data)->addr));
-    // printf("after tokenzing\n");
-    // print_list(list);
+   
     if (!list)
         return -1;
     if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
@@ -163,28 +156,25 @@ int ms_parse(t_data **data, char *line, t_env *env)
         expand_all(&list, env, &((*data)->addr));
         printf("quote>\n");
     }
-    // printf("before expand\n");
-    // print_list(list);
     expand_all(&list, env, &((*data)->addr));
     remove_token(&list, RM);
-    // printf("after expand \n");
-    // print_list(list);
     concat_words(&list, &((*data)->addr));
-    // printf("after concat\n");
-    // print_list(list);
     remove_token(&list, W_SPACE);
-    if (!check_syntax(&list, &count) && count)
-        fds = handle_redirections(&list, &count, &((*data)->addr), env);
+    if (check_syntax(&list, &count) == 1)
+    {
+        ft_exit_status(258);
+        return 1;
+    }
+    fds = handle_redirections(&list, &count, &((*data)->addr), env);
+    // if (!check_syntax(&list, &count) && count)
+    //     fds = handle_redirections(&list, &count, &((*data)->addr), env);
     remove_token(&list, RM);
     if (list->nxt)
     {
         list = list->nxt;
         list->first = 1;
         delete_node(list->prv);
-        // remove_token(&list->prv, NULL_TOKEN);
     }
-    // printf("before args\n");
-    // print_list(list);
     handle_args(&list, &((*data)->addr));
     remove_token(&list, PIPE);
     last = get_last_node(list);
@@ -192,13 +182,6 @@ int ms_parse(t_data **data, char *line, t_env *env)
     (*data)->cmd = list;
     (*data)->fds = fds;
     (*data)->status = 0;
-    // printf("final ------> \n");
-    // print_list(list);
     return 0;
 }
 
-//  printf("--\n");
-//             if (curr->nxt)
-//                 printf("curr nxt -%s- type: %d\n", curr->nxt->value, curr->nxt->type);
-//             if (curr->prv)
-//                 printf("curr prv -%s- type: %d\n", curr->prv->value, curr->prv->type);

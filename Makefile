@@ -34,16 +34,18 @@ SRCS = main.c \
 	execution/exit.c \
 	execution/handle_no_env.c \
 
+brew = $(shell brew --prefix readline)
+
 OBJS = $(SRCS:.c=.o)
 
 all:
 	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L /goinfre/olamrabt/homebrew/opt/readline/lib
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 
 %.o:%.c
-	$(CC) $(CFLAGS)  -c $< -I /goinfre/olamrabt/homebrew/opt/readline/include -o $@
+	$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
 
 clean :
 	@echo "Cleaning object files..."

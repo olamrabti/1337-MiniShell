@@ -17,3 +17,11 @@ rm -rf 1
 
 
 # TODO test changit is_hidden & oldpwd
+
+# >$abc
+
+# echo < | |
+# bash: syntax error near unexpected token `|'
+# bash-3.2$ echo $?
+# 258
+``

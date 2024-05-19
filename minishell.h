@@ -109,4 +109,9 @@ int ft_no_env(t_data **data);
 
 int ft_close_descriptors(t_data *data);
 
+int ft_exit_status(int status);
+
+
+
+
 #endif

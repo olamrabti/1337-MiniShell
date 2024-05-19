@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/15 15:38:02 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:52:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,48 @@
 // [x] var key="" empty value
 // [x] var key=" " empty value
 // [x] invalid var
+// [x] sort export
 
-void ft_print_export(t_env *envp, int flag)
+t_env *ft_sort_export(t_env **envp)
+{
+    t_env *env;
+    t_env *temp;
+    char *swap_key;
+    char *swap_value;
+
+    env = *envp;
+    while (env)
+    {
+        temp = env->next;
+        while (temp)
+        {
+            if (ft_strcmp(temp->key, env->key) < 0)
+            {
+                swap_key = temp->key;
+                temp->key = env->key;
+                env->key = swap_key;
+                swap_value = temp->value;
+                temp->value = env->value;
+                env->value = swap_value;
+            }
+            temp = temp->next;
+        }
+        env = env->next;
+    }
+    return *envp;
+}
+
+void ft_print_export(t_env **envp, int flag)
 {
     t_env *env;
 
-    env = envp;
+    env = ft_sort_export(envp);
     while (env)
     {
         if (ft_strcmp(env->key, "PATH") == 0 && flag == 1)
         {
-            env = env->next; // Skip printing PATH and move to the next environment variable
-            continue; // Skip to the next iteration of the loop
+            env = env->next;
+            continue;
         }
         printf("declare -x ");
         printf("%s", env->key);
@@ -42,6 +72,7 @@ void ft_print_export(t_env *envp, int flag)
         env = env->next;
     }
 }
+
 static int ft_is_exist(char *str, t_env *envp, int concat)
 {
     t_env *env;
@@ -74,34 +105,34 @@ static int ft_is_exist(char *str, t_env *envp, int concat)
     return (0);
 }
 
-char	*ft_strjoin_export(char *s1, char *s2)
+char *ft_strjoin_export(char *s1, char *s2)
 {
-	int		i;
-	int		len;
-	char	*result;
+    int i;
+    int len;
+    char *result;
 
-	i = 0;
-	if (!s2)
-		return (NULL);
+    i = 0;
+    if (!s2)
+        return (NULL);
     if (!s1)
         s1 = ft_strdup("");
-	len = ft_strlen(s2) + ft_strlen(s1);
-	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result)
-		return (0);
-	while (s1[i])
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	i = 0;
-	while (s2[i])
-	{
-		result[ft_strlen(s1) + i] = s2[i];
-		i++;
-	}
-	result[i + ft_strlen(s1)] = '\0';
-	return (result);
+    len = ft_strlen(s2) + ft_strlen(s1);
+    result = (char *)malloc((len + 1) * sizeof(char));
+    if (!result)
+        return (0);
+    while (s1[i])
+    {
+        result[i] = s1[i];
+        i++;
+    }
+    i = 0;
+    while (s2[i])
+    {
+        result[ft_strlen(s1) + i] = s2[i];
+        i++;
+    }
+    result[i + ft_strlen(s1)] = '\0';
+    return (result);
 }
 
 int ft_change_env(char *str, t_env *envp, int concat)
@@ -118,7 +149,6 @@ int ft_change_env(char *str, t_env *envp, int concat)
         {
             if (ft_strncmp(str, env->key, start) == 0)
             {
-                // env->value = ft_substr(str, start + 1, len - start - 1);
                 env->value = ft_strjoin_export(env->value, str + (start + 2));
                 return (SUCCESS);
             }
@@ -132,7 +162,6 @@ int ft_change_env(char *str, t_env *envp, int concat)
 
         while (env)
         {
-            // printf("len li khas y talloca %d\n", len - start);
             if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
             {
                 env->value = ft_substr(str, start + 1, len - start - 1);
@@ -191,7 +220,6 @@ int ft_is_concat(char *str)
     }
     return (0);
 }
-
 
 int ft_export_is_valid(char *str)
 {
@@ -271,7 +299,9 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
         }
     }
     else
-        ft_print_export(*env, data->is_hiden);
+    {
+        ft_print_export(env, data->is_hiden);
+    }
 
     return (SUCCESS);
 }

@@ -69,10 +69,13 @@ int main(int ac, char **av, char **envp)
         }
         if (*line)
             add_history(line);
-        ms_parse(&data, line, data->env);
-        if (data && data->cmd)
-            execute_commands(&data, envp);
-        printf(" exit d zb -------%d------------\n", ft_exit_status(-1));
+        
+        if (ms_parse(&data, line, data->env) != 1)
+        {
+            if (data && data->cmd)
+                execute_commands(&data, envp);
+        }
+
         ft_lstclear(&data->addr, free);
         free(line);
         // printf("\n");

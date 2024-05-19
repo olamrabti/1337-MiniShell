@@ -3,20 +3,20 @@
 void ctrl_c_handler(int signum)
 {
     (void)signum;
-    // if (signum == SIGINT)
-    // {
-	// 	write(1, "\n", 1);
-	// 	rl_replace_line("", 0);
-	// 	rl_on_new_line();
-	// 	rl_redisplay();
-    // }
+    if (signum == SIGINT)
+    {
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+    }
 }
 
 void ft_signal()
 {
-    // rl_catch_signals = 0;
-    // signal(SIGINT, ctrl_c_handler);
-    // signal(3, ctrl_c_handler);
+    rl_catch_signals = 0;
+    signal(SIGINT, ctrl_c_handler);
+    signal(3, ctrl_c_handler);
 }
 
 int ft_exit_status(int status)
@@ -43,7 +43,7 @@ int main(int ac, char **av, char **envp)
     // atexit(f);
     // if (isatty(av[1]))
     //     return (0);
-    ft_exit_status(0);
+    
     // ft_exit_status(127);
     // printf(" exit status %d\n", ft_exit_status(-1));
     data = malloc(sizeof(t_data));
@@ -69,10 +69,10 @@ int main(int ac, char **av, char **envp)
         }
         if (*line)
             add_history(line);
-        ms_parse(&data, line, data->env); // != 1
+        ms_parse(&data, line, data->env);
         if (data && data->cmd)
             execute_commands(&data, envp);
-        
+        printf(" exit d zb -------%d------------\n", ft_exit_status(-1));
         ft_lstclear(&data->addr, free);
         free(line);
         // printf("\n");

@@ -9,6 +9,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
+# include <termios.h>
+#include <signal.h>
+
+
 
 typedef enum token {
         W_SPACE = 1,
@@ -60,7 +64,6 @@ typedef struct s_addr
 typedef struct s_data
 {
     t_list *cmd;
-    int status;
     int *fds;
     int save;
     pid_t pid;

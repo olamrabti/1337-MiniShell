@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/19 15:01:15 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:33:31 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
-            printf("data->fds[i] ----------> %d\n", data->fds[i]);
+            // printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }

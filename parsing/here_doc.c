@@ -42,6 +42,8 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
     while (1)
     {
         line = readline("> ");
+        signal(SIGINT, ctrl_c_handler);
+        signal(3, ctrl_c_handler);
         if (line == NULL)
             break;
         if (!ft_strcmp(line, deli->value))
@@ -50,6 +52,7 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
             expand_inside_str(line, addr, env, fd[1]);
         else
             write(fd[1], line, ft_strlen(line));
+        // if ctrl + D dont add \n, maybe !
         write(fd[1], "\n", 1);
         free(line);
     }

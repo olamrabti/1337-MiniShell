@@ -1,10 +1,12 @@
 #include "minishell.h"
 
+int g_sig;
+
 void ctrl_c_handler(int signum)
 {
-    (void)signum;
     if (signum == SIGINT)
     {
+        g_sig = 1;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -12,12 +14,9 @@ void ctrl_c_handler(int signum)
     }
 }
 
-void ft_signal()
-{
-    rl_catch_signals = 0;
-    signal(SIGINT, ctrl_c_handler);
-    signal(3, ctrl_c_handler);
-}
+// void ft_signal()
+// {
+// }
 
 int ft_exit_status(int status)
 {
@@ -38,20 +37,16 @@ int main(int ac, char **av, char **envp)
 
     (void)ac;
     (void)av;
-    ft_signal();
-
+    rl_catch_signals = 0;
+    
     // atexit(f);
     // if (isatty(av[1]))
     //     return (0);
-    
-    // ft_exit_status(127);
-    // printf(" exit status %d\n", ft_exit_status(-1));
     data = malloc(sizeof(t_data));
     if (!data)
         return (-1);
     data->cmd = NULL;
     data->fds = NULL;
-    data->status = 0;
     data->is_hiden = 0;
     data->oldpwd = 1;
     data->save = -1;
@@ -61,7 +56,11 @@ int main(int ac, char **av, char **envp)
     ft_no_env(&data);
     while (1)
     {
+        signal(SIGINT, ctrl_c_handler);
+        signal(SIGQUIT, ctrl_c_handler);
         line = readline("MINISHELL$ ");
+        if(g_sig)
+            ft_exit_status(1);
         if (line == NULL)
         {
             printf("exit\n");
@@ -69,16 +68,14 @@ int main(int ac, char **av, char **envp)
         }
         if (*line)
             add_history(line);
-        
         if (ms_parse(&data, line, data->env) != 1)
         {
             if (data && data->cmd)
                 execute_commands(&data, envp);
         }
-
         ft_lstclear(&data->addr, free);
         free(line);
-        // printf("\n");
+        g_sig = 0;
     }
     return 0;
 }

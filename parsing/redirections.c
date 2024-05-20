@@ -50,7 +50,6 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
     int *fds;
     int i;
 
-    // fds = malloc(sizeof(sizeof(int)) * (*count));
     fds = ft_calloc(addr, *count ,sizeof(int));
     if (!fds)
         return NULL;
@@ -76,8 +75,6 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
         else if (curr->type == RED_IN)
         {
             curr->type = RM;
-            // if (curr->nxt->type == NF_VAR)
-            //     return printf(" %s: ambiguous redirect", curr->nxt->value), NULL;
             tmp->infile = open(curr->nxt->value, O_RDWR);
             curr->nxt->type = RM;
             if (tmp->infile == -1)

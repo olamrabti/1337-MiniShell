@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 14:49:02 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:09:23 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int ft_echo(t_list *cmd);
 
 int ft_change_env(char *str, t_env *envp, int concat);
 int ft_unset(t_list *cmd, t_env **envp);
-int ft_exit(t_list *cmd);
+void ft_exit(t_list *cmd);
 
 int	ft_isdigit(int d);
 int	ft_isalpha(int c);
@@ -107,5 +107,6 @@ char    *ft_get_cwd(char *new_path, int mode);
 size_t ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 
+int ft_is_a_dir(char *str);
 
 #endif

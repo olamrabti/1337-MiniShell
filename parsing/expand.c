@@ -33,6 +33,52 @@ int get_key(char *line, int i, int j)
     return j;
 }
 
+static char	*put_str(int n, char *str, int count)
+{
+	str[count] = '\0';
+	if (n < 0)
+	{
+		str[0] = '-';
+		n *= -1;
+		while (--count)
+		{
+			str[count] = n % 10 + 48;
+			n /= 10;
+		}
+		return (str);
+	}
+	while (count--)
+	{
+		str[count] = n % 10 + 48;
+		n /= 10;
+	}
+	return (str);
+}
+
+char	*ft_itoa(int n, t_addr **addr)
+{
+	size_t	count;
+	int		temp;
+	char	*str;
+
+	count = 1;
+	temp = n;
+	if (n == -2147483648)
+		return (gc_strdup("-2147483648", addr));
+	while (temp / 10)
+	{
+		temp /= 10;
+		count++;
+	}
+	if (n < 0)
+		count++;
+	str = (char *)malloc(sizeof(char) * (count + 1));
+	if (!str)
+		return (NULL);
+	return (put_str(n, str, count));
+}
+
+
 char *ft_expand(char *key, t_env *env, t_addr **addr)
 {
     char *value;
@@ -41,8 +87,8 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
         return key;
     if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
         return key;
-    // if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
-    //     return strdup : ft_itoa(exitstatus);
+    if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
+        return ft_itoa(ft_exit_status(-1), addr);
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (gc_strdup("", addr));
     value = ft_getvalue(key + 1, env, addr);
@@ -63,23 +109,14 @@ void is_after_red(t_list *curr, t_addr **addr)
     if (temp && (temp->type == RED_IN || temp->type == RED_OUT || temp->type == RED_OUT_APPEND))
     {
         printf(" %s :ambiguous redirect\n", curr->value);
-        // if (temp)
-        //     temp = temp->prv;
+        ft_exit_status(1);
         while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
         {
-            // printf(">>> temp loop 1 -%s- type: %d\n", temp->value, temp->type);
             temp->type = RM;
             temp = temp->prv;
         }
-        // if (temp)
-        // {
-        //     temp = temp->nxt;
-        //     printf(">>> temp cond 1 -%s- type: %d\n", temp->value, temp->type);
-        // }
-            
         if (temp && ( temp->type == PIPE || temp->type == NULL_TOKEN ))
         {
-            // printf(">>> temp cond 2 -%s- type: %d\n", temp->value, temp->type);
             node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
             temp = temp->nxt->nxt;
         }
@@ -125,7 +162,7 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
         }
     }
 }
-// it works properly so far, but maybe this function should be in syntax check !
+
 void find_delimiter(t_list *list)
 {
     t_list *temp;

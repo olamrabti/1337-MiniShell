@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/10 12:16:31 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:31:26 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int ft_valid_exit(char *str)
     return (1);
 }
 
-int ft_exit(t_list *cmd)
+void ft_exit(t_list *cmd)
 {
     if (cmd->args)
     {
@@ -74,7 +74,7 @@ int ft_exit(t_list *cmd)
         else if (ft_valid_exit(cmd->args[0]) && cmd->args[1])
         {
             ft_putstr_fd("exit: too many arguments\n", 2);
-            return (ERROR);
+            return;
         }
         else
         {
@@ -85,6 +85,9 @@ int ft_exit(t_list *cmd)
         }
     }
     else
-        exit(0);
-    return (SUCCESS);
+    {
+        printf("exit\n" );
+        exit(ft_exit_status(-1));
+    
+    }
 }

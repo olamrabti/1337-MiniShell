@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/19 15:01:15 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:49:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int *ft_alloc_tab(t_data *data, int *total)
     return (tab);
 }
 
-int ft_parent_wait(t_data *data, int *tab, int total)
+int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
 {
     int status;
     int i;
@@ -54,12 +54,23 @@ int ft_parent_wait(t_data *data, int *tab, int total)
     while (i < total)
     {
         waitpid(tab[i], &status, 0);
-        // WIFEXITED(status);
-        // printf("exit status : %d\n", WEXITSTATUS(status));
-        // WIFSIGNALED(status);
-        // printf("exit status --> %d\n", WTERMSIG(status) + 128);
         i++;
     }
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+	{
+		tcsetattr(STDIN_FILENO, TCSANOW, term);
+		write(1, "Quit: 3\n", 8);
+	}
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		tcsetattr(STDIN_FILENO, TCSANOW, term);
+		write(1, "\n", 1);
+	}
+    if (WIFEXITED(status))
+        ft_exit_status(WEXITSTATUS(status));
+    else if (WIFSIGNALED(status))
+        ft_exit_status(WTERMSIG(status) + 128);
+    // ft_exit_status(status);
     return (SUCCESS);
 }
 
@@ -73,7 +84,7 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
-            printf("data->fds[i] ----------> %d\n", data->fds[i]);
+            // printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }
@@ -83,15 +94,20 @@ int ft_close_descriptors(t_data *data)
 
 int ft_pipex(t_data *data, char **envp)
 {
+    struct termios *term;
     t_list *temp;
     int total;
     int *tab;
     int i;
 
     total = 0;
+    term = NULL;
     i = 0;
     tab = ft_alloc_tab(data, &total);
     temp = data->cmd;
+    tcgetattr(STDIN_FILENO, term);
+    signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
     while (temp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
@@ -108,6 +124,8 @@ int ft_pipex(t_data *data, char **envp)
         if (data->pid == 0)
         {
             // Child process
+            signal(SIGINT, SIG_DFL);
+	        signal(SIGQUIT, SIG_DFL);
             if (temp->infile != 0)
             {
                 if (temp->infile == -1)
@@ -152,10 +170,16 @@ int ft_pipex(t_data *data, char **envp)
                         ft_putstr_fd(temp->value, 2);
                         ft_putstr_fd("\n", 2);
                         ft_exit_status(127);
+                        exit(127);
                     }
                 }
                 else
                     exit(EXIT_SUCCESS);
+            // else if (ft_is_a_dir(temp->value))
+            // {
+            //     ft_handle_dir(temp->value);
+            //     exit(EXIT_SUCCESS);
+            // }
             }
         }
         if (!temp->first)
@@ -169,7 +193,6 @@ int ft_pipex(t_data *data, char **envp)
         i++;
         temp = temp->nxt;
     }
-    ft_parent_wait(data, tab, total);
-
+    ft_parent_wait(data, tab, total, term);
     return (SUCCESS);
 }

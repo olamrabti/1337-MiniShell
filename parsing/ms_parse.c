@@ -181,7 +181,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     last->last = 1;
     (*data)->cmd = list;
     (*data)->fds = fds;
-    (*data)->status = 0;
+    // print_list(list);
     return 0;
 }
 

@@ -25,3 +25,6 @@ rm -rf 1
 # bash-3.2$ echo $?
 # 258
 ``
+
+
+# [ ] < udfb cat | ls > f2 > f3 > f4 double free

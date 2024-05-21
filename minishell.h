@@ -11,7 +11,10 @@
 # include <limits.h>
 # include <termios.h>
 #include <signal.h>
+#include <sys/ioctl.h>
 
+
+int global_signal;
 
 
 typedef enum token {

@@ -41,6 +41,7 @@
 =================================
 
 // [x] signals
+        // FIXME change g_sig 
 // [ ] signals inside herdoc
         // [ ] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
         // [ ] Ctrl + C exits from the herdoc and stops any execution after

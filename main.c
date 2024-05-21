@@ -1,15 +1,14 @@
 #include "minishell.h"
 
-int g_sig;
 
 void ctrl_c_handler(int signum)
 {
     if (signum == SIGINT)
     {
-        g_sig = 1;
+        global_signal = 1;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
-		rl_on_new_line();
+        rl_on_new_line();
 		rl_redisplay();
     }
 }
@@ -59,7 +58,7 @@ int main(int ac, char **av, char **envp)
         signal(SIGINT, ctrl_c_handler);
         signal(SIGQUIT, ctrl_c_handler);
         line = readline("MINISHELL$ ");
-        if(g_sig)
+        if(global_signal)
             ft_exit_status(1);
         if (line == NULL)
         {
@@ -75,7 +74,7 @@ int main(int ac, char **av, char **envp)
         }
         ft_lstclear(&data->addr, free);
         free(line);
-        g_sig = 0;
+        global_signal = 0;
     }
     return 0;
 }

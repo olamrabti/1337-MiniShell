@@ -46,7 +46,7 @@
         // [ ] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
         // [ ] Ctrl + C exits from the herdoc and stops any execution after
 // [x] redirections by command if fails stop and move to next command
-
+// [ ] syntax error must be fixed : ls > ''o for example.
 
 =================================
             UTILS :

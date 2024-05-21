@@ -6,7 +6,7 @@ char *ft_getvalue(char *key, t_env *env, t_addr **addr)
 {
     while (env)
     {
-        if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
+        if (ft_strncmp(key, env->key, ft_strlen(key)) == 0)
             return (gc_strdup(env->value, addr));
         env = env->next;
     }

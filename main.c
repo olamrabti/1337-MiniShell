@@ -14,10 +14,6 @@ void ctrl_c_handler(int signum)
     }
 }
 
-// void ft_signal()
-// {
-// }
-
 int ft_exit_status(int status)
 {
     static int exit_status;

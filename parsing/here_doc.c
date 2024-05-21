@@ -32,7 +32,6 @@ void expand_inside_str(char *line, t_addr **addr, t_env *env, int fd)
 
 
 
-
 int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
 {
     char *line;

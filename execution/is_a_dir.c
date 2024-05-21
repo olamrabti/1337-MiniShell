@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 14:31:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/20 16:20:36 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:01:17 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,42 +36,8 @@ int ft_is_a_dir(char *str)
     return (0);
 }
 
-// int ft_only_points(char *str)
-// {
-//     int i = 0;
-    
-//     while (str[i])
-//     {
-//         if (str[i] == '.')
-//         {
-//             i++;
-//         }
-//         else
-//             return 0;
-        
-//     }
-//     return 1;
-// }
-
-// int ft_is_point_slash(char *str)
-// {
-//     int i;
-
-//     i = 0;
-//     while (str[i])
-//     {
-//         if (str[i] == '/' || str[i] == '.')
-//             i++;
-//         else
-//             return (0);
-//     }
-//     return (1);
-// }
-
-int ft_handle_dir(char *str)
+int    ft_handle_dir(char *str)
 {
-    int i = 0;
-
     if (ft_is_point(str))
     {
         ft_putstr_fd("minishell: .: filename argument required\n", 2);
@@ -80,9 +46,20 @@ int ft_handle_dir(char *str)
     }
     else
     {
-        // [ ] hna 3yet l function stat wla opendir()
-        
+        if (access(str, F_OK) == 0)
+        {
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd(str, 2);
+            ft_putstr_fd(": is a directory\n", 2);
+            return (ft_exit_status(126));
+        }
+        else
+        {
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd(str, 2);
+            ft_putstr_fd(": No such file or directory\n", 2);
+            return (ft_exit_status(127));
+        }
     }
-    
+    return 0;
 }
-

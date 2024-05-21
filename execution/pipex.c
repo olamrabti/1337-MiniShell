@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/20 17:49:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:21:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
         i++;
     }
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-	{
-		tcsetattr(STDIN_FILENO, TCSANOW, term);
-		write(1, "Quit: 3\n", 8);
-	}
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		tcsetattr(STDIN_FILENO, TCSANOW, term);
-		write(1, "\n", 1);
-	}
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        write(1, "Quit: 3\n", 8);
+    }
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        write(1, "\n", 1);
+    }
     if (WIFEXITED(status))
         ft_exit_status(WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
@@ -84,7 +84,6 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
-            // printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }
@@ -107,11 +106,13 @@ int ft_pipex(t_data *data, char **envp)
     temp = data->cmd;
     tcgetattr(STDIN_FILENO, term);
     signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
     while (temp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
+        else if (temp->first && temp->last && ft_is_a_dir(temp->value))
+            return (ft_handle_dir(temp->value));
         if (!temp->last)
         {
             if (pipe(data->pd) == -1)
@@ -119,13 +120,12 @@ int ft_pipex(t_data *data, char **envp)
         }
         data->pid = fork();
         if (data->pid == -1)
-            return (-1);
+            exit(127);
         tab[i] = data->pid;
         if (data->pid == 0)
         {
-            // Child process
             signal(SIGINT, SIG_DFL);
-	        signal(SIGQUIT, SIG_DFL);
+            signal(SIGQUIT, SIG_DFL);
             if (temp->infile != 0)
             {
                 if (temp->infile == -1)
@@ -158,7 +158,12 @@ int ft_pipex(t_data *data, char **envp)
             if (ft_is_builtin(temp->value))
             {
                 ft_execute_builtin(temp, data);
-                exit(EXIT_SUCCESS);
+                exit(ft_exit_status(-1));
+            }
+            else if (ft_is_a_dir(temp->value))
+            {
+                ft_handle_dir(temp->value);
+                exit(ft_exit_status(-1));
             }
             else
             {
@@ -175,11 +180,6 @@ int ft_pipex(t_data *data, char **envp)
                 }
                 else
                     exit(EXIT_SUCCESS);
-            // else if (ft_is_a_dir(temp->value))
-            // {
-            //     ft_handle_dir(temp->value);
-            //     exit(EXIT_SUCCESS);
-            // }
             }
         }
         if (!temp->first)

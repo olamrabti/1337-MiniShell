@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 14:52:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:55:00 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,10 +273,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
             {
                 concat = ft_is_concat(cmd->args[i]);
                 if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
-                {
                     data->is_hiden = 0;
-                }
-                // printf("concat --> %d\n", concat);
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {
                     // [x] change its value

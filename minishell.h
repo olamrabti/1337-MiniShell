@@ -13,7 +13,6 @@
 #include <signal.h>
 
 
-
 typedef enum token {
         W_SPACE = 1,
         RED_IN,
@@ -114,7 +113,8 @@ int ft_close_descriptors(t_data *data);
 
 int ft_exit_status(int status);
 
-
+int ft_is_a_dir(char *str);
+int ft_handle_dir(char *str);
 
 
 #endif

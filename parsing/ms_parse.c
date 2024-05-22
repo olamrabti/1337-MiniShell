@@ -44,7 +44,7 @@ int check_syntax(t_list **list, int *count)
             (*count)++;
             if ((!curr->nxt))
                 return printf("syntax error near unexpected token `newline'\n"), 1;
-            if ((curr->nxt && curr->nxt->type != WORD))
+            if ((curr->nxt && curr->nxt->type != WORD && curr->nxt->type != LTRAL))
                 return printf("syntax error near unexpected token `%s'\n", curr->nxt->value), 1;
         }
         if (curr->type == H_DOC)

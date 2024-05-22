@@ -6,7 +6,7 @@ char *ft_getvalue(char *key, t_env *env, t_addr **addr)
 {
     while (env)
     {
-        if (ft_strncmp(key, env->key, ft_strlen(key)) == 0)
+        if (ft_strcmp(key, env->key) == 0)
             return (gc_strdup(env->value, addr));
         env = env->next;
     }
@@ -115,7 +115,7 @@ void is_after_red(t_list *curr, t_addr **addr)
             temp->type = RM;
             temp = temp->prv;
         }
-        if (temp && ( temp->type == PIPE || temp->type == NULL_TOKEN ))
+        if (temp && (temp->type == PIPE || temp->type == NULL_TOKEN ))
         {
             node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
             temp = temp->nxt->nxt;

@@ -87,14 +87,33 @@ void	ft_lstclear(t_addr **lst, void (*del)(void *))
 
 	if (!lst || !del)
 		return ;
-	while (*lst)
-	{
-		tmp = (*lst)->nxt;
-		ft_lstdelone(*lst, del);
-		*lst = tmp;
-	}
-	lst = NULL;
+	  while (*lst)
+	  {
+        if (!is_duplicate(*lst, *lst))
+		{
+            tmp = (*lst)->nxt;
+            ft_lstdelone(*lst, del);
+            *lst = tmp;
+        }
+		else 
+            *lst = (*lst)->nxt;
+    }
+    *lst = NULL;
 }
+// void	ft_lstclear(t_addr **lst, void (*del)(void *))
+// {
+// 	t_addr	*tmp;
+
+// 	if (!lst || !del)
+// 		return ;
+// 	while (*lst)
+// 	{
+// 		tmp = (*lst)->nxt;
+// 		ft_lstdelone(*lst, del);
+// 		*lst = tmp;
+// 	}
+// 	lst = NULL;
+// }
 
 // void ft_lstiter(t_addr *lst, void (*f)(void *))
 // {

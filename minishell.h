@@ -94,8 +94,6 @@ void print_list(t_list *list);
 void	*ft_calloc(t_addr **addr, size_t count, size_t size);
 int	add_addr(t_addr **list, t_addr *new);
 t_addr	*new_addr(char *value);
-int	delete_addr(t_addr *node);
-void    clean_all(t_addr **list);
 void print_addr(t_addr *list);
 // void	ft_lstiter(t_addr *lst, void (*f)(void *));
 void	ft_lstclear(t_addr **lst, void (*del)(void *));

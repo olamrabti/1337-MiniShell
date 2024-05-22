@@ -100,41 +100,6 @@ void	ft_lstclear(t_addr **lst, void (*del)(void *))
     }
     *lst = NULL;
 }
-// void	ft_lstclear(t_addr **lst, void (*del)(void *))
-// {
-// 	t_addr	*tmp;
-
-// 	if (!lst || !del)
-// 		return ;
-// 	while (*lst)
-// 	{
-// 		tmp = (*lst)->nxt;
-// 		ft_lstdelone(*lst, del);
-// 		*lst = tmp;
-// 	}
-// 	lst = NULL;
-// }
-
-// void ft_lstiter(t_addr *lst, void (*f)(void *))
-// {
-// 	t_addr *current = lst;
-// 	while (lst)
-// 	{
-// 		if (!is_duplicate(lst, current))
-// 			f(current->address);
-// 		lst = lst->nxt;
-// 	}
-// }
-int delete_addr(t_addr *node)
-{
-	if (!node)
-		return (1);
-	free(node);
-	node->address = NULL;
-	node = NULL;
-	return (0);
-}
-
 
 void print_addr(t_addr *list)
 {

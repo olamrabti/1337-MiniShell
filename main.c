@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void f()
-{
-    system("leaks minishell");
-}
+// void f()
+// {
+//     system("leaks minishell");
+// }
 void ctrl_c_handler(int signum)
 {
     if (signum == SIGINT)
@@ -41,7 +41,7 @@ int main(int ac, char **av, char **envp)
     (void)av;
     rl_catch_signals = 0;
     
-    atexit(f);
+    // atexit(f);
     // if (isatty(av[1]))
     //     return (0);
     data = malloc(sizeof(t_data));

@@ -2,19 +2,6 @@
 #include "parse.h"
 #include "../minishell.h"
 
-// int is_valid_name(char *str)
-// {
-//     int i;
-
-//     i = 0;
-//     if(!str)
-//         return 1;
-//     while(str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
-//     ;
-//     if (str[i])
-//         return 1;
-//     return 0;
-// }
 
 void assign_fd(t_list *tmp, t_addr **addr)
 {

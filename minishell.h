@@ -11,6 +11,10 @@
 # include <limits.h>
 # include <termios.h>
 #include <signal.h>
+#include <sys/ioctl.h>
+
+
+int global_signal;
 
 
 typedef enum token {
@@ -116,5 +120,6 @@ int ft_exit_status(int status);
 int ft_is_a_dir(char *str);
 int ft_handle_dir(char *str);
 
+void ctrl_c_handler(int signum);
 
 #endif

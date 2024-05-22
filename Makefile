@@ -43,10 +43,11 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
+	@echo "Creating MINISHELL..."
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 
 %.o:%.c
-	$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
+	@$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
 
 clean :
 	@echo "Cleaning object files..."

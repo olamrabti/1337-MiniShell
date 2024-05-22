@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 14:31:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/21 16:01:17 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:27:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 int ft_is_point(char *str)
 {
-    if (str[0] == '.' && str[1] == '\0')
-        return (1);
+    if (str && *str)
+    {
+        if (str[0] == '.' && str[1] == '\0')
+            return (1);
+    }
     return (0);
 }
 
@@ -27,16 +30,19 @@ int ft_is_a_dir(char *str)
     if (ft_is_point(str))
         return (1);
     i = 0;
-    while (str[i])
+    if (str && *str)
     {
-        if (str[i] == '/')
-            return (1);
-        i++;
+        while (str[i])
+        {
+            if (str[i] == '/')
+                return (1);
+            i++;
+        }
     }
     return (0);
 }
 
-int    ft_handle_dir(char *str)
+int ft_handle_dir(char *str)
 {
     if (ft_is_point(str))
     {

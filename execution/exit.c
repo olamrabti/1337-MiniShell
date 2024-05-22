@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/19 18:31:26 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:14:30 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void ft_exit(t_list *cmd)
     else
     {
         printf("exit\n" );
+        exit(60);
         exit(ft_exit_status(-1));
-    
     }
 }

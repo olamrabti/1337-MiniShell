@@ -14,25 +14,25 @@
         // [ ] norm + refactor + drw scheema
                 // [x] tokenization 
                 // [ ] quotes 
+                        // [ ] norm it
                 // [x] expanding 
                         // if red before dont expand
                 // [ ] syntax
                         // [x] syntax error ; modify messages
                         // cat << l | ls << 'r' | cat < $Cmm displays abg msg before herdoc, maybe let the print to execution 
                         (-3 f infile could do the job + value "$CMm" to print )
+                        // [ ] norm it
                 // [ ] redirections 
                         // [x] redirections after and before cmd
                         # < Makefile cat > out1 > out2 | ls > out3 > out4
-                        # FIXED heredoc get stuck in infinite loop
-                        // [ ] Expand in herdoc if delimiter is not literal:
-                                # search and expand , ndup join + join 
-                                FIXED << "$PWD" cat => should not expand inside
-                        // NOTE when syntax error dont execute
+                        // [x] Expand in herdoc if delimiter is not literal:
+                        // [x] when syntax error dont execute
+                        // [ ] norm it
                 // [x] heredoc
                 // [ ] args handling 
 
                 // FIXED << l see if it hangs because of tokenization logic 
-                // [ ] Exit status $?
+                // [x] Exit status $?
                         // Ambg exits with 1
                         // syntax error near unexpected token; < >   258
 
@@ -41,6 +41,10 @@
 =================================
 
 // [x] signals
+        // FIXME change g_sig 
+// [ ] signals inside herdoc
+        // [ ] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
+        // [ ] Ctrl + C exits from the herdoc and stops any execution after
 // [x] redirections by command if fails stop and move to next command
 
 

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/21 16:21:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:43:53 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
         ft_exit_status(WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
         ft_exit_status(WTERMSIG(status) + 128);
-    // ft_exit_status(status);
     return (SUCCESS);
 }
 
@@ -99,6 +98,7 @@ int ft_pipex(t_data *data, char **envp)
     int *tab;
     int i;
 
+    (void)envp;
     total = 0;
     term = NULL;
     i = 0;
@@ -118,9 +118,13 @@ int ft_pipex(t_data *data, char **envp)
             if (pipe(data->pd) == -1)
                 exit(127);
         }
-        data->pid = fork();
+        if (temp->type != NULL_TOKEN)
+            data->pid = fork();
         if (data->pid == -1)
-            exit(127);
+        {
+            perror("fork:");
+            return (ERROR);
+        }
         tab[i] = data->pid;
         if (data->pid == 0)
         {
@@ -160,7 +164,7 @@ int ft_pipex(t_data *data, char **envp)
                 ft_execute_builtin(temp, data);
                 exit(ft_exit_status(-1));
             }
-            else if (ft_is_a_dir(temp->value))
+            else if (ft_is_a_dir(temp->value) && temp->type != NULL_TOKEN)
             {
                 ft_handle_dir(temp->value);
                 exit(ft_exit_status(-1));
@@ -171,15 +175,13 @@ int ft_pipex(t_data *data, char **envp)
                 {
                     if (ft_execute(temp, data->env, envp, data->addr) == -1)
                     {
-                        ft_putstr_fd("command not found: ", 2);
+                        ft_putstr_fd("minishell: ", 2);
                         ft_putstr_fd(temp->value, 2);
-                        ft_putstr_fd("\n", 2);
+                        ft_putstr_fd(" command not found\n", 2);
                         ft_exit_status(127);
                         exit(127);
                     }
                 }
-                else
-                    exit(EXIT_SUCCESS);
             }
         }
         if (!temp->first)

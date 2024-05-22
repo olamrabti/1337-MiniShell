@@ -47,7 +47,6 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
     if (!deli || pipe(fd) < 0)
         return -1;
     signal(SIGINT, h_doc_handler);
-    signal(SIGQUIT, h_doc_handler);
     while (1)
     {
         if (global_signal)

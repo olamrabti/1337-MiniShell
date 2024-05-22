@@ -144,8 +144,11 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
     splitted = ft_split_sp(value, addr);
     if (!splitted)
         return ;
-    if((!splitted[0] && !delete_node(curr))|| (is_after_red(curr, addr) && !delete_node(curr)))
+    if (is_after_red(curr, addr) || !splitted[0])
+    {
+        delete_node(curr);
         return ;
+    }
     while (splitted[i])
     {
         node_add_middle(curr, create_node(splitted[i], WORD, addr));

@@ -79,6 +79,7 @@ int	delete_node(t_list *node)
 		node->prv->nxt = node->nxt;
 	if (node->nxt)
 		node->nxt->prv = node->prv;
+	node->value = NULL;
 	node = NULL;
 	return (0);
 }

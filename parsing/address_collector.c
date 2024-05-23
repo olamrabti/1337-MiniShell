@@ -72,7 +72,7 @@ int is_duplicate(t_addr *list, t_addr *node)
 	}
 	return 0;
 }
-void	ft_lstdelone(t_addr *lst, void (*del)(void *))
+void ft_lstdelone(t_addr *lst, void (*del)(void *))
 {
 	if (lst && del)
 	{
@@ -81,51 +81,34 @@ void	ft_lstdelone(t_addr *lst, void (*del)(void *))
 	}
 }
 
-void	ft_lstclear(t_addr **lst, void (*del)(void *))
+void ft_lstclear(t_addr **lst, void (*del)(void *))
 {
-	t_addr	*tmp;
+	t_addr *tmp;
 
 	if (!lst || !del)
-		return ;
+		return;
 	while (*lst)
 	{
-		tmp = (*lst)->nxt;
-		ft_lstdelone(*lst, del);
-		*lst = tmp;
+		if (!is_duplicate(*lst, *lst))
+		{
+			tmp = (*lst)->nxt;
+			ft_lstdelone(*lst, del);
+			*lst = tmp;
+		}
+		*lst = (*lst)->nxt;
 	}
-	lst = NULL;
+	*lst = NULL;
 }
 
-// void ft_lstiter(t_addr *lst, void (*f)(void *))
+// void print_addr(t_addr *list)
 // {
-// 	t_addr *current = lst;
-// 	while (lst)
+// 	t_addr *temp;
+
+// 	printf("\n======== Adresses to free : ===========\n");
+// 	temp = list;
+// 	while (temp)
 // 	{
-// 		if (!is_duplicate(lst, current))
-// 			f(current->address);
-// 		lst = lst->nxt;
+// 		printf("address :  %p\n", temp->address);
+// 		temp = temp->nxt;
 // 	}
 // }
-int delete_addr(t_addr *node)
-{
-	if (!node)
-		return (1);
-	free(node);
-	node->address = NULL;
-	node = NULL;
-	return (0);
-}
-
-
-void print_addr(t_addr *list)
-{
-	t_addr *temp;
-
-	printf("\n======== Adresses to free : ===========\n");
-	temp = list;
-	while (temp)
-	{
-		printf("address :  %p\n", temp->address);
-		temp = temp->nxt;
-	}
-}

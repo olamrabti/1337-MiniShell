@@ -11,7 +11,12 @@
 # include <limits.h>
 # include <termios.h>
 #include <signal.h>
+#include <sys/ioctl.h>
+#include <sys/ioctl.h>
+#include <dirent.h>
 
+
+int global_signal;
 
 
 typedef enum token {
@@ -91,8 +96,6 @@ void print_list(t_list *list);
 void	*ft_calloc(t_addr **addr, size_t count, size_t size);
 int	add_addr(t_addr **list, t_addr *new);
 t_addr	*new_addr(char *value);
-int	delete_addr(t_addr *node);
-void    clean_all(t_addr **list);
 void print_addr(t_addr *list);
 // void	ft_lstiter(t_addr *lst, void (*f)(void *));
 void	ft_lstclear(t_addr **lst, void (*del)(void *));
@@ -114,6 +117,8 @@ int ft_close_descriptors(t_data *data);
 
 int ft_exit_status(int status);
 
+
+void ctrl_c_handler(int signum);
 
 
 

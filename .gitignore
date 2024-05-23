@@ -6,3 +6,4 @@ parsing/todo
 execution/*.o
 .vscode/*
 .*
+minishell_tester

@@ -1,22 +1,20 @@
 #include "minishell.h"
 
-int g_sig;
-
+// void f()
+// {
+//     system("leaks minishell");
+// }
 void ctrl_c_handler(int signum)
 {
     if (signum == SIGINT)
     {
-        g_sig = 1;
+        global_signal = 1;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
-		rl_on_new_line();
+        rl_on_new_line();
 		rl_redisplay();
     }
 }
-
-// void ft_signal()
-// {
-// }
 
 int ft_exit_status(int status)
 {
@@ -38,6 +36,7 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     (void)av;
     rl_catch_signals = 0;
+    global_signal = 0;
     
     // atexit(f);
     // if (isatty(av[1]))
@@ -59,7 +58,7 @@ int main(int ac, char **av, char **envp)
         signal(SIGINT, ctrl_c_handler);
         signal(SIGQUIT, ctrl_c_handler);
         line = readline("MINISHELL$ ");
-        if(g_sig)
+        if(global_signal)
             ft_exit_status(1);
         if (line == NULL)
         {
@@ -73,9 +72,9 @@ int main(int ac, char **av, char **envp)
             if (data && data->cmd)
                 execute_commands(&data, envp);
         }
-        ft_lstclear(&data->addr, free);
+        // ft_lstclear(&data->addr, free);
         free(line);
-        g_sig = 0;
+        global_signal = 0;
     }
     return 0;
 }

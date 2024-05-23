@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 14:52:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:59:43 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,9 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
     t_env **env;
     int i;
     int concat;
+    int flag;
 
+    flag = 0;
     env = envp;
     if (cmd->args)
     {
@@ -273,10 +275,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
             {
                 concat = ft_is_concat(cmd->args[i]);
                 if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
-                {
                     data->is_hiden = 0;
-                }
-                // printf("concat --> %d\n", concat);
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {
                     // [x] change its value
@@ -290,6 +289,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
             }
             else
             {
+                flag = 1;
                 ft_putstr_fd("export: ", 2);
                 ft_putstr_fd(cmd->args[i], 2);
                 ft_putstr_fd(": not a valid identifier\n", 2);
@@ -302,6 +302,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
     {
         ft_print_export(env, data->is_hiden);
     }
-
+    if (flag)
+        return flag;
     return (SUCCESS);
 }

@@ -2,19 +2,18 @@
 #include "parse.h"
 #include "../minishell.h"
 
-
 void expand_inside_str(char *line, t_addr **addr, t_env *env, int fd)
 {
     int i;
-    int j; 
+    int j;
     char *tmp;
 
     i = 0;
     j = 1;
     tmp = NULL;
     if (!line)
-        return ;
-    while(line[i])
+        return;
+    while (line[i])
     {
         if (line[i] == '$')
         {
@@ -25,30 +24,38 @@ void expand_inside_str(char *line, t_addr **addr, t_env *env, int fd)
                 write(fd, tmp, ft_strlen(tmp));
             i += j;
         }
-        else 
+        else
             write(fd, &line[i++], 1);
     }
 }
 
-
-
+void h_doc_handler(int signum)
+{
+    if (signum == SIGINT)
+    {
+        global_signal = 1;
+        ioctl(STDIN_FILENO, TIOCSTI, "\n");
+        ft_exit_status(1);
+    }
+}
 
 int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
 {
     char *line;
-    int	fd[2];
+    int fd[2];
 
-    if (!deli)
+    if (!deli || pipe(fd) < 0)
         return -1;
-	if (pipe(fd) < 0)
-		return (perror("Heredoc pipe "), -1);
+    signal(SIGINT, h_doc_handler);
     while (1)
     {
+        if (global_signal)
+            return close(fd[1]), close(fd[0]), -1;
         line = readline("> ");
-        if (line == NULL)
+        if (!line)
             break;
-        if (!ft_strcmp(line, deli->value))
-            break ;
+        if(!ft_strcmp(line, deli->value))
+            return free(line), close(fd[1]), fd[0];
         if (deli->type != LTRAL)
             expand_inside_str(line, addr, env, fd[1]);
         else
@@ -56,6 +63,5 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
         write(fd[1], "\n", 1);
         free(line);
     }
-    close(fd[1]);
-    return fd[0];
+    return close(fd[1]), fd[0];
 }

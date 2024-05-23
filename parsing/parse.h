@@ -40,7 +40,7 @@ void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j);
 t_list *init_list( char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env);
+int *handle_redirections(t_list **list, int *count, t_data **data , t_env *env);
 // int is_valid_name(char *str);
 void empty_cmd(t_list *temp, t_addr **addr, t_env *env);
 int fill_heredoc(t_list *deli, t_addr **addr, t_env *env);

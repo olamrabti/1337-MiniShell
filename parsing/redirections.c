@@ -60,33 +60,29 @@ int open_heredoc(t_list *curr, t_list *tmp, t_addr **addr, t_env *env)
     return tmp->infile;
 }
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr , t_env *env)
+int *handle_redirections(t_list **list, int *count, t_data **data , t_env *env)
 {
     t_list *curr;
     t_list *tmp;
-    int *fds;
     int i;
-
-    fds = ft_calloc(addr, *count, sizeof(int));
-    if (!fds)
-        return NULL;
-    fds[*count] = -1;
+   
+    (*data)->fds[*count] = -1;
     curr = *list;
     tmp = *list;
     i = 0;
     while (curr)
     {
         if ((curr->type == RED_OUT || curr->type == RED_OUT_APPEND || curr->type == RED_IN))
-            fds[i++] = open_file(curr, tmp, addr, env);
+            (*data)->fds[i++] = open_file(curr, tmp, &(*data)->addr, env);
         else if (curr->type == H_DOC)
-            fds[i++] = open_heredoc(curr, tmp, addr, env);
+            (*data)->fds[i++] = open_heredoc(curr, tmp, &(*data)->addr, env);
         curr = curr->nxt;
         if (!curr || curr->type == PIPE)
         {
-            assign_fd(tmp, addr);
+            assign_fd(tmp, &(*data)->addr);
             if (curr)
                 tmp = curr;
         }
     }
-    return fds;
+    return (*data)->fds;
 }

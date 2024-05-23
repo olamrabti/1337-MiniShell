@@ -6,12 +6,16 @@
 --> TO COMMIT :
 
         // None
-        // refactored ms_parse
-        // refactored gc 
         // refactored heredoc
-        // FIXED export cmd="ls      -la" ; then ls > $cmd  => must be $cmd: ambiguous redirect and dont execute ls -la
-        // FIXME args handling : 
-                // echo $dhfgh
+        // NOTE refactor redirections
+        // NOTE refactor quotes
+        // FIXME Double free in gc
+        // FIXED << k < l < Makefile ls > f | ls, in normal cicumstances it must execute ls 
+                except if u hit ctrl+c must not execute other cmds
+
+        // FIXED herdoc opening in case of files errors ex : < l < Makefile ls > f << l cat
+                        ; displays error but must display heredoc tho
+
         // FIXED args handling : 
                 // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
 

@@ -12,6 +12,7 @@
 # include <termios.h>
 #include <signal.h>
 #include <sys/ioctl.h>
+#include <sys/ioctl.h>
 #include <dirent.h>
 
 
@@ -115,8 +116,6 @@ int ft_no_env(t_data **data);
 int ft_close_descriptors(t_data *data);
 
 int ft_exit_status(int status);
-
-int ft_is_a_dir(char *str);
 
 
 void ctrl_c_handler(int signum);

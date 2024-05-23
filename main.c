@@ -72,7 +72,7 @@ int main(int ac, char **av, char **envp)
             if (data && data->cmd)
                 execute_commands(&data, envp);
         }
-        ft_lstclear(&data->addr, free);
+        // ft_lstclear(&data->addr, free);
         free(line);
         global_signal = 0;
     }

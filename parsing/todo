@@ -9,7 +9,8 @@
         // refactored heredoc
         // NOTE refactor redirections
         // NOTE refactor quotes
-        // FIXME Double free in gc ( was because of fds pointer)
+        // FIXED Double free in gc ( was because of fds pointer)
+        // FIXME > ls should not be sent as node
         // FIXED << k < l < Makefile ls > f | ls, in normal cicumstances it must execute ls 
                 except if u hit ctrl+c must not execute other cmds
 

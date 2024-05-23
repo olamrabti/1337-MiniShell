@@ -34,19 +34,19 @@ int open_file(t_list *curr, t_list *tmp, t_addr **addr, t_env *env)
     if (tmp->infile >= 0 && tmp->outfile > 0 && (curr->type == RED_OUT || curr->type == RED_OUT_APPEND))
     {
         if (curr->type == RED_OUT_APPEND)
-            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
+            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0644);
         else
-            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0644);
         if (tmp->outfile == -1)
             return perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->outfile;
-        return tmp->outfile;
+        return curr->type = RM, curr->nxt->type = RM, tmp->outfile;
     }
     if (tmp->infile >= 0 && tmp->outfile > 0 && curr->type == RED_IN)
     {
         tmp->infile = open(curr->nxt->value, O_RDWR);
         if (tmp->infile == -1)
             return perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->infile;
-        return tmp->infile;
+        return curr->type = RM, curr->nxt->type = RM, tmp->infile;
     }
     curr->type = RM;
     curr->nxt->type = RM;

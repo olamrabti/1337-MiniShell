@@ -33,51 +33,50 @@ int get_key(char *line, int i, int j)
     return j;
 }
 
-static char	*put_str(int n, char *str, int count)
+static char *put_str(int n, char *str, int count)
 {
-	str[count] = '\0';
-	if (n < 0)
-	{
-		str[0] = '-';
-		n *= -1;
-		while (--count)
-		{
-			str[count] = n % 10 + 48;
-			n /= 10;
-		}
-		return (str);
-	}
-	while (count--)
-	{
-		str[count] = n % 10 + 48;
-		n /= 10;
-	}
-	return (str);
+    str[count] = '\0';
+    if (n < 0)
+    {
+        str[0] = '-';
+        n *= -1;
+        while (--count)
+        {
+            str[count] = n % 10 + 48;
+            n /= 10;
+        }
+        return (str);
+    }
+    while (count--)
+    {
+        str[count] = n % 10 + 48;
+        n /= 10;
+    }
+    return (str);
 }
 
-char	*ft_itoa(int n, t_addr **addr)
+char *ft_itoa(int n, t_addr **addr)
 {
-	size_t	count;
-	int		temp;
-	char	*str;
+    size_t count;
+    int temp;
+    char *str;
 
-	count = 1;
-	temp = n;
-	if (n == -2147483648)
-		return (gc_strdup("-2147483648", addr));
-	while (temp / 10)
-	{
-		temp /= 10;
-		count++;
-	}
-	if (n < 0)
-		count++;
-	str = (char *)malloc(sizeof(char) * (count + 1));
-	if (!str)
-		return (NULL);
-	return (put_str(n, str, count));
+    count = 1;
+    temp = n;
+    if (n == -2147483648)
+        return (gc_strdup("-2147483648", addr));
+    while (temp / 10)
+    {
+        temp /= 10;
+        count++;
+    }
+    if (n < 0)
+        count++;
+    str = (char *)malloc(sizeof(char) * (count + 1));
+    if (!str)
+        return (NULL);
+    return (put_str(n, str, count));
 }
-
 
 char *ft_expand(char *key, t_env *env, t_addr **addr)
 {
@@ -97,7 +96,46 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     return (value);
 }
 
-int is_after_red(t_list *curr, t_addr **addr)
+void empty_cmd(t_list *temp, t_addr **addr, t_env *env)
+{
+    int fd;
+
+    fd = 0;
+    while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
+    {
+        if (temp->nxt && temp->type == H_DOC)
+        {
+            fd = fill_heredoc(temp->nxt, addr, env);
+            if (fd)
+                close(fd);
+        }
+        temp->type = RM;
+        temp = temp->prv;
+    }
+    if (temp && (temp->type == PIPE || temp->type == NULL_TOKEN))
+    {
+        node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
+        temp = temp->nxt->nxt;
+    }
+    while (temp)
+    {
+        if (temp->type == PIPE)
+        {
+            temp->type = RM;
+            break;
+        }
+        if (temp->nxt && temp->type == H_DOC)
+        {
+            fd = fill_heredoc(temp->nxt, addr, env);
+            if (fd)
+                close(fd);
+        }
+        temp->type = RM;
+        temp = temp->nxt;
+    }
+}
+
+int is_after_red(t_list *curr, t_addr **addr, t_env *env)
 {
     t_list *temp;
 
@@ -110,32 +148,13 @@ int is_after_red(t_list *curr, t_addr **addr)
     {
         printf(" %s :ambiguous redirect\n", curr->value);
         ft_exit_status(1);
-        while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
-        {
-            temp->type = RM;
-            temp = temp->prv;
-        }
-        if (temp && (temp->type == PIPE || temp->type == NULL_TOKEN ))
-        {
-            node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
-            temp = temp->nxt->nxt;
-        }
-        while (temp)
-        {
-            if (temp->type == PIPE)
-            {
-                temp->type = RM;
-                break;
-            }
-            temp->type = RM;
-            temp = temp->nxt;
-        }
+        empty_cmd(temp, addr, env);
         return 1;
     }
     return 0;
 }
 
-void ft_split_value(t_list *curr, char *value, t_addr **addr)
+void ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
 {
     char **splitted;
     int i;
@@ -143,11 +162,11 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
     i = 0;
     splitted = ft_split_sp(value, addr);
     if (!splitted)
-        return ;
-    if (is_after_red(curr, addr) || !splitted[0])
+        return;
+    if (is_after_red(curr, addr, env) || !splitted[0])
     {
         delete_node(curr);
-        return ;
+        return;
     }
     while (splitted[i])
     {
@@ -194,7 +213,7 @@ void expand_all(t_list **list, t_env *env, t_addr **addr)
             curr->type = WORD;
         }
         else if (curr->type == _DOLLAR)
-            ft_split_value(curr, ft_expand(curr->value, env, addr), addr);
+            ft_split_value(curr, ft_expand(curr->value, env, addr), addr, env);
         if (curr)
             curr = curr->nxt;
     }

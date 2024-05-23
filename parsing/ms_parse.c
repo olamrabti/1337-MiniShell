@@ -170,6 +170,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
     if (check_syntax(&list, &count) == 1)
         return ft_exit_status(258), 1;
     fds = handle_redirections(&list, &count, &((*data)->addr), env);
+    if (global_signal)
+        return 1;
     return fill_data(data, list, fds);
 }
 

@@ -52,11 +52,10 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
         if (global_signal)
             return close(fd[1]), close(fd[0]), -1;
         line = readline("> ");
-        if (!line || !ft_strcmp(line, deli->value))
-        {
-            free(line);
+        if (!line)
             break;
-        }
+        if(!ft_strcmp(line, deli->value))
+            return free(line), close(fd[1]), fd[0];
         if (deli->type != LTRAL)
             expand_inside_str(line, addr, env, fd[1]);
         else

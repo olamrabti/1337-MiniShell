@@ -1,18 +1,17 @@
-
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_execute(t_list *cmd, t_env *env, char **envp, t_addr *addr)
+int ft_execute(t_list *cmd, t_data *data, char **envp)
 {
     char *path;
     char **command;
     int i;
 
     i = 0;
-    path = ft_get_path(cmd, env);
+    path = ft_get_path(cmd, data->env);
     if (!path)
         return (-1);
-    command = ft_join_for_execve(cmd, addr);
+    command = ft_join_for_execve(cmd, data->addr);
     if (!command)
         return (-1);
     return (execve(path, command, envp));
@@ -46,20 +45,19 @@ int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
         i++;
     }
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-	{
-		tcsetattr(STDIN_FILENO, TCSANOW, term);
-		write(1, "Quit: 3\n", 8);
-	}
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		tcsetattr(STDIN_FILENO, TCSANOW, term);
-		write(1, "\n", 1);
-	}
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        write(1, "Quit: 3\n", 8);
+    }
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        write(1, "\n", 1);
+    }
     if (WIFEXITED(status))
         ft_exit_status(WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
         ft_exit_status(WTERMSIG(status) + 128);
-    // ft_exit_status(status);
     return (SUCCESS);
 }
 
@@ -73,7 +71,6 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
-            // printf("data->fds[i] ----------> %d\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }
@@ -89,6 +86,7 @@ int ft_pipex(t_data *data, char **envp)
     int *tab;
     int i;
 
+    (void)envp;
     total = 0;
     term = NULL;
     i = 0;
@@ -96,25 +94,30 @@ int ft_pipex(t_data *data, char **envp)
     temp = data->cmd;
     tcgetattr(STDIN_FILENO, term);
     signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
     while (temp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
+        else if (temp->first && temp->last && ft_is_a_dir(temp->value))
+            return (ft_handle_dir(temp, data, envp));
         if (!temp->last)
         {
             if (pipe(data->pd) == -1)
                 exit(127);
         }
-        data->pid = fork();
+        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1))
+            data->pid = fork();
         if (data->pid == -1)
-            return (-1);
+        {
+            perror("fork:");
+            return (ERROR);
+        }
         tab[i] = data->pid;
         if (data->pid == 0)
         {
-            // Child process
             signal(SIGINT, SIG_DFL);
-	        signal(SIGQUIT, SIG_DFL);
+            signal(SIGQUIT, SIG_DFL);
             if (temp->infile != 0)
             {
                 if (temp->infile == -1)
@@ -147,28 +150,28 @@ int ft_pipex(t_data *data, char **envp)
             if (ft_is_builtin(temp->value))
             {
                 ft_execute_builtin(temp, data);
-                exit(EXIT_SUCCESS);
+                exit(ft_exit_status(-1));
+            }
+            else if (ft_is_a_dir(temp->value) && temp->type != NULL_TOKEN)
+            {
+                ft_handle_dir(temp, data, envp);
+                exit(ft_exit_status(-1));
             }
             else
             {
                 if (temp->type != NULL_TOKEN)
                 {
-                    if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                    if (ft_execute(temp, data, envp) == -1)
                     {
-                        ft_putstr_fd("command not found: ", 2);
+                        ft_putstr_fd("minishell: ", 2);
                         ft_putstr_fd(temp->value, 2);
-                        ft_putstr_fd("\n", 2);
+                        ft_putstr_fd(" command not found\n", 2);
                         ft_exit_status(127);
                         exit(127);
                     }
                 }
                 else
-                    exit(EXIT_SUCCESS);
-            // else if (ft_is_a_dir(temp->value))
-            // {
-            //     ft_handle_dir(temp->value);
-            //     exit(EXIT_SUCCESS);
-            // }
+                    exit(SUCCESS);
             }
         }
         if (!temp->first)

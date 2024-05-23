@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 11:05:31 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:29:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int ft_cd(t_list *cmd, t_env **envp, t_data *data)
         }
         if (!getcwd(NULL, PATH_MAX))
         {
-            perror("pwd");
+            perror("cd: ..");
             ft_get_cwd(cmd->args[0], 1);
         }
         ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);

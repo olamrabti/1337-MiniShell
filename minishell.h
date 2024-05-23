@@ -12,6 +12,8 @@
 # include <termios.h>
 #include <signal.h>
 #include <sys/ioctl.h>
+#include <sys/ioctl.h>
+#include <dirent.h>
 
 
 int global_signal;
@@ -115,6 +117,8 @@ int ft_close_descriptors(t_data *data);
 
 int ft_exit_status(int status);
 
+
+void ctrl_c_handler(int signum);
 
 
 

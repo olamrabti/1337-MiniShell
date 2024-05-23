@@ -16,10 +16,6 @@ void ctrl_c_handler(int signum)
     }
 }
 
-// void ft_signal()
-// {
-// }
-
 int ft_exit_status(int status)
 {
     static int exit_status;
@@ -40,6 +36,7 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     (void)av;
     rl_catch_signals = 0;
+    global_signal = 0;
     
     // atexit(f);
     // if (isatty(av[1]))

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/17 12:12:11 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:33:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char *ft_get_path(t_list *cmd, t_env *env)
     int i;
 
     i = -1;
-    if (access(cmd->value, X_OK | R_OK | F_OK) == 0)
+    if (access(cmd->value, X_OK) == 0)
         return (ft_strdup(cmd->value));
     if (ft_strncmp(cmd->value, "/", 1) == 0)
     {
-        if (access(cmd->value, X_OK | R_OK | F_OK) == 0)
+        if (access(cmd->value, X_OK) == 0)
             return (ft_strdup(cmd->value));
         else
         {
@@ -58,7 +58,7 @@ char *ft_get_path(t_list *cmd, t_env *env)
     {
         full_path = ft_strjoin(paths[i], "/");
         full_path = ft_strjoin(full_path, cmd->value);
-        if (access(full_path, F_OK | R_OK | X_OK) == 0)
+        if (access(full_path, X_OK) == 0)
             return (full_path);
         free(full_path);
         full_path = NULL;

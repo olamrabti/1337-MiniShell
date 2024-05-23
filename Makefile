@@ -33,7 +33,7 @@ SRCS = main.c \
 	execution/unset.c \
 	execution/exit.c \
 	execution/handle_no_env.c \
-	# execution/is_a_dir.c \
+	execution/handle_dir.c \
 
 brew = $(shell brew --prefix readline)
 

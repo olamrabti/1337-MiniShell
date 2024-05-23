@@ -42,3 +42,6 @@ rm -rf 1
 
 # MINISHELL$ ls >> "s"
 # syntax error near unexpected token `s'
+
+# [ ]modify the params passed to ft_execute 
+# and pass them to handle dir !!

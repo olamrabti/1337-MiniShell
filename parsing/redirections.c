@@ -2,19 +2,6 @@
 #include "parse.h"
 #include "../minishell.h"
 
-// int is_valid_name(char *str)
-// {
-//     int i;
-
-//     i = 0;
-//     if(!str)
-//         return 1;
-//     while(str[i] && ft_isprint(str[i]) && !ft_isspace(str[i++]))
-//     ;
-//     if (str[i])
-//         return 1;
-//     return 0;
-// }
 
 void assign_fd(t_list *tmp, t_addr **addr)
 {
@@ -61,12 +48,11 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
     {
         if (curr->type == RED_OUT || curr->type == RED_OUT_APPEND )
         {
-            curr->type = RM;
-            // NOTE is it even necessary to check for valid name !!
             if (curr->type == RED_OUT_APPEND)
                 tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
             else
                 tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+            curr->type = RM;
             curr->nxt->type = RM;
             if (tmp->outfile == -1)
                 perror(curr->nxt->value);
@@ -74,8 +60,8 @@ int *handle_redirections(t_list **list, int *count, t_addr **addr, t_env *env)
         }
         else if (curr->type == RED_IN)
         {
-            curr->type = RM;
             tmp->infile = open(curr->nxt->value, O_RDWR);
+            curr->type = RM;
             curr->nxt->type = RM;
             if (tmp->infile == -1)
                 perror(curr->nxt->value);

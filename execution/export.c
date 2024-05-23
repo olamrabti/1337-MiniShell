@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/20 18:55:00 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:59:43 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,9 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
     t_env **env;
     int i;
     int concat;
+    int flag;
 
+    flag = 0;
     env = envp;
     if (cmd->args)
     {
@@ -287,6 +289,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
             }
             else
             {
+                flag = 1;
                 ft_putstr_fd("export: ", 2);
                 ft_putstr_fd(cmd->args[i], 2);
                 ft_putstr_fd(": not a valid identifier\n", 2);
@@ -299,6 +302,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
     {
         ft_print_export(env, data->is_hiden);
     }
-
+    if (flag)
+        return flag;
     return (SUCCESS);
 }

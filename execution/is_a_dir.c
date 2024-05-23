@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 14:31:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/22 17:27:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:33:29 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ int ft_is_a_dir(char *str)
     return (0);
 }
 
-int ft_handle_dir(char *str)
+int ft_handle_dir(t_list *cmd, t_data *data, char **envp)
 {
-    if (ft_is_point(str))
+    DIR *dir;
+
+    if (ft_is_point(cmd->value))
     {
         ft_putstr_fd("minishell: .: filename argument required\n", 2);
         ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
@@ -52,20 +54,39 @@ int ft_handle_dir(char *str)
     }
     else
     {
-        if (access(str, F_OK) == 0)
+        if (access(cmd->value, X_OK | F_OK) == 0)
         {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(str, 2);
-            ft_putstr_fd(": is a directory\n", 2);
-            return (ft_exit_status(126));
+            if (ft_execute(cmd, data , envp) == -1)
+            {
+                return (ft_exit_status(126));
+            }
+            return (ft_exit_status(0));
         }
-        else
+        dir = opendir(cmd->value);
+        if (dir == NULL)
         {
+            closedir(dir);
             ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(str, 2);
+            ft_putstr_fd(cmd->value, 2);
             ft_putstr_fd(": No such file or directory\n", 2);
             return (ft_exit_status(127));
         }
+        dir = opendir(cmd->value);
+        if (access(cmd->value, F_OK ) == 0 && dir != NULL)
+        {
+            closedir(dir);
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd(cmd->value, 2);
+            ft_putstr_fd(": is a directory\n", 2);
+            return (ft_exit_status(126));
+        }
+        // else
+        // {
+            // ft_putstr_fd("minishell: ", 2);
+            // ft_putstr_fd(str, 2);
+            // ft_putstr_fd(": No such file or directory\n", 2);
+            // return (ft_exit_status(127));
+        // }
     }
     return 0;
 }

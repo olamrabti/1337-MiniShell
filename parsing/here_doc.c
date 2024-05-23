@@ -35,6 +35,7 @@ void h_doc_handler(int signum)
     {
         global_signal = 1;
         ioctl(STDIN_FILENO, TIOCSTI, "\n");
+        ft_exit_status(1);
     }
 }
 
@@ -43,20 +44,14 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
     char *line;
     int fd[2];
 
-    if (!deli)
+    if (!deli || pipe(fd) < 0)
         return -1;
-    if (pipe(fd) < 0)
-        return (perror("Heredoc pipe "), -1);
     signal(SIGINT, h_doc_handler);
-    signal(SIGQUIT, h_doc_handler);
+    signal(SIGQUIT, ctrl_c_handler);
     while (1)
     {
         if (global_signal)
-        {
-            ft_exit_status(1);
-            global_signal = 0;
             return close(fd[1]), close(fd[0]), -1;
-        }
         line = readline("> ");
         if (!line || !ft_strcmp(line, deli->value))
         {
@@ -70,6 +65,5 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
         write(fd[1], "\n", 1);
         free(line);
     }
-    close(fd[1]);
-    return (fd[0]);
+    return close(fd[1]), fd[0];
 }

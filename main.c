@@ -1,6 +1,9 @@
 #include "minishell.h"
 
-
+// void f()
+// {
+//     system("leaks minishell");
+// }
 void ctrl_c_handler(int signum)
 {
     if (signum == SIGINT)

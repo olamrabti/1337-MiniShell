@@ -6,6 +6,12 @@
 --> TO COMMIT :
 
         // None
+        // refactored ms_parse
+        // refactored gc 
+        // refactored heredoc
+        // FIXED export cmd="ls      -la" ; then ls > $cmd  => must be $cmd: ambiguous redirect and dont execute ls -la
+        // FIXME args handling : 
+                // echo $dhfgh
         // FIXED args handling : 
                 // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
 
@@ -16,12 +22,11 @@
                 // [ ] quotes 
                         // [ ] norm it
                 // [x] expanding 
-                        // if red before dont expand
-                // [ ] syntax
+                        // FIXED if red before dont expand
+                        // [ ] refactor : is_after_red.
+                // [x] syntax
                         // [x] syntax error ; modify messages
-                        // cat << l | ls << 'r' | cat < $Cmm displays abg msg before herdoc, maybe let the print to execution 
-                        (-3 f infile could do the job + value "$CMm" to print )
-                        // [ ] norm it
+                        // [x] norm it
                 // [ ] redirections 
                         // [x] redirections after and before cmd
                         # < Makefile cat > out1 > out2 | ls > out3 > out4
@@ -31,10 +36,10 @@
                 // [x] heredoc
                 // [ ] args handling 
 
-                // FIXED << l see if it hangs because of tokenization logic 
                 // [x] Exit status $?
-                        // Ambg exits with 1
-                        // syntax error near unexpected token; < >   258
+
+                        // FIXME IOCTL !!
+                        // FIXED export cmd="ls      -la" ; then ls > $cmd  => must be $cmd: ambiguous redirect
 
 =================================
             LATER :
@@ -46,7 +51,7 @@
         // [ ] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
         // [ ] Ctrl + C exits from the herdoc and stops any execution after
 // [x] redirections by command if fails stop and move to next command
-
+// [ ] syntax error must be fixed : ls > ''o for example.
 
 =================================
             UTILS :

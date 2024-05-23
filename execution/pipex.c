@@ -1,29 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/24 12:05:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/21 19:43:53 by oumimoun         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_execute(t_list *cmd, t_env *env, char **envp, t_addr *addr)
+int ft_execute(t_list *cmd, t_data *data, char **envp)
 {
     char *path;
     char **command;
     int i;
 
     i = 0;
-    path = ft_get_path(cmd, env);
+    path = ft_get_path(cmd, data->env);
     if (!path)
         return (-1);
-    command = ft_join_for_execve(cmd, addr);
+    command = ft_join_for_execve(cmd, data->addr);
     if (!command)
         return (-1);
     return (execve(path, command, envp));
@@ -112,13 +100,13 @@ int ft_pipex(t_data *data, char **envp)
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
         else if (temp->first && temp->last && ft_is_a_dir(temp->value))
-            return (ft_handle_dir(temp->value));
+            return (ft_handle_dir(temp, data, envp));
         if (!temp->last)
         {
             if (pipe(data->pd) == -1)
                 exit(127);
         }
-        if (temp->type != NULL_TOKEN)
+        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1))
             data->pid = fork();
         if (data->pid == -1)
         {
@@ -166,14 +154,14 @@ int ft_pipex(t_data *data, char **envp)
             }
             else if (ft_is_a_dir(temp->value) && temp->type != NULL_TOKEN)
             {
-                ft_handle_dir(temp->value);
+                ft_handle_dir(temp, data, envp);
                 exit(ft_exit_status(-1));
             }
             else
             {
                 if (temp->type != NULL_TOKEN)
                 {
-                    if (ft_execute(temp, data->env, envp, data->addr) == -1)
+                    if (ft_execute(temp, data, envp) == -1)
                     {
                         ft_putstr_fd("minishell: ", 2);
                         ft_putstr_fd(temp->value, 2);
@@ -182,6 +170,8 @@ int ft_pipex(t_data *data, char **envp)
                         exit(127);
                     }
                 }
+                else
+                    exit(SUCCESS);
             }
         }
         if (!temp->first)

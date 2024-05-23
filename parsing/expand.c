@@ -6,7 +6,7 @@ char *ft_getvalue(char *key, t_env *env, t_addr **addr)
 {
     while (env)
     {
-        if (ft_strncmp(key, env->key, ft_strlen(env->key)) == 0)
+        if (ft_strcmp(key, env->key) == 0)
             return (gc_strdup(env->value, addr));
         env = env->next;
     }
@@ -97,7 +97,7 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     return (value);
 }
 
-void is_after_red(t_list *curr, t_addr **addr)
+int is_after_red(t_list *curr, t_addr **addr)
 {
     t_list *temp;
 
@@ -115,7 +115,7 @@ void is_after_red(t_list *curr, t_addr **addr)
             temp->type = RM;
             temp = temp->prv;
         }
-        if (temp && ( temp->type == PIPE || temp->type == NULL_TOKEN ))
+        if (temp && (temp->type == PIPE || temp->type == NULL_TOKEN ))
         {
             node_add_middle(temp, create_node(NULL, NULL_TOKEN, addr));
             temp = temp->nxt->nxt;
@@ -130,7 +130,9 @@ void is_after_red(t_list *curr, t_addr **addr)
             temp->type = RM;
             temp = temp->nxt;
         }
+        return 1;
     }
+    return 0;
 }
 
 void ft_split_value(t_list *curr, char *value, t_addr **addr)
@@ -140,26 +142,22 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr)
 
     i = 0;
     splitted = ft_split_sp(value, addr);
-    if (splitted && !splitted[0])
+    if (!splitted)
+        return ;
+    if((!splitted[0] && !delete_node(curr))|| (is_after_red(curr, addr) && !delete_node(curr)))
+        return ;
+    while (splitted[i])
     {
-        is_after_red(curr, addr);
-        delete_node(curr);
-    }
-    else
-    {
-        while (splitted[i])
+        node_add_middle(curr, create_node(splitted[i], WORD, addr));
+        curr = curr->nxt;
+        if (i == 0)
+            delete_node(curr->prv);
+        if (splitted[i + 1] && splitted[i + 1][0])
         {
-            node_add_middle(curr, create_node(splitted[i], WORD, addr));
+            node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
             curr = curr->nxt;
-            if (i == 0)
-                delete_node(curr->prv);
-            if (splitted[i + 1] && splitted[i + 1][0])
-            {
-                node_add_middle(curr, create_node(gc_strdup(" ", addr), W_SPACE, addr));
-                curr = curr->nxt;
-            }
-            i++;
         }
+        i++;
     }
 }
 

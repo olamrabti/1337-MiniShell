@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/20 15:09:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:32:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,11 @@ size_t ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 
 int ft_is_a_dir(char *str);
+
+int ft_execute(t_list *cmd, t_data *data, char **envp);
+
+
+int ft_handle_dir(t_list *cmd, t_data *data, char **envp);
+
 
 #endif

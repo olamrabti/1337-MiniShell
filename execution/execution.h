@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/23 22:04:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:22:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,23 @@ int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
 int ft_strncmp(char *s1, char *s2, unsigned int n);
 char *ft_strdup(char *str);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char const *s, char c, t_data *data);
+
 char *ft_substr(char *s, unsigned int start, size_t len);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 
 
 int execute_commands(t_data **data, char **envp);
-void ft_add_to_env(t_env **env, char *key, char *value);
 
 
 int ft_execute_builtin(t_list *cmd, t_data *data);
 
-t_env *ft_parce_env(char **envp);
+
 
 
 char	*ft_strjoin(char *s1, char *s2);
 
-char *ft_get_path(t_list *cmd, t_env *env);
+char *ft_get_path(t_list *cmd, t_env *env, t_data *data);
 
 
 char **ft_join_for_execve(t_list *cmd, t_addr *addr);
@@ -83,7 +83,7 @@ int ft_echo(t_list *cmd);
 
 // void ft_print_export(t_env *envp);
 
-int ft_change_env(char *str, t_env *envp, int concat);
+int ft_change_env(char *str, t_env *envp, int concat, t_data *data);
 int ft_unset(t_list *cmd, t_env **envp);
 void ft_exit(t_list *cmd);
 
@@ -117,5 +117,8 @@ int ft_handle_dir(t_list *cmd, t_data *data, char **envp);
 
 int	ft_atoi(char *str);
 
+void ft_add_to_env(t_env **env, char *key, char *value);
+
+// char *gc_substr(char *s, unsigned int start, size_t len, t_data *data);
 
 #endif

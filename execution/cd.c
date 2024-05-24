@@ -6,22 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/21 19:29:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:09:38 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-// TODO creating cd
-// TODO testing cd
-//  [x] cd with no argument
-// [x] cd chenge oldpwd and pwd
-
-// getcwd geting PWD
-// getcwd();
-
-int ft_change_pwd(char *buf, t_env **envp)
+int ft_change_pwd(char *buf, t_env **envp, t_data *data)
 {
     t_env *env;
 
@@ -29,16 +21,14 @@ int ft_change_pwd(char *buf, t_env **envp)
     while (env)
     {
         if (ft_strcmp((env)->key, "PWD") == 0)
-        {
-            (env)->value = ft_strdup(buf);
-        }
+            (env)->value = gc_strdup(buf, &data->addr);
         (env) = (env)->next;
     }
 
     return (SUCCESS);
 }
 
-int ft_change_oldpwd(char *buf, t_env **envp)
+int ft_change_oldpwd(char *buf, t_env **envp, t_data *data)
 {
     t_env *env;
 
@@ -46,9 +36,7 @@ int ft_change_oldpwd(char *buf, t_env **envp)
     while (env)
     {
         if (ft_strcmp((env)->key, "OLDPWD") == 0)
-        {
-            (env)->value = ft_strdup(buf);
-        }
+            (env)->value = gc_strdup(buf, &data->addr);
         (env) = (env)->next;
     }
     return (SUCCESS);
@@ -77,8 +65,8 @@ int ft_cd(t_list *cmd, t_env **envp, t_data *data)
             ft_get_cwd(cmd->args[0], 1);
         }
         ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
-        ft_change_pwd(pwd, envp);
-        if (ft_change_oldpwd(oldpwd, envp) == 0)
+        ft_change_pwd(pwd, envp, data);
+        if (ft_change_oldpwd(oldpwd, envp, data) == 0)
             (data)->oldpwd = 0;
     }
     else
@@ -95,8 +83,8 @@ int ft_cd(t_list *cmd, t_env **envp, t_data *data)
                     return (ERROR);
                 }
                 ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
-                ft_change_pwd(pwd, envp);
-                ft_change_oldpwd(oldpwd, envp);
+                ft_change_pwd(pwd, envp, data);
+                ft_change_oldpwd(oldpwd, envp, data);
             }
             (env) = (env)->next;
         }

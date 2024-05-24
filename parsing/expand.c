@@ -60,11 +60,10 @@ char *gc_itoa(int n, t_addr **addr)
     size_t count;
     int temp;
     char *str;
+    (void)addr;
 
     count = 1;
     temp = n;
-    if (n == -2147483648)
-        return (gc_strdup("-2147483648", addr));
     while (temp / 10)
     {
         temp /= 10;
@@ -72,6 +71,7 @@ char *gc_itoa(int n, t_addr **addr)
     }
     if (n < 0)
         count++;
+    // str = (char *)ft_calloc(addr, sizeof(char), count + 1);
     str = (char *)malloc(sizeof(char) * (count + 1));
     if (!str)
         return (NULL);
@@ -163,7 +163,7 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
     splitted = ft_split_sp(value, addr);
     if (!splitted)
         return;
-    if (is_after_red(curr, addr, env) || !splitted[0])
+    if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0])
     {
         delete_node(curr);
         return;
@@ -191,7 +191,10 @@ void find_delimiter(t_list *list)
     if (temp->nxt)
         temp = temp->nxt;
     while (temp && temp->type == W_SPACE)
+    {
+        delete_node(temp);
         temp = temp->nxt;
+    }
     if (temp && temp->type == Q_DOLLAR)
         temp->type = LTRAL;
     if (temp && temp->type == _DOLLAR)

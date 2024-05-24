@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/22 19:59:43 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:22:09 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int ft_is_exist(char *str, t_env *envp, int concat)
     return (0);
 }
 
-char *ft_strjoin_export(char *s1, char *s2)
+char *ft_strjoin_export(char *s1, char *s2, t_data *data)
 {
     int i;
     int len;
@@ -115,9 +115,9 @@ char *ft_strjoin_export(char *s1, char *s2)
     if (!s2)
         return (NULL);
     if (!s1)
-        s1 = ft_strdup("");
+        s1 = gc_strdup("", &data->addr);
     len = ft_strlen(s2) + ft_strlen(s1);
-    result = (char *)malloc((len + 1) * sizeof(char));
+    result = (char *)ft_calloc(&data->addr, (len + 1) , sizeof(char));
     if (!result)
         return (0);
     while (s1[i])
@@ -135,7 +135,7 @@ char *ft_strjoin_export(char *s1, char *s2)
     return (result);
 }
 
-int ft_change_env(char *str, t_env *envp, int concat)
+int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
 {
     t_env *env = envp;
     int start = 0;
@@ -149,7 +149,7 @@ int ft_change_env(char *str, t_env *envp, int concat)
         {
             if (ft_strncmp(str, env->key, start) == 0)
             {
-                env->value = ft_strjoin_export(env->value, str + (start + 2));
+                env->value = ft_strjoin_export(env->value, str + (start + 2), data);
                 return (SUCCESS);
             }
             env = env->next;
@@ -188,7 +188,6 @@ int ft_add_to_export(char *str, t_env **env, int concat)
             value = NULL;
         else
         {
-            // value = ft_substr(str, start + 1, len - start);
             value = ft_strjoin("", str + (start + 2));
         }
         key = ft_substr(str, 0, start);
@@ -279,7 +278,7 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
                 {
                     // [x] change its value
-                    ft_change_env(cmd->args[i], *env, concat);
+                    ft_change_env(cmd->args[i], *env, concat, data);
                 }
                 else
                 {

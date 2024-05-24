@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:08:23 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/04/21 15:41:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:57:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static int	len_str(const char *str, char c)
 	return (i);
 }
 
-static char	*ft_allocated_str(const char *str, char c)
+static char	*ft_allocated_str(const char *str, char c, t_data *data)
 {
 	char	*result;
 	int		len_string;
 
 	len_string = len_str(str, c);
-	result = (char *)malloc((len_string + 1) * sizeof(char));
+	result = (char *)ft_calloc(&data->addr,(len_string + 1) , sizeof(char));
 	if (!result)
 		return (NULL);
 	result[len_string] = '\0';
@@ -69,14 +69,14 @@ static void	ft_free(char **result)
 	free(result);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c, t_data *data)
 {
 	int		i;
 	char	**result;
 
 	if (!s)
 		return (NULL);
-	result = (char **)malloc((count_str(s, c) + 1) * sizeof(char *));
+	result = (char **)ft_calloc(&data->addr, (count_str(s, c) + 1) , sizeof(char *));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 			s++;
 		if (*s)
 		{
-			result[i] = ft_allocated_str(s, c);
+			result[i] = ft_allocated_str(s, c, data);
 			if (!result[i])
 				return (ft_free(result), NULL);
 			i++;

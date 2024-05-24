@@ -33,7 +33,7 @@ void h_doc_handler(int signum)
 {
     if (signum == SIGINT)
     {
-        global_signal = 1;
+        global_signal = 2;
         ioctl(STDIN_FILENO, TIOCSTI, "\n");
         ft_exit_status(1);
     }
@@ -47,6 +47,8 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
     if (!deli || pipe(fd) < 0)
         return -1;
     signal(SIGINT, h_doc_handler);
+    find_delimiter(deli);
+    // printf(">>> deli -%s- type: %d\n", deli->value, deli->type);
     while (1)
     {
         if (global_signal)

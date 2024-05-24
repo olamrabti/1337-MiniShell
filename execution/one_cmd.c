@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/22 19:33:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:10:36 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-char **ft_get_paths(t_env *env)
+char **ft_get_paths(t_env *env, t_data *data)
 {
     t_env *temp;
     char **path;
@@ -26,7 +26,7 @@ char **ft_get_paths(t_env *env)
     {
         if (ft_strncmp(temp->key, "PATH", 4) == 0)
         {
-            path = ft_split(temp->value, ':');
+            path = ft_split(temp->value, ':', data);
             return (path);
         }
         temp = temp->next;
@@ -34,7 +34,7 @@ char **ft_get_paths(t_env *env)
     return (NULL);
 }
 
-char *ft_get_path(t_list *cmd, t_env *env)
+char *ft_get_path(t_list *cmd, t_env *env, t_data *data)
 {
     char **paths;
     char *full_path;
@@ -42,18 +42,18 @@ char *ft_get_path(t_list *cmd, t_env *env)
 
     i = -1;
     if (access(cmd->value, X_OK) == 0)
-        return (ft_strdup(cmd->value));
+        return (gc_strdup(cmd->value, &data->addr));
     if (ft_strncmp(cmd->value, "/", 1) == 0)
     {
         if (access(cmd->value, X_OK) == 0)
-            return (ft_strdup(cmd->value));
+            return (gc_strdup(cmd->value, &data->addr));
         else
         {
             ft_putstr_fd(cmd->value, 2);
             ft_putstr_fd(": No such file or director", 2);
         }
     }
-    paths = ft_get_paths(env);
+    paths = ft_get_paths(env, data);
     while (paths && paths[++i])
     {
         full_path = ft_strjoin(paths[i], "/");

@@ -7,14 +7,18 @@
 
         // None
         // refactored heredoc
-        // NOTE refactor redirections
-        // NOTE refactor quotes
-        // FIXME Double free in gc
+        // FIXED Double free in gc ( was because of fds pointer)
+        // FIXED > ls should not be sent as node
         // FIXED << k < l < Makefile ls > f | ls, in normal cicumstances it must execute ls 
                 except if u hit ctrl+c must not execute other cmds
 
         // FIXED herdoc opening in case of files errors ex : < l < Makefile ls > f << l cat
                         ; displays error but must display heredoc tho
+        // DONE refactor redirections
+        // NOTE refactor quotes
+        // FIXME figure out how to get rid of that $? leak from itoa
+        // FIXED << k ls > $cmd | ls , didnt found the right delimiter
+        // FIXED ls > $cmd, must not exit 
 
         // FIXED args handling : 
                 // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"
@@ -27,22 +31,22 @@
                         // [ ] norm it
                 // [x] expanding 
                         // FIXED if red before dont expand
-                        // [ ] refactor : is_after_red.
+                        // [x] refactor : is_after_red.
                 // [x] syntax
                         // [x] syntax error ; modify messages
                         // [x] norm it
-                // [ ] redirections 
+                // [x] redirections 
                         // [x] redirections after and before cmd
                         # < Makefile cat > out1 > out2 | ls > out3 > out4
                         // [x] Expand in herdoc if delimiter is not literal:
                         // [x] when syntax error dont execute
-                        // [ ] norm it
+                        // [x] norm it
                 // [x] heredoc
-                // [ ] args handling 
+                // [x] args handling 
 
                 // [x] Exit status $?
 
-                        // FIXME IOCTL !!
+                        // FIXED IOCTL !!
                         // FIXED export cmd="ls      -la" ; then ls > $cmd  => must be $cmd: ambiguous redirect
 
 =================================
@@ -51,11 +55,11 @@
 
 // [x] signals
         // FIXME change g_sig 
-// [ ] signals inside herdoc
-        // [ ] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
-        // [ ] Ctrl + C exits from the herdoc and stops any execution after
+// [x] signals inside herdoc
+        // [x] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
+        // [x] Ctrl + C exits from the herdoc and stops any execution after
 // [x] redirections by command if fails stop and move to next command
-// [ ] syntax error must be fixed : ls > ''o for example.
+// [x] syntax error must be fixed : ls > ''o for example.
 
 =================================
             UTILS :

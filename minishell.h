@@ -120,6 +120,6 @@ int ft_exit_status(int status);
 
 void ctrl_c_handler(int signum);
 
-
+size_t ft_strlcpy(char *dest, const char *src, size_t size);
 
 #endif

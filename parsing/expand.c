@@ -55,7 +55,7 @@ static char *put_str(int n, char *str, int count)
     return (str);
 }
 
-char *ft_itoa(int n, t_addr **addr)
+char *gc_itoa(int n, t_addr **addr)
 {
     size_t count;
     int temp;
@@ -87,7 +87,7 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
         return key;
     if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
-        return ft_itoa(ft_exit_status(-1), addr);
+        return gc_itoa(ft_exit_status(-1), addr);
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (gc_strdup("", addr));
     value = ft_getvalue(key + 1, env, addr);

@@ -146,7 +146,7 @@ int fill_data(t_data **data, t_list *list, int *fds)
         last->last = 1;
     (*data)->cmd = list;
     (*data)->fds = fds;
-    // print_list(list);
+    print_list(list);
     return 0;
 }
 

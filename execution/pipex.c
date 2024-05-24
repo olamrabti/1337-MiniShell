@@ -99,7 +99,7 @@ int ft_pipex(t_data *data, char **envp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
-        else if (temp->first && temp->last && ft_is_a_dir(temp->value))
+        else if (temp->first && temp->last && ft_is_a_dir(temp->value) && (ft_strcmp(temp->value, "./minishell") != 0))
             return (ft_handle_dir(temp, data, envp));
         if (!temp->last)
         {

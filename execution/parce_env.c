@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:33:30 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/08 14:03:58 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:24:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void ft_add_to_env(t_env **env, char *key, char *value)
     if (!new_env)
         return;
     new_env->key = ft_strdup(key);
-    if(!value)
+    if (!value)
         new_env->value = NULL;
     else
         new_env->value = ft_strdup(value);
@@ -43,12 +43,14 @@ void ft_add_to_env(t_env **env, char *key, char *value)
 
 t_env *ft_parce_env(char **envp)
 {
-    t_env *env = NULL;
+    t_env *env;
     char *value;
     char *key;
-    int i = 0;
+    int i;
     int j;
 
+    env = NULL;
+    i = 0;
     while (envp[i])
     {
         j = 0;

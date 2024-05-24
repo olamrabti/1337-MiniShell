@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/23 15:26:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:04:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,9 @@ int ft_execute(t_list *cmd, t_data *data, char **envp);
 int ft_is_a_dir(char *str);
 
 int ft_handle_dir(t_list *cmd, t_data *data, char **envp);
+
+
+int	ft_atoi(char *str);
+
 
 #endif

@@ -120,10 +120,7 @@ void empty_cmd(t_list *temp, t_addr **addr, t_env *env)
     while (temp)
     {
         if (temp->type == PIPE)
-        {
-            temp->type = RM;
             break;
-        }
         if (temp->nxt && temp->type == H_DOC)
         {
             fd = fill_heredoc(temp->nxt, addr, env);

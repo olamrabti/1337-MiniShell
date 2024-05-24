@@ -42,7 +42,7 @@ OBJS = $(SRCS:.c=.o)
 all:
 	@$(MAKE) $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) minishell.h parsing/parse.h execution/execution.h
 	@echo "Creating MINISHELL..."
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 

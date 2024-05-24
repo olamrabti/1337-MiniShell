@@ -10,7 +10,6 @@
 # include <readline/history.h>
 
 
-
 char	*gc_itoa(int n, t_addr **addr);
 char    *gc_strdup(const char *s, t_addr **addr);
 char *ft_strndup(char *s, int n, t_addr **addr);

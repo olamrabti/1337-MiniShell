@@ -66,7 +66,7 @@ int *handle_redirections(t_list **list, int *count, t_data **data , t_env *env)
     t_list *tmp;
     int i;
    
-    (*data)->fds[*count] = -1;
+    (*data)->fds[*count] = -2;
     curr = *list;
     tmp = *list;
     i = 0;

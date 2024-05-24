@@ -45,7 +45,6 @@
                 // [x] args handling 
 
                 // [x] Exit status $?
-
                         // FIXED IOCTL !!
                         // FIXED export cmd="ls      -la" ; then ls > $cmd  => must be $cmd: ambiguous redirect
 
@@ -54,7 +53,7 @@
 =================================
 
 // [x] signals
-        // FIXME change g_sig 
+        // FIXME study
 // [x] signals inside herdoc
         // [x] Ctrl + D acts like a delimiter is found except it doesnt add \n to the last
         // [x] Ctrl + C exits from the herdoc and stops any execution after
@@ -101,31 +100,4 @@ export cmd="[tab]ls [tab] -la  "
 
 echo $dhfgh $USER
 
-
-MINISHELL$ (())
-command not found: (())
-MINISHELL$ .
-command not found: .
-MINISHELL$ /
-command not found: /
-
-
-unset for many variables
-
-$- bash-3.2$ export aa=+=
-   bash-3.2$ export $aa=ls
-   bash: export: `+==ls': not a valid identifier
-   bash-3.2$ export a=oussmaa
-   bash-3.2$ export $a=ls
-   bash-3.2$ $oussmaa
-   9a2o            README.md       main.c          minishell.h
-   I-,1o           TODO            main.o          parsing
-   Makefile        execution       minishell
-   bash-3.2$ export
-   declare -x OLDPWD
-   declare -x PWD="/Users/olamrabt/Desktop/1337-MiniShell"
-   declare -x SHLVL="1"
-   declare -x a="oussmaa"
-   declare -x aa="+="
-   declare -x oussmaa="ls"
 

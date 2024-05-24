@@ -71,8 +71,7 @@ char *gc_itoa(int n, t_addr **addr)
     }
     if (n < 0)
         count++;
-    // str = (char *)ft_calloc(addr, sizeof(char), count + 1);
-    str = (char *)malloc(sizeof(char) * (count + 1));
+    str = (char *)ft_calloc(addr, sizeof(char), count + 1);
     if (!str)
         return (NULL);
     return (put_str(n, str, count));

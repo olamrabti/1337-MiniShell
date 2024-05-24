@@ -164,14 +164,14 @@ int ms_parse(t_data **data, char *line, t_env *env)
     remove_token(&list, RM);
     concat_words(&list, &((*data)->addr));
     remove_token(&list, W_SPACE);
-    if (check_syntax(&list, &count) == 1)
-        return ft_exit_status(258), 1;
     (*data)->fds = malloc(count * sizeof(int));
     if ((*data)->fds == NULL)
         return 1;
+    if (check_syntax(&list, &count) == 1)
+        return ft_close_descriptors(*data), ft_exit_status(258), 1;
     (*data)->fds = handle_redirections(&list, &count, data , env);
     if (global_signal == 2)
-        return ft_close_descriptors(*data), 1;
+        return ft_close_descriptors(*data), 1; // free((*data)->fds) bra at any case
     return fill_data(data, list);
 }
 

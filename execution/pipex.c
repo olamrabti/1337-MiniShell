@@ -68,9 +68,10 @@ int ft_close_descriptors(t_data *data)
     i = 0;
     if (data && data->fds)
     {
-        i = 0;
-        while (data->fds[i] > 0)
+        while (data->fds[i])
         {
+            if (data->fds[i] == -2)
+                return (SUCCESS);
             close(data->fds[i]);
             i++;
         }

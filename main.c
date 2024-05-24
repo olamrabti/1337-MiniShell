@@ -67,7 +67,6 @@ int main(int ac, char **av, char **envp)
         }
         if (*line)
             add_history(line);
-        // ms_parse(&data, line, data->env);
         if (ms_parse(&data, line, data->env) != 1)
         {
             if (data && data->cmd)

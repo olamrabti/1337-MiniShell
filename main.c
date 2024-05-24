@@ -94,8 +94,8 @@ int main(int ac, char **av, char **envp)
         }
         ft_lstclear(&data->addr, free);
         free(line);
-        free(data->addr);
-        data->addr = NULL;
+        free((data)->fds);
+        (data)->fds = NULL;
         global_signal = 0;
     }
     ft_free_env(&data->env);

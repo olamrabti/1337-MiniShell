@@ -138,13 +138,13 @@ int ft_pipex(t_data *data, char **envp)
             }
             if (!temp->first)
             {
-                if (dup2(data->save, STDIN_FILENO) == -1)
+                if (dup2(data->save, temp->infile) == -1)
                     return (-1);
                 close(data->save);
             }
             if (!temp->last)
             {
-                if (dup2(data->pd[1], STDOUT_FILENO) == -1)
+                if (dup2(data->pd[1], temp->outfile) == -1)
                     return (-1);
                 close(data->pd[0]);
                 close(data->pd[1]);

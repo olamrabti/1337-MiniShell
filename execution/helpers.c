@@ -6,11 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/14 11:33:54 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:29:14 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+// #include "../parsing/parse.h"
 
 // int ft_strlen(char *str)
 // {
@@ -61,22 +62,40 @@ size_t	ft_strlcat(char *dest, char *src, size_t size)
 //     return (0);
 // }
 
-char *ft_substr(char *s, unsigned int start, size_t len)
-{
-    char *result;
+// char *gc_substr(char *s, unsigned int start, size_t len, t_data *data)
+// {
+//     char *result;
 
-    if (!s)
-        return (NULL);
-    if (start >= (unsigned int)ft_strlen(s) || !len)
-        return (ft_strdup(""));
-    if (len + start > (unsigned int)ft_strlen(s))
-        len = (unsigned int)ft_strlen(s) - start;
-    result = (char *)malloc((len + 1) * sizeof(char));
-    if (!result)
-        return (NULL);
-    ft_memcpy(result, s + start, len);
-    result[len] = '\0';
-    return (result);
+//     if (!s)
+//         return (NULL);
+//     if (start >= (unsigned int)ft_strlen(s) || !len)
+//         return (gc_strdup("", &data->addr));
+//     if (len + start > (unsigned int)ft_strlen(s))
+//         len = (unsigned int)ft_strlen(s) - start;
+//     result = (char *)ft_calloc(&data->addr, (len + 1) , sizeof(char));
+//     if (!result)
+//         return (NULL);
+//     ft_memcpy(result, s + start, len);
+//     result[len] = '\0';
+//     return (result);
+// }
+
+char	*ft_substr(char *s, unsigned int start, size_t len)
+{
+	char	*result;
+
+	if (!s)
+		return (NULL);
+	if (start >= (unsigned int)ft_strlen(s) || !len)
+		return (ft_strdup(""));
+	if (len + start > (unsigned int)ft_strlen(s))
+		len = (unsigned int)ft_strlen(s) - start;
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result)
+		return (NULL);
+	ft_memcpy(result, s + start, len);
+	result[len] = '\0';
+	return (result);
 }
 
 void *ft_memcpy(void *dest, const void *src, size_t n)

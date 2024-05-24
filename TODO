@@ -45,3 +45,5 @@ rm -rf 1
 
 # [ ]modify the params passed to ft_execute 
 # and pass them to handle dir !!
+
+# [ ]echo after sig ctr + c

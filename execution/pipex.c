@@ -8,7 +8,7 @@ int ft_execute(t_list *cmd, t_data *data, char **envp)
     int i;
 
     i = 0;
-    path = ft_get_path(cmd, data->env);
+    path = ft_get_path(cmd, data->env, data);
     if (!path)
         return (-1);
     command = ft_join_for_execve(cmd, data->addr);
@@ -99,15 +99,17 @@ int ft_pipex(t_data *data, char **envp)
     {
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
-        else if (temp->first && temp->last && ft_is_a_dir(temp->value))
+        if (temp->first && temp->last && ft_is_a_dir(temp->value) && (ft_strcmp(temp->value, "./minishell") != 0))
             return (ft_handle_dir(temp, data, envp));
         if (!temp->last)
         {
             if (pipe(data->pd) == -1)
                 exit(127);
         }
-        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1))
+        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1 && temp->last))
             data->pid = fork();
+        else
+            break;
         if (data->pid == -1)
         {
             perror("fork:");

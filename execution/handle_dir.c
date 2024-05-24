@@ -54,13 +54,10 @@ int ft_handle_dir(t_list *cmd, t_data *data, char **envp)
                 ft_putstr_fd(": is a directory\n", 2);
                 return ft_exit_status(126);
             }
-            closedir(dir);
             if (access(cmd->value, X_OK) == 0)
             {
                 if (ft_execute(cmd, data, envp) == -1)
-                {
                     return ft_exit_status(126);
-                }
                 return ft_exit_status(0);
             }
             else

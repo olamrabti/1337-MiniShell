@@ -128,7 +128,7 @@ void concat_words(t_list **list, t_addr **addr)
             curr = curr->nxt;
     }
 }
-int fill_data(t_data **data, t_list *list, int *fds)
+int fill_data(t_data **data, t_list *list)
 {
     t_list *last;
 
@@ -145,7 +145,6 @@ int fill_data(t_data **data, t_list *list, int *fds)
     if (last)
         last->last = 1;
     (*data)->cmd = list;
-    (*data)->fds = fds;
     // print_list(list);
     return 0;
 }
@@ -154,10 +153,8 @@ int ms_parse(t_data **data, char *line, t_env *env)
 {
     t_list *list;
     int count;
-    int *fds;
 
     count = 0;
-    fds = NULL;
     list = init_list(line, &((*data)->addr));
     if (!list)
         return 1;
@@ -167,11 +164,14 @@ int ms_parse(t_data **data, char *line, t_env *env)
     remove_token(&list, RM);
     concat_words(&list, &((*data)->addr));
     remove_token(&list, W_SPACE);
+    (*data)->fds = malloc(count * sizeof(int));
+    if ((*data)->fds == NULL)
+        return 1;
     if (check_syntax(&list, &count) == 1)
         return ft_exit_status(258), 1;
-    fds = handle_redirections(&list, &count, &((*data)->addr), env);
-    if (global_signal)
-        return free(fds), 1;
-    return fill_data(data, list, fds);
+    (*data)->fds = handle_redirections(&list, &count, data , env);
+    if (global_signal == 2)
+        return ft_close_descriptors(*data), 1;
+    return fill_data(data, list);
 }
 

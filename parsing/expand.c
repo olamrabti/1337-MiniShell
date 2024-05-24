@@ -55,16 +55,15 @@ static char *put_str(int n, char *str, int count)
     return (str);
 }
 
-char *ft_itoa(int n, t_addr **addr)
+char *gc_itoa(int n, t_addr **addr)
 {
     size_t count;
     int temp;
     char *str;
+    // (void)addr;
 
     count = 1;
     temp = n;
-    if (n == -2147483648)
-        return (gc_strdup("-2147483648", addr));
     while (temp / 10)
     {
         temp /= 10;
@@ -72,7 +71,8 @@ char *ft_itoa(int n, t_addr **addr)
     }
     if (n < 0)
         count++;
-    str = (char *)malloc(sizeof(char) * (count + 1));
+    str = (char *)ft_calloc(addr, sizeof(char), count + 1);
+    // str = (char *)malloc(sizeof(char) * (count + 1));
     if (!str)
         return (NULL);
     return (put_str(n, str, count));
@@ -87,7 +87,7 @@ char *ft_expand(char *key, t_env *env, t_addr **addr)
     if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
         return key;
     if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)
-        return ft_itoa(ft_exit_status(-1), addr);
+        return gc_itoa(ft_exit_status(-1), addr);
     if (key && (ft_strlen(key) == 1 || ft_isdigit(key[1])))
         return (gc_strdup("", addr));
     value = ft_getvalue(key + 1, env, addr);
@@ -120,10 +120,7 @@ void empty_cmd(t_list *temp, t_addr **addr, t_env *env)
     while (temp)
     {
         if (temp->type == PIPE)
-        {
-            temp->type = RM;
             break;
-        }
         if (temp->nxt && temp->type == H_DOC)
         {
             fd = fill_heredoc(temp->nxt, addr, env);
@@ -163,7 +160,7 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
     splitted = ft_split_sp(value, addr);
     if (!splitted)
         return;
-    if (is_after_red(curr, addr, env) || !splitted[0])
+    if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0])
     {
         delete_node(curr);
         return;
@@ -191,7 +188,10 @@ void find_delimiter(t_list *list)
     if (temp->nxt)
         temp = temp->nxt;
     while (temp && temp->type == W_SPACE)
+    {
+        delete_node(temp);
         temp = temp->nxt;
+    }
     if (temp && temp->type == Q_DOLLAR)
         temp->type = LTRAL;
     if (temp && temp->type == _DOLLAR)

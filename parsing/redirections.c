@@ -31,22 +31,22 @@ void assign_fd(t_list *tmp, t_addr **addr)
 
 int open_file(t_list *curr, t_list *tmp, t_addr **addr, t_env *env)
 {
-    if (tmp->infile >= 0 && tmp->outfile > 0 && (curr->type == RED_OUT || curr->type == RED_OUT_APPEND))
+    if (tmp->infile >= 0 && tmp->outfile >= 0 && (curr->type == RED_OUT || curr->type == RED_OUT_APPEND))
     {
         if (curr->type == RED_OUT_APPEND)
-            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0777);
+            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_APPEND, 0644);
         else
-            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0777);
+            tmp->outfile = open(curr->nxt->value, O_CREAT | O_RDWR | O_TRUNC, 0644);
         if (tmp->outfile == -1)
-            return perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->outfile;
-        return tmp->outfile;
+            return ft_exit_status(1), perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->outfile;
+        return curr->type = RM, curr->nxt->type = RM, tmp->outfile;
     }
-    if (tmp->infile >= 0 && tmp->outfile > 0 && curr->type == RED_IN)
+    if (tmp->infile >= 0 && tmp->outfile >= 0 && curr->type == RED_IN)
     {
         tmp->infile = open(curr->nxt->value, O_RDWR);
         if (tmp->infile == -1)
-            return perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->infile;
-        return tmp->infile;
+            return ft_exit_status(1), perror(curr->nxt->value), empty_cmd(curr, addr, env), tmp->infile;
+        return curr->type = RM, curr->nxt->type = RM, tmp->infile;
     }
     curr->type = RM;
     curr->nxt->type = RM;
@@ -60,33 +60,29 @@ int open_heredoc(t_list *curr, t_list *tmp, t_addr **addr, t_env *env)
     return tmp->infile;
 }
 
-int *handle_redirections(t_list **list, int *count, t_addr **addr , t_env *env)
+int *handle_redirections(t_list **list, int *count, t_data **data , t_env *env)
 {
     t_list *curr;
     t_list *tmp;
-    int *fds;
     int i;
-
-    fds = ft_calloc(addr, *count, sizeof(int));
-    if (!fds)
-        return NULL;
-    fds[*count] = -1;
+   
+    (*data)->fds[*count] = -1;
     curr = *list;
     tmp = *list;
     i = 0;
     while (curr)
     {
         if ((curr->type == RED_OUT || curr->type == RED_OUT_APPEND || curr->type == RED_IN))
-            fds[i++] = open_file(curr, tmp, addr, env);
+            (*data)->fds[i++] = open_file(curr, tmp, &(*data)->addr, env);
         else if (curr->type == H_DOC)
-            fds[i++] = open_heredoc(curr, tmp, addr, env);
+            (*data)->fds[i++] = open_heredoc(curr, tmp, &(*data)->addr, env);
         curr = curr->nxt;
         if (!curr || curr->type == PIPE)
         {
-            assign_fd(tmp, addr);
-            if (curr)
+            assign_fd(tmp, &(*data)->addr);
+            if (curr && curr->type == PIPE)
                 tmp = curr;
         }
     }
-    return fds;
+    return (*data)->fds;
 }

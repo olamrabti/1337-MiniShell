@@ -153,7 +153,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
 {
     t_list *list;
     int count;
-    // int *fds;
+
     count = 0;
     list = init_list(line, &((*data)->addr));
     if (!list)
@@ -167,11 +167,11 @@ int ms_parse(t_data **data, char *line, t_env *env)
     if (check_syntax(&list, &count) == 1)
         return ft_exit_status(258), 1;
     (*data)->fds = malloc(count * sizeof(int));
-    if (!(*data)->fds)
+    if ((*data)->fds == NULL)
         return 1;
     (*data)->fds = handle_redirections(&list, &count, data , env);
-    if (global_signal)
-        return free((*data)->fds), 1;
+    if (global_signal == 2)
+        return ft_close_descriptors(*data), 1;
     return fill_data(data, list);
 }
 

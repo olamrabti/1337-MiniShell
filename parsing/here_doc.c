@@ -33,7 +33,7 @@ void h_doc_handler(int signum)
 {
     if (signum == SIGINT)
     {
-        global_signal = 1;
+        global_signal = 2;
         ioctl(STDIN_FILENO, TIOCSTI, "\n");
         ft_exit_status(1);
     }

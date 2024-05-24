@@ -106,8 +106,10 @@ int ft_pipex(t_data *data, char **envp)
             if (pipe(data->pd) == -1)
                 exit(127);
         }
-        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1))
+        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1 && temp->last))
             data->pid = fork();
+        else
+            break;
         if (data->pid == -1)
         {
             perror("fork:");

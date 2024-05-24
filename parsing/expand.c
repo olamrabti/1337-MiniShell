@@ -163,7 +163,7 @@ void ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
     splitted = ft_split_sp(value, addr);
     if (!splitted)
         return;
-    if (is_after_red(curr, addr, env) || !splitted[0])
+    if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0])
     {
         delete_node(curr);
         return;
@@ -191,7 +191,10 @@ void find_delimiter(t_list *list)
     if (temp->nxt)
         temp = temp->nxt;
     while (temp && temp->type == W_SPACE)
+    {
+        delete_node(temp);
         temp = temp->nxt;
+    }
     if (temp && temp->type == Q_DOLLAR)
         temp->type = LTRAL;
     if (temp && temp->type == _DOLLAR)

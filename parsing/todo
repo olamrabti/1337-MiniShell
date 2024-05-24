@@ -17,6 +17,8 @@
         // DONE refactor redirections
         // NOTE refactor quotes
         // FIXME figure out how to get rid of that $? leak from itoa
+        // FIXED << k ls > $cmd | ls , didnt found the right delimiter
+        // FIXED ls > $cmd, must not exit 
 
         // FIXED args handling : 
                 // echo $ $$ $'' $"" "$USER" '$USER' $'USER' $"USER" $dhfgh $USER $'sdgdh' $"dgdfh"

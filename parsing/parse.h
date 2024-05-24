@@ -44,7 +44,7 @@ int *handle_redirections(t_list **list, int *count, t_data **data , t_env *env);
 // int is_valid_name(char *str);
 void empty_cmd(t_list *temp, t_addr **addr, t_env *env);
 int fill_heredoc(t_list *deli, t_addr **addr, t_env *env);
-
+void find_delimiter(t_list *list);
 
 
 t_list	*create_node(char *value, token type, t_addr **addr);

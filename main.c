@@ -94,6 +94,7 @@ int main(int ac, char **av, char **envp)
         }
         ft_lstclear(&data->addr, free);
         free(line);
+        ft_close_descriptors(data);
         free((data)->fds);
         (data)->fds = NULL;
         global_signal = 0;

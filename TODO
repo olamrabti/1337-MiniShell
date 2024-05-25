@@ -10,9 +10,9 @@ rm -rf 1
 
 ##cat | << cat
 
-# [ ] return 1 f ms_pars
+# [x] return 1 f ms_pars
 # [x] old pwd in -i ./minishell
-# [ ] sort export
+# [x] sort export
 
 
 
@@ -43,7 +43,9 @@ rm -rf 1
 # MINISHELL$ ls >> "s"
 # syntax error near unexpected token `s'
 
-# [ ]modify the params passed to ft_execute 
+# [x]modify the params passed to ft_execute 
 # and pass them to handle dir !!
 
-# [ ]echo after sig ctr + c
+# [x] echo after sig ctr + c
+
+# [ ]relink in makefile

@@ -71,11 +71,91 @@ int ft_close_descriptors(t_data *data)
         i = 0;
         while (data->fds[i] > 0)
         {
+            // printf("|%d|\n", data->fds[i]);
             close(data->fds[i]);
             i++;
         }
     }
     return (SUCCESS);
+}
+
+void handle_parent_pipes(t_data *data, t_list *temp)
+{
+    if (!temp->first)
+        close(data->save);
+    if (!temp->last)
+    {
+        close(data->pd[1]);
+        data->save = dup(data->pd[0]);
+        close(data->pd[0]);
+    }
+}
+
+void handle_file_descriptors(t_list *temp)
+{
+    if (temp->infile != 0)
+    {
+        if (temp->infile == -1)
+            exit(1);
+        if (dup2(temp->infile, 0) == -1)
+            perror("infile");
+        close(temp->infile);
+    }
+    if (temp->outfile != 1)
+    {
+        if (temp->outfile == -1)
+            exit(1);
+        if (dup2(temp->outfile, 1) == -1)
+            perror("outfile");
+        close(temp->outfile);
+    }
+}
+
+void handle_pipes(t_data *data, t_list *temp)
+{
+    if (!temp->first)
+    {
+        if (dup2(data->save, temp->infile) == -1)
+            exit(-1);
+        close(data->save);
+    }
+    if (!temp->last)
+    {
+        if (dup2(data->pd[1], temp->outfile) == -1)
+            exit(-1);
+        close(data->pd[0]);
+        close(data->pd[1]);
+    }
+}
+
+void execute_command(t_list *temp, t_data *data, char **envp)
+{
+    if (ft_is_builtin(temp->value))
+    {
+        ft_execute_builtin(temp, data);
+        exit(ft_exit_status(-1));
+    }
+    else if (ft_is_a_dir(temp->value) && temp->type != NULL_TOKEN)
+    {
+        ft_handle_dir(temp, data, envp);
+        exit(ft_exit_status(-1));
+    }
+    else
+    {
+        if (temp->type != NULL_TOKEN)
+        {
+            if (ft_execute(temp, data, envp) == -1)
+            {
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(temp->value, 2);
+                ft_putstr_fd(" command not found\n", 2);
+                ft_exit_status(127);
+                exit(127);
+            }
+        }
+        else
+            exit(SUCCESS);
+    }
 }
 
 int ft_pipex(t_data *data, char **envp)
@@ -86,7 +166,6 @@ int ft_pipex(t_data *data, char **envp)
     int *tab;
     int i;
 
-    (void)envp;
     total = 0;
     term = NULL;
     i = 0;
@@ -115,76 +194,16 @@ int ft_pipex(t_data *data, char **envp)
             perror("fork:");
             return (ERROR);
         }
-        tab[i] = data->pid;
+        tab[i++] = data->pid;
         if (data->pid == 0)
         {
             signal(SIGINT, SIG_DFL);
             signal(SIGQUIT, SIG_DFL);
-            if (temp->infile != 0)
-            {
-                if (temp->infile == -1)
-                    exit(1);
-                if (dup2(temp->infile, 0) == -1)
-                    perror("infile");
-                close(temp->infile);
-            }
-            if (temp->outfile != 1)
-            {
-                if (temp->outfile == -1)
-                    exit(1);
-                if (dup2(temp->outfile, 1) == -1)
-                    perror("outfile");
-                close(temp->outfile);
-            }
-            if (!temp->first)
-            {
-                if (dup2(data->save, temp->infile) == -1)
-                    return (-1);
-                close(data->save);
-            }
-            if (!temp->last)
-            {
-                if (dup2(data->pd[1], temp->outfile) == -1)
-                    return (-1);
-                close(data->pd[0]);
-                close(data->pd[1]);
-            }
-            if (ft_is_builtin(temp->value))
-            {
-                ft_execute_builtin(temp, data);
-                exit(ft_exit_status(-1));
-            }
-            else if (ft_is_a_dir(temp->value) && temp->type != NULL_TOKEN)
-            {
-                ft_handle_dir(temp, data, envp);
-                exit(ft_exit_status(-1));
-            }
-            else
-            {
-                if (temp->type != NULL_TOKEN)
-                {
-                    if (ft_execute(temp, data, envp) == -1)
-                    {
-                        ft_putstr_fd("minishell: ", 2);
-                        ft_putstr_fd(temp->value, 2);
-                        ft_putstr_fd(" command not found\n", 2);
-                        ft_exit_status(127);
-                        exit(127);
-                    }
-                }
-                else
-                    exit(SUCCESS);
-            }
+            handle_file_descriptors(temp);
+            handle_pipes(data, temp);
+            execute_command(temp, data, envp);
         }
-        if (!temp->first)
-            close(data->save);
-        if (!temp->last)
-        {
-            close(data->pd[1]);
-            data->save = dup(data->pd[0]);
-            close(data->pd[0]);
-        }
-        i++;
+        handle_parent_pipes(data, temp);
         temp = temp->nxt;
     }
     ft_parent_wait(data, tab, total, term);

@@ -168,10 +168,10 @@ int ms_parse(t_data **data, char *line, t_env *env)
     if ((*data)->fds == NULL)
         return 1;
     if (check_syntax(&list, &count) == 1)
-        return ft_exit_status(258), 1;
+        return  ft_exit_status(258), 1;
     (*data)->fds = handle_redirections(&list, &count, data , env);
     if (global_signal == 2)
-        return ft_close_descriptors(*data), 1;
+        return  1;
     return fill_data(data, list);
 }
 

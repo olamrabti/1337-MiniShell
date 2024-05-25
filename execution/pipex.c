@@ -32,7 +32,7 @@ int *ft_alloc_tab(t_data *data, int *total)
     return (tab);
 }
 
-int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
+int ft_parent_wait(t_data *data, int *tab, int total)
 {
     int status;
     int i;
@@ -46,12 +46,12 @@ int ft_parent_wait(t_data *data, int *tab, int total, struct termios *term)
     }
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
     {
-        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        tcsetattr(STDIN_FILENO, TCSANOW, data->term);
         write(1, "Quit: 3\n", 8);
     }
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
     {
-        tcsetattr(STDIN_FILENO, TCSANOW, term);
+        tcsetattr(STDIN_FILENO, TCSANOW, data->term);
         write(1, "\n", 1);
     }
     if (WIFEXITED(status))
@@ -169,22 +169,21 @@ void ft_handle_childs(t_list *temp, t_data *data, char **envp)
 
 int ft_pipex(t_data *data, char **envp)
 {
-    struct termios *term;
     t_list *temp;
     int total;
     int *tab;
     int i;
 
     total = 0;
-    term = NULL;
     i = 0;
     tab = ft_alloc_tab(data, &total);
     temp = data->cmd;
-    tcgetattr(STDIN_FILENO, term);
+    tcgetattr(STDIN_FILENO, data->term);
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
     while (temp)
     {
+        // ft_handle_no_fork();
         if (temp->first && temp->last && ft_is_builtin(temp->value))
             return (ft_execute_builtin(temp, data));
         if (temp->first && temp->last && ft_is_a_dir(temp->value) && (ft_strcmp(temp->value, "./minishell") != 0))
@@ -206,6 +205,6 @@ int ft_pipex(t_data *data, char **envp)
         handle_parent_pipes(data, temp);
         temp = temp->nxt;
     }
-    ft_parent_wait(data, tab, total, term);
+    ft_parent_wait(data, tab, total);
     return (SUCCESS);
 }

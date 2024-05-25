@@ -39,13 +39,13 @@ char	*ft_strdup(const char *s)
 	{
 		copy = (char *)malloc(sizeof(char));
 		if (!copy)
-			return (NULL);
+			exit(1);
 		copy[0] = '\0';
 		return (copy);
 	}
 	copy = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!copy)
-		return (NULL);
+		exit(1);
 	ft_memcpy(copy, s, ft_strlen(s));
 	copy[ft_strlen(s)] = '\0';
 	return (copy);

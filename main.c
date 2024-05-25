@@ -58,13 +58,14 @@ int main(int ac, char **av, char **envp)
     //     return (0);
     data = malloc(sizeof(t_data));
     if (!data)
-        return (-1);
+        exit(1);
     data->cmd = NULL;
     data->fds = NULL;
     data->is_hiden = 0;
     data->oldpwd = 1;
     data->save = -1;
     data->addr = NULL;
+    data->term = NULL;
     env = ft_parce_env(envp);
     data->env = env;
     ft_no_env(&data);

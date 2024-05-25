@@ -75,6 +75,7 @@ typedef struct s_data
     int pd[2];
     int is_hiden;
     int oldpwd;
+    struct termios *term;
     struct s_env *env;
     struct s_addr *addr;
 

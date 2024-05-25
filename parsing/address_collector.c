@@ -23,7 +23,7 @@ void *ft_calloc(t_addr **addr, size_t count, size_t size)
 		return (NULL);
 	copy = (char *)malloc(count * size);
 	if (!copy)
-		return (NULL);
+		exit(1);
 	ft_bzero(copy, size * count);
 	add_addr(addr, new_addr(copy));
 	return (copy);
@@ -35,7 +35,7 @@ t_addr *new_addr(char *value)
 
 	node = malloc(sizeof(t_addr));
 	if (!node)
-		return (NULL);
+		exit(1);
 	node->nxt = NULL;
 	node->address = value;
 	return (node);

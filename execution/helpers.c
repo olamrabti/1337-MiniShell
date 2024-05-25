@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 15:01:35 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:34:58 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		len = (unsigned int)ft_strlen(s) - start;
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
-		return (NULL);
+		exit(1);
 	ft_memcpy(result, s + start, len);
 	result[len] = '\0';
 	return (result);
@@ -88,7 +88,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	len = ft_strlen(s2) + ft_strlen(s1);
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
-		return (0);
+		exit(1);
 	while (s1[i])
 	{
 		result[i] = s1[i];

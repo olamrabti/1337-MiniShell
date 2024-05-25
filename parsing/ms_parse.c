@@ -135,7 +135,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
     remove_token(&list, W_SPACE);
     (*data)->fds = malloc(count * sizeof(int));
     if ((*data)->fds == NULL)
-        return 1;
+        exit(1);
     if (check_syntax(&list, &count) == 1)
         return ft_close_descriptors(*data), ft_exit_status(258), 1;
     (*data)->fds = handle_redirections(&list, &count, data, env);

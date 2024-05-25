@@ -23,7 +23,7 @@ typedef enum token {
         W_SPACE = 1,
         RED_IN,
         RED_OUT, 
-        RED_OUT_APPEND, 
+        R_O_APPEND, 
         H_DOC, 
         PIPE,
         _DOLLAR,
@@ -85,19 +85,18 @@ typedef struct s_data
 
 ////////////////////// parcing ////////////////////////////////
 
-
-// t_list *ms_tokenize(char *line, t_addr **addr);
 int ms_parse(t_data **data, char *line, t_env *env);
-void remove_list(t_list **list);
+
+// NOTE delete me before push 
 void print_list(t_list *list);
 
 
 
+////////////////////// gc ////////////////////////////////
+
 void	*ft_calloc(t_addr **addr, size_t count, size_t size);
-int	add_addr(t_addr **list, t_addr *new);
 t_addr	*new_addr(char *value);
-void print_addr(t_addr *list);
-// void	ft_lstiter(t_addr *lst, void (*f)(void *));
+int	add_addr(t_addr **list, t_addr *new);
 void	ft_lstclear(t_addr **lst, void (*del)(void *));
 
 

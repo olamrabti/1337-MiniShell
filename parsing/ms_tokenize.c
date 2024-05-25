@@ -1,83 +1,102 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_tokenize.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 15:03:07 by olamrabt          #+#    #+#             */
+/*   Updated: 2024/05/25 15:39:24 by olamrabt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
-int is_operator(t_list *current, char *line, int *i, t_addr **addr)
+int	is_operator(t_list *curr, char *line, int *i, t_addr **addr)
 {
-    if (line[*i] == '<' && line[*i + 1] == '<')
-        return node_addback(&current, create_node(gc_strdup("<<", addr), H_DOC, addr)), *i += 1, 1;
-    else if (line[*i] == '>' && line[*i + 1] == '>')
-        return node_addback(&current, create_node(gc_strdup(">>", addr), RED_OUT_APPEND, addr)), *i += 1, 1;
-    else if (line[*i] == '>')
-        return node_addback(&current, create_node(gc_strdup(">", addr), RED_OUT, addr)), 1;
-    else if (line[*i] == '<')
-        return node_addback(&current, create_node(gc_strdup("<", addr), RED_IN, addr)), 1;
-    else if (line[*i] == '|')
-        return node_addback(&current, create_node(gc_strdup("|", addr), PIPE, addr)), 1;
-    else if (line[*i] == '"')
-        return node_addback(&current, create_node(gc_strdup("\"", addr), D_QUOTE, addr)), 1;
-    else if (line[*i] == '\'')
-        return node_addback(&current, create_node(gc_strdup("'", addr), S_QUOTE, addr)), 1;
-    else
-        return 0;
+	if (line[*i] == '<' && line[*i + 1] == '<')
+	{
+		addback(&curr, cr_node(gc_strdup("<<", addr), H_DOC, addr));
+		*i += 1;
+	}
+	else if (line[*i] == '>' && line[*i + 1] == '>')
+	{
+		addback(&curr, cr_node(gc_strdup(">>", addr), R_O_APPEND, addr));
+		*i += 1;
+	}
+	else if (line[*i] == '>')
+		addback(&curr, cr_node(gc_strdup(">", addr), RED_OUT, addr));
+	else if (line[*i] == '<')
+		addback(&curr, cr_node(gc_strdup("<", addr), RED_IN, addr));
+	else if (line[*i] == '|')
+		addback(&curr, cr_node(gc_strdup("|", addr), PIPE, addr));
+	else if (line[*i] == '"')
+		addback(&curr, cr_node(gc_strdup("\"", addr), D_QUOTE, addr));
+	else if (line[*i] == '\'')
+		addback(&curr, cr_node(gc_strdup("'", addr), S_QUOTE, addr));
+	else
+		return (0);
+	return (1);
 }
 
-void is_word(t_list *current, char *line, int *i, t_addr **addr)
+void	is_word(t_list *curr, char *line, int *i, t_addr **addr)
 {
-    current = get_last_node(current);
-    if (current && current->type == WORD)
-        current->value = ft_charjoin(current->value, line[*i], addr);
-    else
-        node_addback(&current, create_node(ft_charjoin(NULL, line[*i], addr), WORD, addr));
+	curr = get_last_node(curr);
+	if (curr && curr->type == WORD)
+		curr->value = ft_charjoin(curr->value, line[*i], addr);
+	else
+		addback(&curr, cr_node(ft_charjoin(NULL, line[*i], addr), WORD, addr));
 }
 
-int count_spaces(char *line)
+int	count_spaces(char *line)
 {
-    int j;
+	int	j;
 
-    j = 1;
-    while (line[j] && ft_isspace(line[j]))
-        j += 1;
-    return j;
+	j = 1;
+	while (line[j] && ft_isspace(line[j]))
+		j += 1;
+	return (j);
 }
 
-void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j)
+void	ms_tokenize(t_list *curr, char *str, t_addr **a, int *j)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (line[i])
-    {
-        if (line[i] == '$')
-        {
-            *j = get_key(line, i, *j);
-            if (*j == 1 && line[i + 1] && (line[i + 1] == '\'' || line[i + 1] == '"'))
-                node_addback(&current, create_node(ft_strndup(&line[i], *j, addr), RM, addr));
-            else
-                node_addback(&current, create_node(ft_strndup(&line[i], *j, addr), _DOLLAR, addr));
-            i += *j - 1;
-        }
-        else if (ft_isspace(line[i]))
-        {
-            *j = count_spaces(&line[i]);
-            node_addback(&current, create_node(ft_strndup(&line[i], *j, addr), W_SPACE, addr));
-            i += *j - 1;
-        }
-        else if (!is_operator(current, line, &i, addr))
-            is_word(current, line, &i, addr);
-        i++;
-    }
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			*j = get_key(str, i, *j);
+			if (*j == 1 && str[i + 1]
+				&& (str[i + 1] == '\'' || str[i + 1] == '"'))
+				addback(&curr, cr_node(ft_strndup(&str[i], *j, a), RM, a));
+			else
+				addback(&curr, cr_node(ft_strndup(&str[i], *j, a), _DOLLAR, a));
+			i += *j - 1;
+		}
+		else if (ft_isspace(str[i]))
+		{
+			*j = count_spaces(&str[i]);
+			addback(&curr, cr_node(ft_strndup(&str[i], *j, a), W_SPACE, a));
+			i += *j - 1;
+		}
+		else if (!is_operator(curr, str, &i, a))
+			is_word(curr, str, &i, a);
+		i++;
+	}
 }
 
-t_list *init_list(char *line, t_addr **addr)
+t_list	*init_list(char *line, t_addr **addr)
 {
-    t_list *head;
-    t_list *current;
-    int j;
-    j = 1;
+	t_list	*head;
+	t_list	*curr;
+	int		j;
 
-    head = create_node(NULL, NULL_TOKEN, addr);
-    current = head;
-    ms_tokenize(current, line, addr, &j);
-    return (head);
+	j = 1;
+	head = cr_node(NULL, NULL_TOKEN, addr);
+	curr = head;
+	ms_tokenize(curr, line, addr, &j);
+	return (head);
 }

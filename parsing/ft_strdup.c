@@ -1,18 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 14:36:49 by olamrabt          #+#    #+#             */
+/*   Updated: 2024/05/25 14:36:49 by olamrabt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parse.h"
 
-int ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	if (!s)
-		return 0;
+		return (0);
 	if (!*s)
-       return 0;
+		return (0);
 	return (ft_strlen(s + 1) + 1);
 }
 
-char *gc_strdup(const char *s, t_addr **addr)
+char	*gc_strdup(const char *s, t_addr **addr)
 {
-	char *copy;
+	char	*copy;
 
 	if (!s[0])
 	{
@@ -22,14 +33,13 @@ char *gc_strdup(const char *s, t_addr **addr)
 		copy[0] = '\0';
 		return (copy);
 	}
-	copy = (char *)ft_calloc(addr, (ft_strlen(s) + 1) , sizeof(char));
+	copy = (char *)ft_calloc(addr, (ft_strlen(s) + 1), sizeof(char));
 	if (!copy)
 		return (NULL);
 	ft_memcpy(copy, s, ft_strlen(s));
 	copy[ft_strlen(s)] = '\0';
 	return (copy);
 }
-
 
 char	*ft_strdup(const char *s)
 {
@@ -51,28 +61,10 @@ char	*ft_strdup(const char *s)
 	return (copy);
 }
 
-// char	*ft_strdup(const char *str)
-// {
-// 	int		i;
-// 	char	*p;
-
-// 	i = 0;
-// 	p = (char *)malloc(ft_strlen(str) + 1 * sizeof(char));
-// 	if (p == NULL)
-// 		return (NULL);
-// 	while (str[i] != '\0')
-// 	{
-// 		p[i] = str[i];
-// 		i++;
-// 	}
-// 	p[i] = '\0';
-// 	return (p);
-// }
-
-char *ft_strndup(char *s, int n, t_addr **addr)
+char	*ft_strndup(char *s, int n, t_addr **addr)
 {
-	char *copy;
-	int i;
+	char	*copy;
+	int		i;
 
 	if (!s)
 		return (NULL);

@@ -6,22 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 15:22:09 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:49:39 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-// [x] var with no value
-// [x] var with value
-// [x] var already exist
-// [x] var with += value
-// [x] var with += value already exist
-// [x] var key="" empty value
-// [x] var key=" " empty value
-// [x] invalid var
-// [x] sort export
 
 t_env *ft_sort_export(t_env **envp)
 {
@@ -101,7 +91,6 @@ static int ft_is_exist(char *str, t_env *envp, int concat)
             env = env->next;
         }
     }
-
     return (0);
 }
 
@@ -276,15 +265,9 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
                 if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
                     data->is_hiden = 0;
                 if (ft_is_exist(cmd->args[i], *env, concat) == 1)
-                {
-                    // [x] change its value
                     ft_change_env(cmd->args[i], *env, concat, data);
-                }
                 else
-                {
-                    // [x] add node and if there is '=' assigne a value
                     ft_add_to_export(cmd->args[i], env, concat);
-                }
             }
             else
             {
@@ -293,14 +276,11 @@ int ft_export(t_list *cmd, t_env **envp, t_data *data)
                 ft_putstr_fd(cmd->args[i], 2);
                 ft_putstr_fd(": not a valid identifier\n", 2);
             }
-            // move to next argument
             i++;
         }
     }
     else
-    {
         ft_print_export(env, data->is_hiden);
-    }
     if (flag)
         return flag;
     return (SUCCESS);

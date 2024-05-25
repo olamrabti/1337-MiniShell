@@ -25,33 +25,6 @@ void remove_token(t_list **list, token token)
     }
 }
 
-int check_syntax(t_list **list, int *count)
-{
-    t_list *curr;
-
-    curr = *list;
-    while (curr)
-    {
-        if (curr->type == PIPE)
-        {
-            if ((curr->prv && !curr->prv->prv)|| !curr->nxt)
-                return printf("syntax error near unexpected token `|'\n"), 1;
-            if (curr->nxt && curr->nxt->type == PIPE)
-                return printf("syntax error near unexpected token `||'\n"), 1;
-        }
-        if (curr->type == RED_IN || curr->type == RED_OUT || curr->type == RED_OUT_APPEND || curr->type == H_DOC)
-        {
-            (*count)++;
-            if ((!curr->nxt))
-                return printf("syntax error near unexpected token `newline'\n"), 1;
-            if ((curr->nxt && curr->nxt->type != WORD && curr->nxt->type != LTRAL))
-                return printf("syntax error near unexpected token `%s'\n", curr->nxt->value), 1;
-        }
-        curr = curr->nxt;
-    }
-    return 0;
-}
-
 int fill_args(t_list *curr, int count, t_addr **addr)
 {
     char **tmp;
@@ -62,18 +35,13 @@ int fill_args(t_list *curr, int count, t_addr **addr)
         return 1;
     tmp[--count] = NULL;
     i = 0;
-    while (count)
+    while (count && curr && curr->prv)
     {
-        if (curr && curr->prv)
-        {
-            tmp[--count] = curr->value;
-            curr->type = RM;
-            if (curr->outfile != 1)
-                curr->prv->outfile = curr->outfile;
-            curr = curr->prv;
-        }
-        else
-            break;
+        tmp[--count] = curr->value;
+        curr->type = RM;
+        if (curr->outfile != 1)
+            curr->prv->outfile = curr->outfile;
+        curr = curr->prv;
     }
     if (curr)
         curr->args = tmp;
@@ -113,8 +81,8 @@ void concat_words(t_list **list, t_addr **addr)
     curr = *list;
     while (curr)
     {
-        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) && curr->nxt 
-        && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
+        if ((curr->type == WORD || curr->type == NF_VAR || curr->type == LTRAL) 
+        && curr->nxt && (curr->nxt->type == WORD || curr->nxt->type == NF_VAR || curr->nxt->type == LTRAL))
         {
             tmp = gc_strjoin(curr->value, curr->nxt->value, addr);
             curr->value = tmp;
@@ -160,6 +128,7 @@ int ms_parse(t_data **data, char *line, t_env *env)
         return 1;
     if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
         return printf("quote>\n"), 1;
+    remove_token(&list, RM);
     expand_all(&list, env, &((*data)->addr));
     remove_token(&list, RM);
     concat_words(&list, &((*data)->addr));
@@ -168,10 +137,9 @@ int ms_parse(t_data **data, char *line, t_env *env)
     if ((*data)->fds == NULL)
         return 1;
     if (check_syntax(&list, &count) == 1)
-        return  ft_exit_status(258), 1;
-    (*data)->fds = handle_redirections(&list, &count, data , env);
+        return ft_close_descriptors(*data), ft_exit_status(258), 1;
+    (*data)->fds = handle_redirections(&list, &count, data, env);
     if (global_signal == 2)
-        return  1;
+        return ft_close_descriptors(*data), 1; // free((*data)->fds) bra at any case
     return fill_data(data, list);
 }
-

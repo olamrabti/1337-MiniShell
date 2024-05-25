@@ -68,10 +68,10 @@ int ft_close_descriptors(t_data *data)
     i = 0;
     if (data && data->fds)
     {
-        i = 0;
-        while (data->fds[i] > 0)
+        while (data->fds[i])
         {
-            // printf("|%d|\n", data->fds[i]);
+            if (data->fds[i] == -2)
+                return (SUCCESS);
             close(data->fds[i]);
             i++;
         }
@@ -158,6 +158,15 @@ void execute_command(t_list *temp, t_data *data, char **envp)
     }
 }
 
+void ft_handle_childs(t_list *temp, t_data *data, char **envp)
+{
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
+    handle_file_descriptors(temp);
+    handle_pipes(data, temp);
+    execute_command(temp, data, envp);
+}
+
 int ft_pipex(t_data *data, char **envp)
 {
     struct termios *term;
@@ -190,19 +199,10 @@ int ft_pipex(t_data *data, char **envp)
         else
             break;
         if (data->pid == -1)
-        {
-            perror("fork:");
-            return (ERROR);
-        }
+            return (perror("fork:"), (ERROR));
         tab[i++] = data->pid;
         if (data->pid == 0)
-        {
-            signal(SIGINT, SIG_DFL);
-            signal(SIGQUIT, SIG_DFL);
-            handle_file_descriptors(temp);
-            handle_pipes(data, temp);
-            execute_command(temp, data, envp);
-        }
+            ft_handle_childs(temp, data, envp);
         handle_parent_pipes(data, temp);
         temp = temp->nxt;
     }

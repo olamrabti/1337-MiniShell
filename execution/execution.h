@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 18:10:40 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:21:21 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	ft_isdigit(int d);
 int	ft_isalpha(int c);
 int	ft_isalnum(int c);
 
-int  *ft_alloc_tab(t_data *data, int *total);
+int *ft_alloc_tab(t_data *data, int *total);
 
 int ft_close_descriptors(t_data *data);
 

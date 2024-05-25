@@ -66,6 +66,7 @@ int main(int ac, char **av, char **envp)
     data->cmd = NULL;
     data->fds = NULL;
     data->is_hiden = 0;
+    data->total = 0;
     data->oldpwd = 1;
     data->save = -1;
     data->addr = NULL;

@@ -31,6 +31,16 @@ void is_word(t_list *current, char *line, int *i, t_addr **addr)
         node_addback(&current, create_node(ft_charjoin(NULL, line[*i], addr), WORD, addr));
 }
 
+int count_spaces(char *line)
+{
+    int j;
+
+    j = 1;
+    while (line[j] && ft_isspace(line[j]))
+        j += 1;
+    return j;
+}
+
 void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j)
 {
     int i;
@@ -49,9 +59,7 @@ void ms_tokenize(t_list *current, char *line, t_addr **addr, int *j)
         }
         else if (ft_isspace(line[i]))
         {
-            *j = 1;
-            while ((line[i + *j]) && ft_isspace(line[i + *j]))
-                *j+= 1;
+            *j = count_spaces(&line[i]);
             node_addback(&current, create_node(ft_strndup(&line[i], *j, addr), W_SPACE, addr));
             i += *j - 1;
         }
@@ -70,7 +78,6 @@ t_list *init_list(char *line, t_addr **addr)
 
     head = create_node(NULL, NULL_TOKEN, addr);
     current = head;
-    ms_tokenize(current,line, addr, &j);
+    ms_tokenize(current, line, addr, &j);
     return (head);
 }
-

@@ -60,7 +60,7 @@ char *gc_itoa(int n, t_addr **addr)
     size_t count;
     int temp;
     char *str;
-    // (void)addr;
+    (void)addr;
 
     count = 1;
     temp = n;
@@ -72,7 +72,6 @@ char *gc_itoa(int n, t_addr **addr)
     if (n < 0)
         count++;
     str = (char *)ft_calloc(addr, sizeof(char), count + 1);
-    // str = (char *)malloc(sizeof(char) * (count + 1));
     if (!str)
         return (NULL);
     return (put_str(n, str, count));
@@ -100,15 +99,11 @@ void empty_cmd(t_list *temp, t_addr **addr, t_env *env)
 {
     int fd;
 
-    fd = 0;
+    fd = -1;
     while (temp && temp->type != PIPE && temp->type != NULL_TOKEN)
     {
         if (temp->nxt && temp->type == H_DOC)
-        {
-            fd = fill_heredoc(temp->nxt, addr, env);
-            if (fd)
-                close(fd);
-        }
+            close(fill_heredoc(temp->nxt, addr, env));
         temp->type = RM;
         temp = temp->prv;
     }
@@ -122,11 +117,7 @@ void empty_cmd(t_list *temp, t_addr **addr, t_env *env)
         if (temp->type == PIPE)
             break;
         if (temp->nxt && temp->type == H_DOC)
-        {
-            fd = fill_heredoc(temp->nxt, addr, env);
-            if (fd)
-                close(fd);
-        }
+            close(fill_heredoc(temp->nxt, addr, env));
         temp->type = RM;
         temp = temp->nxt;
     }

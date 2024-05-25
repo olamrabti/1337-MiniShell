@@ -6,22 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 15:29:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:01:35 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-// #include "../parsing/parse.h"
-
-// int ft_strlen(char *str)
-// {
-//     int i;
-
-//     i = 0;
-//     while (str[i])
-//         i++;
-//     return i;
-// }
 
 size_t	ft_strlcat(char *dest, char *src, size_t size)
 {
@@ -47,38 +36,6 @@ size_t	ft_strlcat(char *dest, char *src, size_t size)
 	dest[j] = '\0';
 	return (lsrc + ldest);
 }
-
-// int ft_strncmp(char *s1, char *s2, unsigned int n)
-// {
-//     unsigned int i;
-
-//     i = 0;
-//     while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
-//     {
-//         if (s1[i] != s2[i])
-//             return ((unsigned char)(s1[i]) - (unsigned char)s2[i]);
-//         i++;
-//     }
-//     return (0);
-// }
-
-// char *gc_substr(char *s, unsigned int start, size_t len, t_data *data)
-// {
-//     char *result;
-
-//     if (!s)
-//         return (NULL);
-//     if (start >= (unsigned int)ft_strlen(s) || !len)
-//         return (gc_strdup("", &data->addr));
-//     if (len + start > (unsigned int)ft_strlen(s))
-//         len = (unsigned int)ft_strlen(s) - start;
-//     result = (char *)ft_calloc(&data->addr, (len + 1) , sizeof(char));
-//     if (!result)
-//         return (NULL);
-//     ft_memcpy(result, s + start, len);
-//     result[len] = '\0';
-//     return (result);
-// }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
@@ -119,7 +76,6 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
     return (byte_dest);
 }
 
-
 char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
@@ -148,7 +104,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-
 void	ft_putstr_fd(char *s, int fd)
 {
 	int	i;
@@ -162,4 +117,3 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 }
-

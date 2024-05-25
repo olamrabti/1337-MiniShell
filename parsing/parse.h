@@ -20,13 +20,14 @@ char    *ft_memmove(void *dst, const void *src, size_t len);
 int     ft_strcmp(const char *s1, const char *s2);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 int     ft_strlen(const char *s);
+
 int     ft_isspace(int d);
 int     ft_isdigit(int d);
 int     ft_isalpha(int c);
 int     ft_isalnum(int c);
-int     ft_isprint(int c);
-char    **ft_split_sp(char const *s, t_addr **addr);
+int check_syntax(t_list **list, int *count);
 
+char    **ft_split_sp(char const *s, t_addr **addr);
 char    *ft_getvalue(char *key, t_env *env , t_addr **addr);
 char    *ft_expand(char *line, t_env *env, t_addr **addr);
 void expand_all(t_list **list, t_env *env, t_addr **addr);

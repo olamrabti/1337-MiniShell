@@ -48,7 +48,6 @@ int fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
         return -1;
     signal(SIGINT, h_doc_handler);
     find_delimiter(deli);
-    // printf(">>> deli -%s- type: %d\n", deli->value, deli->type);
     while (1)
     {
         if (global_signal)

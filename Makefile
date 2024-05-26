@@ -5,13 +5,16 @@ CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = minishell
 
 SRCS = main.c \
+	parsing/address_collector.c \
+	parsing/address_collector_utils.c \
+	parsing/arguments.c \
+	parsing/expand.c \
+	parsing/expand_utils.c \
 	parsing/linked_list_utils.c \
 	parsing/ms_parse.c \
 	parsing/here_doc.c \
 	parsing/quotes.c \
-	parsing/expand.c \
 	parsing/redirections.c \
-	parsing/address_collector.c \
 	parsing/ms_tokenize.c \
 	parsing/syntax_utils.c \
 	parsing/ft_strcmp.c \
@@ -42,7 +45,7 @@ OBJS = $(SRCS:.c=.o)
 all:
 	@$(MAKE) $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) minishell.h parsing/parse.h execution/execution.h
 	@echo "Creating MINISHELL..."
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 

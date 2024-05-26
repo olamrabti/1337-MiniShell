@@ -6,25 +6,25 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/18 11:02:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:34:32 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-int ft_env(t_list *cmd, t_env **envp, t_data *data)
+void ft_print_error_env(char *str)
+{
+    ft_putstr_fd("env: ", 2);
+    ft_putstr_fd(str, 2);
+    ft_putstr_fd(": No such file or directory\n", 2);
+}
+
+void ft_print_env(t_env *envp, t_data *data)
 {
     t_env *env;
 
-    env = *envp;
-    if (cmd->args != NULL)
-    {
-        ft_putstr_fd("env: ", 2);
-        ft_putstr_fd(cmd->args[0], 2);
-        ft_putstr_fd(": No such file or directory\n", 2);
-        return (ERROR);
-    }
+    env = envp;
     while (env)
     {
         if (env && env->key && env->value)
@@ -43,5 +43,18 @@ int ft_env(t_list *cmd, t_env **envp, t_data *data)
         }
         env = env->next;
     }
+}
+
+int ft_env(t_list *cmd, t_env **envp, t_data *data)
+{
+    t_env *env;
+
+    env = *envp;
+    if (cmd->args != NULL)
+    {
+        ft_print_error_env(cmd->args[0]);
+        return (ERROR);
+    }
+    ft_print_env(env, data);
     return (SUCCESS);
 }

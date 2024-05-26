@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:33:30 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 15:17:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:35:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void ft_add_to_env(t_env **env, char *key, char *value)
         return;
     new_env = malloc(sizeof(t_env));
     if (!new_env)
-        return;
+        exit(1);
     new_env->key = ft_strdup(key);
     if (!value)
         new_env->value = NULL;
@@ -39,7 +39,6 @@ void ft_add_to_env(t_env **env, char *key, char *value)
         temp = temp->next;
     temp->next = new_env;
 }
-
 
 t_env *ft_parce_env(char **envp)
 {

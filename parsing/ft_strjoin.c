@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 14:37:18 by olamrabt          #+#    #+#             */
+/*   Updated: 2024/05/25 14:39:17 by olamrabt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parse.h"
 
-char *ft_memmove(void *dst, const void *src, size_t len)
+char	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char	*dest;
 	unsigned char	*source;
@@ -29,12 +40,12 @@ char *ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-char *gc_strjoin(char *s1, char *s2, t_addr **addr)
+char	*gc_strjoin(char *s1, char *s2, t_addr **addr)
 {
-	char *arr;
-	char *dest;
-	size_t s1_len;
-	size_t s2_len;
+	char	*arr;
+	char	*dest;
+	size_t	s1_len;
+	size_t	s2_len;
 
 	dest = s1;
 	if (!s1 || !s2)
@@ -50,11 +61,11 @@ char *gc_strjoin(char *s1, char *s2, t_addr **addr)
 	return (arr);
 }
 
-char *ft_charjoin(char *s1, char c, t_addr **addr)
+char	*ft_charjoin(char *s1, char c, t_addr **addr)
 {
-	char *arr;
-	char *dest;
-	size_t s1_len;
+	char	*arr;
+	char	*dest;
+	size_t	s1_len;
 
 	dest = s1;
 	if (!s1)
@@ -67,7 +78,7 @@ char *ft_charjoin(char *s1, char c, t_addr **addr)
 		return (arr);
 	}
 	s1_len = ft_strlen(dest);
-	arr = (char *)ft_calloc(addr, (s1_len + 2),sizeof(char));
+	arr = (char *)ft_calloc(addr, (s1_len + 2), sizeof(char));
 	if (!arr)
 		return (NULL);
 	ft_memmove(arr, dest, s1_len);

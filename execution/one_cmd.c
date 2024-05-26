@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 15:10:36 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 21:29:22 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ char **ft_get_paths(t_env *env, t_data *data)
     return (NULL);
 }
 
+void ft_print_error_path(char *str)
+{
+    ft_putstr_fd(str, 2);
+    ft_putstr_fd(": No such file or director", 2);
+}
+
 char *ft_get_path(t_list *cmd, t_env *env, t_data *data)
 {
     char **paths;
@@ -48,10 +54,7 @@ char *ft_get_path(t_list *cmd, t_env *env, t_data *data)
         if (access(cmd->value, X_OK) == 0)
             return (gc_strdup(cmd->value, &data->addr));
         else
-        {
-            ft_putstr_fd(cmd->value, 2);
-            ft_putstr_fd(": No such file or director", 2);
-        }
+            ft_print_error_path(cmd->value);
     }
     paths = ft_get_paths(env, data);
     while (paths && paths[++i])
@@ -66,33 +69,38 @@ char *ft_get_path(t_list *cmd, t_env *env, t_data *data)
     return (NULL);
 }
 
-
-char **ft_join_for_execve(t_list *cmd, t_addr *addr)
+int count_args(char **args)
 {
-    char **command;
-    int total;
+    int total = 0;
+    while (args && args[total])
+        total++;
+    return total;
+}
+
+void copy_command_args(char **command, t_list *cmd, t_addr *addr)
+{
     int i;
     int j;
 
-    total = 0;
-    if (cmd->args)
-    {
-        while (cmd->args[total])
-            total++;
-    }
-    command = ft_calloc(&addr, (total + 2) , sizeof(char *));
-    command[0] = gc_strdup(cmd->value, &addr);
     i = 1;
     j = 0;
-    if (cmd->args)
+    while (cmd->args && cmd->args[j])
     {
-        while (cmd->args[j])
-        {
-            command[i] = gc_strdup(cmd->args[j], &addr);
-            i++;
-            j++;
-        }
+        command[i] = gc_strdup(cmd->args[j], &addr);
+        i++;
+        j++;
     }
     command[i] = NULL;
+}
+
+char **ft_join_for_execve(t_list *cmd, t_addr *addr)
+{
+    int total;
+    char **command;
+
+    total = count_args(cmd->args);
+    command = ft_calloc(&addr, total + 2, sizeof(char *));
+    command[0] = gc_strdup(cmd->value, &addr);
+    copy_command_args(command, cmd, addr);
     return (command);
 }

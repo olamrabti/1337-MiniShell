@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/17 14:48:59 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:53:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,52 +32,67 @@ int ft_valid_unset(char *str)
     return (1);
 }
 
-int ft_unset(t_list *cmd, t_env **envp)
+void ft_print_error_unset(char *str)
 {
-    t_env *prev;
-    t_env *head;
-    t_env *temp;
+    ft_putstr_fd("unset: ", 2);
+    ft_putstr_fd(str, 2);
+    ft_putstr_fd(": not a valid identifier", 2);
+}
 
-    if (!cmd->args || !*envp)
-        return (SUCCESS);
+void free_env_node(t_env *node)
+{
+    free(node->key);
+    node->key = NULL;
+    free(node->value);
+    node->value = NULL;
+    free(node);
+}
 
-    int i = 0;
-    while (cmd && cmd->args && cmd->args[i])
+void unset_env_variable(char *arg, t_env **envp)
+{
+    t_env *prev = NULL;
+    t_env *temp = NULL;
+    t_env *head = *envp;
+
+    while (head)
     {
-        if (ft_valid_unset(cmd->args[i]))
+        if (ft_strcmp(arg, head->key) == 0)
         {
-            prev = NULL;
-            temp = NULL;
-            head = *envp;
-            while (head)
-            {
-                if (ft_strcmp(cmd->args[i], head->key) == 0)
-                {
-                    if (prev)
-                        prev->next = head->next;
-                    else
-                        *envp = head->next;
-                    temp = head;
-                    head = head->next;
-                    free(temp->key);
-                    temp->key = NULL;
-                    free(temp->value);
-                    temp->value = NULL;
-                    free(temp);
-                    temp = NULL;
-                }
-                prev = head;
-                if (head)
-                    head = head->next;
-            }
+            if (prev)
+                prev->next = head->next;
+            else
+                *envp = head->next;
+            temp = head;
+            head = head->next;
+            free_env_node(temp);
         }
         else
         {
-            ft_putstr_fd("nset: ", 2);
-            ft_putstr_fd(cmd->args[i], 2);
-            ft_putstr_fd(": not a valid identifier", 2);
+            prev = head;
+            head = head->next;
         }
+    }
+}
+
+void process_unset_command(t_list *cmd, t_env **envp)
+{
+    int i;
+
+    i = 0;
+    while (cmd->args && cmd->args[i])
+    {
+        if (ft_valid_unset(cmd->args[i]))
+            unset_env_variable(cmd->args[i], envp);
+        else
+            ft_print_error_unset(cmd->args[i]);
         i++;
     }
+}
+
+int ft_unset(t_list *cmd, t_env **envp)
+{
+    if (!cmd->args || !*envp)
+        return (SUCCESS);
+    process_unset_command(cmd, envp);
     return (SUCCESS);
 }

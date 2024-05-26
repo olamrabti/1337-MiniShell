@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 14:49:39 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 21:19:37 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,33 @@ void ft_print_export(t_env **envp, int flag)
     }
 }
 
-static int ft_is_exist(char *str, t_env *envp, int concat)
+int ft_is_exist_concat(char *str, t_env *envp)
 {
     t_env *env;
+    int start;
+
+    start = 0;
+    env = envp;
+    while (str[start] && (str[start] != '+'))
+        start++;
+    while (env)
+    {
+        if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
+            return (1);
+        env = env->next;
+    }
+    return (0);
+}
+
+int ft_is_exist(char *str, t_env *envp, int concat)
+{
+    t_env *env;
+    int start;
 
     env = envp;
-    int start = 0;
+    start = 0;
     if (concat)
-    {
-        while (str[start] && (str[start] != '+'))
-            start++;
-        while (env)
-        {
-            if ((ft_strncmp(str, env->key, start) == 0) && (env->key[start] == '\0'))
-                return (1);
-            env = env->next;
-        }
-    }
+        return (ft_is_exist_concat(str, envp));
     else
     {
         while (str[start] && (str[start] != '='))
@@ -97,7 +107,6 @@ static int ft_is_exist(char *str, t_env *envp, int concat)
 char *ft_strjoin_export(char *s1, char *s2, t_data *data)
 {
     int i;
-    int len;
     char *result;
 
     i = 0;
@@ -105,8 +114,7 @@ char *ft_strjoin_export(char *s1, char *s2, t_data *data)
         return (NULL);
     if (!s1)
         s1 = gc_strdup("", &data->addr);
-    len = ft_strlen(s2) + ft_strlen(s1);
-    result = (char *)ft_calloc(&data->addr, (len + 1) , sizeof(char));
+    result = (char *)ft_calloc(&data->addr, ((ft_strlen(s2) + ft_strlen(s1)) + 1), sizeof(char));
     if (!result)
         return (0);
     while (s1[i])
@@ -124,31 +132,42 @@ char *ft_strjoin_export(char *s1, char *s2, t_data *data)
     return (result);
 }
 
+int ft_concat_env(char *str, t_env *envp, t_data *data)
+{
+    t_env *env;
+    int start;
+
+    env = envp;
+    start = 0;
+    while (str[start] && str[start] != '+')
+        start++;
+    while (env)
+    {
+        if (ft_strncmp(str, env->key, start) == 0)
+        {
+            env->value = ft_strjoin_export(env->value, str + (start + 2), data);
+            return (SUCCESS);
+        }
+        env = env->next;
+    }
+    return (SUCCESS);
+}
+
 int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
 {
-    t_env *env = envp;
-    int start = 0;
+    t_env *env;
+    int start;
+    int len;
 
-    int len = ft_strlen(str);
+    env = envp;
+    start = 0;
+    len = ft_strlen(str);
     if (concat)
-    {
-        while (str[start] && str[start] != '+')
-            start++;
-        while (env)
-        {
-            if (ft_strncmp(str, env->key, start) == 0)
-            {
-                env->value = ft_strjoin_export(env->value, str + (start + 2), data);
-                return (SUCCESS);
-            }
-            env = env->next;
-        }
-    }
+        return (ft_concat_env(str, env, data));
     else
     {
         while (str[start] && str[start] != '=')
             start++;
-
         while (env)
         {
             if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
@@ -162,26 +181,36 @@ int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
     return (SUCCESS);
 }
 
+void ft_concat_export(char *str, t_env **env)
+{
+    int start;
+    int len;
+    char *key;
+    char *value;
+
+    len = ft_strlen(str);
+    start = 0;
+    while ((str[start]) && (str[start] != '+'))
+        start++;
+    if (start == len)
+        value = NULL;
+    else
+        value = ft_strjoin("", str + (start + 2));
+    key = ft_substr(str, 0, start);
+    ft_add_to_env(env, key, value);
+}
+
 int ft_add_to_export(char *str, t_env **env, int concat)
 {
     char *key;
     char *value;
+    int start;
 
-    int start = 0;
-    int len = ft_strlen(str);
+    start = 0;
+    int len;
+    len = ft_strlen(str);
     if (concat)
-    {
-        while ((str[start]) && (str[start] != '+'))
-            start++;
-        if (start == len)
-            value = NULL;
-        else
-        {
-            value = ft_strjoin("", str + (start + 2));
-        }
-        key = ft_substr(str, 0, start);
-        ft_add_to_env(env, key, value);
-    }
+        ft_concat_export(str, env);
     else
     {
         while ((str[start]) && (str[start] != '='))
@@ -211,7 +240,9 @@ int ft_is_concat(char *str)
 
 int ft_export_is_valid(char *str)
 {
-    int i = 0;
+    int i;
+
+    i = 0;
     if (ft_isalpha(str[0]) || str[0] == '_')
     {
         i++;
@@ -220,7 +251,7 @@ int ft_export_is_valid(char *str)
             if (ft_isalnum(str[i]) || str[i] == '_')
                 i++;
             else
-                return 0;
+                return (0);
         }
     }
     else
@@ -245,43 +276,58 @@ int ft_double_check(char *str)
     return 1;
 }
 
-int ft_export(t_list *cmd, t_env **envp, t_data *data)
+int handle_export_argument(char *arg, t_env **env, t_data *data)
 {
-    t_env **env;
-    int i;
     int concat;
+
+    concat = ft_is_concat(arg);
+    if ((ft_strncmp(arg, "PATH", 4) == 0) && (arg[4] == '=' || arg[4] == '+'))
+        data->is_hiden = 0;
+    if (ft_is_exist(arg, *env, concat))
+        ft_change_env(arg, *env, concat, data);
+    else
+        ft_add_to_export(arg, env, concat);
+    return (SUCCESS);
+}
+
+int ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
+{
     int flag;
+    int i;
 
     flag = 0;
-    env = envp;
+    i = 0;
+    while (cmd->args[i])
+    {
+        if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
+            handle_export_argument(cmd->args[i], env, data);
+        else
+        {
+            flag = 1;
+            ft_putstr_fd("export: ", 2);
+            ft_putstr_fd(cmd->args[i], 2);
+            ft_putstr_fd(": not a valid identifier\n", 2);
+        }
+        i++;
+    }
+    return (flag);
+}
+
+int ft_export(t_list *cmd, t_env **envp, t_data *data)
+{
+    int flag;
+
     if (cmd->args)
     {
-        i = 0;
-        while (cmd->args[i])
-        {
-            if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
-            {
-                concat = ft_is_concat(cmd->args[i]);
-                if ((ft_strncmp(cmd->args[i], "PATH", 4) == 0) && (cmd->args[i][4] == '=' || cmd->args[i][4] == '+'))
-                    data->is_hiden = 0;
-                if (ft_is_exist(cmd->args[i], *env, concat) == 1)
-                    ft_change_env(cmd->args[i], *env, concat, data);
-                else
-                    ft_add_to_export(cmd->args[i], env, concat);
-            }
-            else
-            {
-                flag = 1;
-                ft_putstr_fd("export: ", 2);
-                ft_putstr_fd(cmd->args[i], 2);
-                ft_putstr_fd(": not a valid identifier\n", 2);
-            }
-            i++;
-        }
+        flag = ft_process_arguments(cmd, envp, data);
+        if (flag)
+            return (ERROR);
+        else
+            return (SUCCESS);
     }
     else
-        ft_print_export(env, data->is_hiden);
-    if (flag)
-        return flag;
-    return (SUCCESS);
+    {
+        ft_print_export(envp, data->is_hiden);
+        return (SUCCESS);
+    }
 }

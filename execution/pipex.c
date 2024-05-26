@@ -128,6 +128,13 @@ void handle_pipes(t_data *data, t_list *temp)
     }
 }
 
+void ft_print_error_execute_command(char *str)
+{
+    ft_putstr_fd("minishell: ", 2);
+    ft_putstr_fd(str, 2);
+    ft_putstr_fd(" command not found\n", 2);
+}
+
 void execute_command(t_list *temp, t_data *data, char **envp)
 {
     if (ft_is_builtin(temp->value))
@@ -146,9 +153,7 @@ void execute_command(t_list *temp, t_data *data, char **envp)
         {
             if (ft_execute(temp, data, envp) == -1)
             {
-                ft_putstr_fd("minishell: ", 2);
-                ft_putstr_fd(temp->value, 2);
-                ft_putstr_fd(" command not found\n", 2);
+                ft_print_error_execute_command(temp->value);
                 ft_exit_status(127);
                 exit(127);
             }
@@ -167,42 +172,41 @@ void ft_handle_childs(t_list *temp, t_data *data, char **envp)
     execute_command(temp, data, envp);
 }
 
-int ft_pipex(t_data *data, char **envp)
+void ft_create_pipe(t_list *temp, t_data *data)
+{
+    if (!temp->last)
+    {
+        if (pipe(data->pd) == -1)
+            exit(127);
+    }
+}
+
+void ft_middle_proccess(t_list *temp, t_data *data, char **envp)
+{
+    if (data->pid == 0)
+        ft_handle_childs(temp, data, envp);
+    handle_parent_pipes(data, temp);
+}
+
+int ft_pipex(t_data *data, char **envp, int *tab, int total)
 {
     t_list *temp;
-    int total;
-    int *tab;
     int i;
 
-    total = 0;
     i = 0;
-    tab = ft_alloc_tab(data, &total);
     temp = data->cmd;
-    tcgetattr(STDIN_FILENO, data->term);
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
     while (temp)
     {
-        // ft_handle_no_fork();
-        if (temp->first && temp->last && ft_is_builtin(temp->value))
-            return (ft_execute_builtin(temp, data));
-        if (temp->first && temp->last && ft_is_a_dir(temp->value) && (ft_strcmp(temp->value, "./minishell") != 0))
-            return (ft_handle_dir(temp, data, envp));
-        if (!temp->last)
-        {
-            if (pipe(data->pd) == -1)
-                exit(127);
-        }
-        if (!(temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1 && temp->last))
-            data->pid = fork();
-        else
+        ft_create_pipe(temp, data);
+        if (temp->type == NULL_TOKEN && temp->infile == 0 && temp->outfile == 1 && temp->last)
             break;
+        data->pid = fork();
         if (data->pid == -1)
             return (perror("fork:"), (ERROR));
         tab[i++] = data->pid;
-        if (data->pid == 0)
-            ft_handle_childs(temp, data, envp);
-        handle_parent_pipes(data, temp);
+        ft_middle_proccess(temp, data, envp);
         temp = temp->nxt;
     }
     ft_parent_wait(data, tab, total);

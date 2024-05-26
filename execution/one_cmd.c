@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 15:25:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/25 21:29:22 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,6 @@ int count_args(char **args)
     return total;
 }
 
-char **allocate_command_array(t_addr *addr, int total)
-{
-    return ft_calloc(&addr, total + 2, sizeof(char *));
-}
-
-void copy_command_value(char **command, t_list *cmd, t_addr *addr)
-{
-    command[0] = gc_strdup(cmd->value, &addr);
-}
-
 void copy_command_args(char **command, t_list *cmd, t_addr *addr)
 {
     int i;
@@ -109,8 +99,8 @@ char **ft_join_for_execve(t_list *cmd, t_addr *addr)
     char **command;
 
     total = count_args(cmd->args);
-    command = allocate_command_array(addr, total);
-    copy_command_value(command, cmd, addr);
+    command = ft_calloc(&addr, total + 2, sizeof(char *));
+    command[0] = gc_strdup(cmd->value, &addr);
     copy_command_args(command, cmd, addr);
-    return command;
+    return (command);
 }

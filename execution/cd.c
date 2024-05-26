@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 16:14:04 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:07:44 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int ft_home_dir(t_env **envp, t_data *data)
     char pwd[PATH_MAX];
 
     env = *envp;
+    
     while (env)
     {
         if (ft_strcmp((env)->key, "HOME") == 0)
@@ -62,16 +63,20 @@ int ft_home_dir(t_env **envp, t_data *data)
             ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
             ft_change_pwd(pwd, envp, data);
             ft_change_oldpwd(oldpwd, envp, data);
+            return (SUCCESS);
         }
         (env) = (env)->next;
     }
-    return (SUCCESS);
+    ft_putstr_fd("cd: HOME not set\n", 2);
+    return (ERROR);
 }
 
 int ft_cd_with_args(t_list *cmd, t_env **envp, t_data *data)
 {
     char oldpwd[PATH_MAX];
     char pwd[PATH_MAX];
+    char *ptr;
+    
 
     ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
     if (chdir(cmd->args[0]) == -1)
@@ -81,11 +86,13 @@ int ft_cd_with_args(t_list *cmd, t_env **envp, t_data *data)
         ft_putstr_fd(": no such file or directory\n", 2);
         return (ERROR);
     }
-    if (!getcwd(NULL, PATH_MAX))
+    ptr = getcwd(NULL, 0); 
+    if (!ptr)
     {
         perror("cd: ..");
         ft_get_cwd(cmd->args[0], 1);
     }
+    free(ptr);
     ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
     ft_change_pwd(pwd, envp, data);
     if (ft_change_oldpwd(oldpwd, envp, data) == 0)

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 16:19:56 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:31:08 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
         {
             if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
             {
-                env->value = gc_substr(str, start + 1, len - start - 1, &data->addr);
+                env->value = gc_substr(str, start + 1, len - start - 1, &data->addr_env);
                 return (SUCCESS);
             }
             env = env->next;

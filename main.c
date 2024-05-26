@@ -65,8 +65,9 @@ int main(int ac, char **av, char **envp)
     data->oldpwd = 1;
     data->save = -1;
     data->addr = NULL;
+    data->addr_env = NULL;
     data->term = NULL;
-    env = ft_parce_env(envp);
+    env = ft_parce_env(envp, &data->addr_env);
     data->env = env;
     ft_no_env(&data);
     while (1)
@@ -95,6 +96,7 @@ int main(int ac, char **av, char **envp)
         (data)->fds = NULL;
         global_signal = 0;
     }
+    ft_lstclear(&data->addr_env, free);
     ft_free_env(&data->env);
     free(data);
     data = NULL;

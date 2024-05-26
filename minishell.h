@@ -78,6 +78,7 @@ typedef struct s_data
     struct termios *term;
     struct s_env *env;
     struct s_addr *addr;
+    struct s_addr *addr_env;
 
 } t_data;
 
@@ -107,7 +108,7 @@ void	ft_lstclear(t_addr **lst, void (*del)(void *));
 
 
 int execute_commands(t_data **data, char **envp);
-t_env *ft_parce_env(char **envp);
+t_env *ft_parce_env(char **envp, t_addr **addr_env);
 
 char *gc_strdup(const char *s, t_addr **addr);
 

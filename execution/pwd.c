@@ -6,14 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:32:49 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/16 16:16:19 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:34:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-// [x] OLDPWD
 
 char    *ft_get_cwd(char *new_path, int flag)
 {

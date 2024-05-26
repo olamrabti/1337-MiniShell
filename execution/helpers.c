@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 16:34:58 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:54:44 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ size_t	ft_strlcat(char *dest, char *src, size_t size)
 	return (lsrc + ldest);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*gc_substr(char *s, unsigned int start, size_t len, t_addr **addr)
 {
 	char	*result;
 
 	if (!s)
 		return (NULL);
 	if (start >= (unsigned int)ft_strlen(s) || !len)
-		return (ft_strdup(""));
+		return (gc_strdup("", addr));
 	if (len + start > (unsigned int)ft_strlen(s))
 		len = (unsigned int)ft_strlen(s) - start;
-	result = (char *)malloc((len + 1) * sizeof(char));
+	result = (char *)ft_calloc(addr ,(len + 1) , sizeof(char));
 	if (!result)
 		exit(1);
 	ft_memcpy(result, s + start, len);

@@ -257,3 +257,24 @@ Test 143: ✅  minishell.h
 Test 144: ✅  $ 
 Test 145: ✅  $? 
 Test 146: ✅  README.md 
+
+
+
+———————————— syntax
+Test   1: ✅ | 
+Test   2: ✅ | echo oi 
+Test   3: ✅ | | 
+Test   4: ✅ | $ 
+Test   5: ✅ | > 
+Test   6: ✅ > 
+Test   7: ✅ >> 
+Test   8: ✅ >>> 
+Test   9: ✅ < 
+Test  10: ✅ << 
+Test  11: ✅ echo hi < 
+Test  12: ✅ cat    <| ls 
+Test  13: ✅ echo hi | > 
+Test  14: ✅ echo hi | > >> 
+Test  15: ✅ echo hi | < | 
+Test  16: ✅ echo hi |   | 
+Test  17: ✅ echo hi |  "|" 

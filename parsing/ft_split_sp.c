@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_sp.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 14:33:25 by olamrabt          #+#    #+#             */
+/*   Updated: 2024/05/25 14:34:21 by olamrabt         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parse.h"
 
-size_t ft_strlcpy(char *dest, const char *src, size_t size)
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
-	int i;
-	size_t src_len;
+	int		i;
+	size_t	src_len;
 
 	i = 0;
 	src_len = ft_strlen(src);
@@ -23,10 +34,10 @@ size_t ft_strlcpy(char *dest, const char *src, size_t size)
 	return (i);
 }
 
-static size_t count_words(char const *s)
+static size_t	count_words(char const *s)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -44,19 +55,11 @@ static size_t count_words(char const *s)
 	return (count);
 }
 
-// static char **ft_free(char **copy, size_t j)
-// {
-// 	while (j--)
-// 		free(copy[j]);
-// 	free(copy);
-// 	return (NULL);
-// }
-
-static char **str_split(char const *s, size_t i, size_t len, t_addr **addr)
+static char	**str_split(char const *s, size_t i, size_t len, t_addr **addr)
 {
-	size_t j;
-	char **copy;
-	size_t count;
+	char	**copy;
+	size_t	j;
+	size_t	count;
 
 	j = 0;
 	count = count_words(s);
@@ -73,8 +76,6 @@ static char **str_split(char const *s, size_t i, size_t len, t_addr **addr)
 		copy[j] = (char *)ft_calloc(addr, (len + 1), sizeof(char));
 		if (!copy[j])
 			return (NULL);
-		// if (!copy[j])
-		// 	return (ft_free(copy, j));
 		ft_strlcpy(copy[j], (s + i), len + 1);
 		i += len;
 		j++;
@@ -83,10 +84,10 @@ static char **str_split(char const *s, size_t i, size_t len, t_addr **addr)
 	return (copy);
 }
 
-char **ft_split_sp(char const *s, t_addr **addr)
+char	**ft_split_sp(char const *s, t_addr **addr)
 {
-	size_t i;
-	size_t len;
+	size_t	i;
+	size_t	len;
 
 	i = 0;
 	len = 0;

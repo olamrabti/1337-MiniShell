@@ -147,8 +147,8 @@ Test  35: ✅ unset HELLO1 HELLO2
 Test  36: ✅ unset HOME 
 Test  37: ✅ unset PATH 
 Test  38: ✅ unset SHELL 
-Test  39: ✅ cd $PWD 
-Test  40: ✅ cd $PWD hi 
+Test  39: ✅ cd $PWD  // FIXME leaks
+Test  40: ✅ cd $PWD hi // FIXME leaks
 Test  41: ✅ cd 123123 
 Test  42: ✅ exit 123 
 Test  43: ✅ exit 298 

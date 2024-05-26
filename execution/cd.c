@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 18:09:02 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:14:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int ft_change_pwd(char *buf, t_env **envp, t_data *data)
     while (env)
     {
         if (ft_strcmp((env)->key, "PWD") == 0)
-            (env)->value = gc_strdup(buf, &data->addr);
+            (env)->value = gc_strdup(buf, &data->addr_env);
         (env) = (env)->next;
     }
     return (SUCCESS);
@@ -35,7 +35,7 @@ int ft_change_oldpwd(char *buf, t_env **envp, t_data *data)
     while (env)
     {
         if (ft_strcmp((env)->key, "OLDPWD") == 0)
-            (env)->value = gc_strdup(buf, &data->addr);
+            (env)->value = gc_strdup(buf, &data->addr_env);
         (env) = (env)->next;
     }
     return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 13:09:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:04:35 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,10 @@ int ft_handle_dir(t_list *cmd, t_data *data, char **envp);
 
 int	ft_atoi(char *str);
 
-void ft_add_to_env(t_env **env, char *key, char *value);
+void ft_add_to_env(t_env **env, char *key, char *value, t_addr **addr);
 
-// char *gc_substr(char *s, unsigned int start, size_t len, t_data *data);
+char *gc_substr(char *s, unsigned int start, size_t len, t_addr **addr_env);
+char	*gc_strjoin(char *s1, char *s2, t_addr **addr);
+
 
 #endif

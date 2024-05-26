@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/25 21:19:37 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:19:56 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ char *ft_strjoin_export(char *s1, char *s2, t_data *data)
     if (!s2)
         return (NULL);
     if (!s1)
-        s1 = gc_strdup("", &data->addr);
-    result = (char *)ft_calloc(&data->addr, ((ft_strlen(s2) + ft_strlen(s1)) + 1), sizeof(char));
+        s1 = gc_strdup("", &data->addr_env);
+    result = (char *)ft_calloc(&data->addr_env, ((ft_strlen(s2) + ft_strlen(s1)) + 1), sizeof(char));
     if (!result)
         return (0);
     while (s1[i])
@@ -172,7 +172,7 @@ int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
         {
             if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
             {
-                env->value = ft_substr(str, start + 1, len - start - 1);
+                env->value = gc_substr(str, start + 1, len - start - 1, &data->addr);
                 return (SUCCESS);
             }
             env = env->next;
@@ -181,7 +181,7 @@ int ft_change_env(char *str, t_env *envp, int concat, t_data *data)
     return (SUCCESS);
 }
 
-void ft_concat_export(char *str, t_env **env)
+void ft_concat_export(char *str, t_env **env, t_addr **addr_env)
 {
     int start;
     int len;
@@ -195,12 +195,12 @@ void ft_concat_export(char *str, t_env **env)
     if (start == len)
         value = NULL;
     else
-        value = ft_strjoin("", str + (start + 2));
-    key = ft_substr(str, 0, start);
-    ft_add_to_env(env, key, value);
+        value = gc_strjoin("", str + (start + 2), addr_env);
+    key = gc_substr(str, 0, start, addr_env);
+    ft_add_to_env(env, key, value, addr_env);
 }
 
-int ft_add_to_export(char *str, t_env **env, int concat)
+int ft_add_to_export(char *str, t_env **env, int concat, t_addr **addr_env)
 {
     char *key;
     char *value;
@@ -210,7 +210,7 @@ int ft_add_to_export(char *str, t_env **env, int concat)
     int len;
     len = ft_strlen(str);
     if (concat)
-        ft_concat_export(str, env);
+        ft_concat_export(str, env, addr_env);
     else
     {
         while ((str[start]) && (str[start] != '='))
@@ -218,9 +218,9 @@ int ft_add_to_export(char *str, t_env **env, int concat)
         if (start == len)
             value = NULL;
         else
-            value = ft_substr(str, start + 1, len - start);
-        key = ft_substr(str, 0, start);
-        ft_add_to_env(env, key, value);
+            value = gc_substr(str, start + 1, len - start, addr_env);
+        key = gc_substr(str, 0, start, addr_env);
+        ft_add_to_env(env, key, value, addr_env);
     }
     return (SUCCESS);
 }
@@ -286,7 +286,7 @@ int handle_export_argument(char *arg, t_env **env, t_data *data)
     if (ft_is_exist(arg, *env, concat))
         ft_change_env(arg, *env, concat, data);
     else
-        ft_add_to_export(arg, env, concat);
+        ft_add_to_export(arg, env, concat, &data->addr_env);
     return (SUCCESS);
 }
 

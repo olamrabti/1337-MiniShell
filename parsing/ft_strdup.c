@@ -41,25 +41,7 @@ char	*gc_strdup(const char *s, t_addr **addr)
 	return (copy);
 }
 
-char	*ft_strdup(const char *s)
-{
-	char	*copy;
 
-	if (!s[0])
-	{
-		copy = (char *)malloc(sizeof(char));
-		if (!copy)
-			exit(1);
-		copy[0] = '\0';
-		return (copy);
-	}
-	copy = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!copy)
-		exit(1);
-	ft_memcpy(copy, s, ft_strlen(s));
-	copy[ft_strlen(s)] = '\0';
-	return (copy);
-}
 
 char	*ft_strndup(char *s, int n, t_addr **addr)
 {

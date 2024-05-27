@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/22 18:23:11 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 21:57:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,45 +48,54 @@ int	ft_atoi(char *str)
 	return ((int)(signe * total));
 }
 
-int ft_valid_exit(char *str)
+int	ft_valid_exit(char *str)
 {
-    int i = 0;
-    if (str[0] == '+' || str[0] == '-' || ft_isdigit(str[0]))
-        i++;
-    while (str[i])
-    {
-        if (!ft_isdigit(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	int	i;
+
+	i = 0;
+	if (str[0] == '+' || str[0] == '-' || ft_isdigit(str[0]))
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-void ft_exit(t_list *cmd)
+void	ft_print_error_exit(char *str)
 {
-    if (cmd->args)
-    {
-        if (ft_valid_exit(cmd->args[0]) && !cmd->args[1])
-        {
-            int ext = ft_atoi(cmd->args[0]);
-            exit(ext % 256);
-        }
-        else if (ft_valid_exit(cmd->args[0]) && cmd->args[1])
-        {
-            ft_putstr_fd("exit: too many arguments\n", 2);
-            return;
-        }
-        else
-        {
-            ft_putstr_fd("exit: ", 2);
-            ft_putstr_fd(cmd->args[0], 2);
-            ft_putstr_fd(": numeric argument required\n", 2);
-            exit(255);
-        }
-    }
-    else
-    {
-        printf("exit\n" );
-        exit(ft_exit_status(-1));
-    }
+	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+}
+
+void	ft_exit(t_list *cmd)
+{
+	int	ext;
+
+	if (cmd->args)
+	{
+		if (ft_valid_exit(cmd->args[0]) && !cmd->args[1])
+		{
+			ext = ft_atoi(cmd->args[0]);
+			exit(ext % 256);
+		}
+		else if (ft_valid_exit(cmd->args[0]) && cmd->args[1])
+		{
+			ft_putstr_fd("exit: too many arguments\n", 2);
+			return ;
+		}
+		else
+		{
+			ft_print_error_exit(cmd->args[0]);
+			exit(255);
+		}
+	}
+	else
+	{
+		printf("exit\n");
+		exit(ft_exit_status(-1));
+	}
 }

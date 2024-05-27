@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:08:23 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/24 14:57:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:17:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*ft_allocated_str(const char *str, char c, t_data *data)
 	int		len_string;
 
 	len_string = len_str(str, c);
-	result = (char *)ft_calloc(&data->addr,(len_string + 1) , sizeof(char));
+	result = (char *)ft_calloc(&data->addr, (len_string + 1), sizeof(char));
 	if (!result)
 		return (NULL);
 	result[len_string] = '\0';
@@ -76,9 +76,8 @@ char	**ft_split(char const *s, char c, t_data *data)
 
 	if (!s)
 		return (NULL);
-	result = (char **)ft_calloc(&data->addr, (count_str(s, c) + 1) , sizeof(char *));
-	if (!result)
-		return (NULL);
+	result = (char **)ft_calloc(&data->addr, \
+		(count_str(s, c) + 1), sizeof(char *));
 	i = 0;
 	while (*s)
 	{

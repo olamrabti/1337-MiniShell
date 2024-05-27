@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -37,8 +37,18 @@ SRCS = main.c \
 	execution/exit.c \
 	execution/handle_no_env.c \
 	execution/handle_dir.c \
+	execution/export_utils.c \
+	execution/export_helpers.c \
+	execution/ft_get_paths.c \
+	execution/pipex_helpers.c \
+	execution/pipex_utils.c \
 
 brew = $(shell brew --prefix readline)
+
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+RED = \033[0;31m
+RESET = \033[0m
 
 OBJS = $(SRCS:.c=.o)
 
@@ -46,18 +56,18 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME) : $(OBJS) minishell.h parsing/parse.h execution/execution.h
-	@echo "Creating MINISHELL..."
+	@echo "$(GREEN)Creating MINISHELL...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 
 %.o:%.c
 	@$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
 
 clean :
-	@echo "Cleaning object files..."
+	@echo "$(YELLOW)Cleaning object files...$(RESET)"
 	@rm -f $(OBJS)
 
 fclean : clean
-	@echo "Cleaning $(NAME)..."
+	@echo "$(RED)Cleaning $(NAME)...$(RESET)"
 	@rm -f $(NAME)
 
 re : fclean all

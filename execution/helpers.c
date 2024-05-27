@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 15:54:44 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 22:38:45 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*gc_substr(char *s, unsigned int start, size_t len, t_addr **addr)
 		return (gc_strdup("", addr));
 	if (len + start > (unsigned int)ft_strlen(s))
 		len = (unsigned int)ft_strlen(s) - start;
-	result = (char *)ft_calloc(addr ,(len + 1) , sizeof(char));
+	result = (char *)ft_calloc(addr, (len + 1), sizeof(char));
 	if (!result)
 		exit(1);
 	ft_memcpy(result, s + start, len);
@@ -55,25 +55,25 @@ char	*gc_substr(char *s, unsigned int start, size_t len, t_addr **addr)
 	return (result);
 }
 
-void *ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-    size_t i;
-    char *byte_dest;
-    char *byte_src;
+	size_t	i;
+	char	*byte_dest;
+	char	*byte_src;
 
-    if (!src && !dest)
-        return (NULL);
-    if (src == dest)
-        return (dest);
-    i = 0;
-    byte_dest = (char *)dest;
-    byte_src = (char *)src;
-    while (i < n)
-    {
-        byte_dest[i] = byte_src[i];
-        i++;
-    }
-    return (byte_dest);
+	if (!src && !dest)
+		return (NULL);
+	if (src == dest)
+		return (dest);
+	i = 0;
+	byte_dest = (char *)dest;
+	byte_src = (char *)src;
+	while (i < n)
+	{
+		byte_dest[i] = byte_src[i];
+		i++;
+	}
+	return (byte_dest);
 }
 
 char	*ft_strjoin(char *s1, char *s2)

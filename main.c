@@ -74,7 +74,7 @@ int main(int ac, char **av, char **envp)
     {
         signal(SIGINT, ctrl_c_handler);
         signal(SIGQUIT, ctrl_c_handler);
-        line = readline("MINISHELL$ ");
+        line = readline(BOLD_WHITE "MINISHELL$ " RESET);
         if (global_signal)
             ft_exit_status(1);
         if (line == NULL)

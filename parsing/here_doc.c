@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:39:36 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/25 14:41:34 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:43:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	h_doc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		global_signal = 2;
+		g_signal = 2;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		ft_exit_status(1);
 	}
@@ -61,7 +61,7 @@ int	fill_heredoc(t_list *deli, t_addr **addr, t_env *env)
 	find_delimiter(deli);
 	while (1)
 	{
-		if (global_signal)
+		if (g_signal)
 			return (close(fd[1]), close(fd[0]), -1);
 		line = readline("> ");
 		if (!line)

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:40:06 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/26 14:22:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:54:36 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_list	*handle_singleq(t_list *curr, int *i, t_addr **addr)
 	return (curr);
 }
 
-int	handle_quote(t_list **list, token quote, t_addr **addr)
+int	handle_quote(t_list **list, t_token quote, t_addr **addr)
 {
 	t_list	*curr;
 	int		i;

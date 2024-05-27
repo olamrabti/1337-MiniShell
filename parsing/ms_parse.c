@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:49:30 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/26 18:25:31 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:55:10 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
 
-void	remove_token(t_list **list, token token)
+void	remove_token(t_list **list, t_token token)
 {
 	t_list	*temp;
 
@@ -69,7 +69,7 @@ int	ms_parse(t_data **data, char *line, t_env *env)
 	if (check_syntax(&list, &count) == 1)
 		return (ft_close_descriptors(*data), ft_exit_status(258), 1);
 	(*data)->fds = handle_redirections(&list, &count, data, env);
-	if (global_signal == 2)
+	if (g_signal == 2)
 		return (ft_close_descriptors(*data), 1);
 	return (fill_data(data, list));
 }

@@ -41,8 +41,6 @@ char	*gc_strdup(const char *s, t_addr **addr)
 	return (copy);
 }
 
-
-
 char	*ft_strndup(char *s, int n, t_addr **addr)
 {
 	char	*copy;

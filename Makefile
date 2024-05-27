@@ -42,6 +42,7 @@ SRCS = main.c \
 	execution/ft_get_paths.c \
 	execution/pipex_helpers.c \
 	execution/pipex_utils.c \
+	utils.c \
 
 brew = $(shell brew --prefix readline)
 

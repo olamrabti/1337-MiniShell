@@ -2,6 +2,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#define BOLD_WHITE "\033[1;37m"
+#define RESET "\033[0m"
+
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>

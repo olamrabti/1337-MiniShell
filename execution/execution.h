@@ -6,121 +6,84 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 16:04:35 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/26 23:20:54 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
-
-# define EXECUTION_H
-
-# define SUCCESS 0
-# define ERROR 1
+#define EXECUTION_H
 
 #include "../minishell.h"
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/wait.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-// typedef struct s_env
-// {
-//     char *key;
-//     char *value;
-//     struct s_env *next;
+// Status codes
+#define SUCCESS 0
+#define ERROR 1
 
-// } t_env;
-
-
-// void ft_putstr(char *str);
-// void ft_putchar(char c);
-// void ft_putendl(char *str);
-// void ft_putnbr(int n);
-// void ft_putendl_fd(char *str, int fd);
-// void ft_putchar_fd(char c, int fd);
-// void ft_putnbr_fd(int n, int fd);
-
-
-void ft_putstr_fd(char *str, int fd);
-
+// Function declarations
 int ft_strlen(char *str);
 int ft_strcmp(char *s1, char *s2);
 int ft_strncmp(char *s1, char *s2, unsigned int n);
-char *ft_strdup(char *str);
-char	**ft_split(char const *s, char c, t_data *data);
-
-char *ft_substr(char *s, unsigned int start, size_t len);
-void *ft_memcpy(void *dest, const void *src, size_t n);
-
-
 int execute_commands(t_data **data, char **envp);
-
-
 int ft_execute_builtin(t_list *cmd, t_data *data);
-
-
-
-
-char	*ft_strjoin(char *s1, char *s2);
-
-char *ft_get_path(t_list *cmd, t_env *env, t_data *data);
-
-
-char **ft_join_for_execve(t_list *cmd, t_addr *addr);
-
 int ft_pipex(t_data *data, char **envp, int *tab, int total);
-
-
-
 int ft_is_builtin(char *value);
-
 int ft_cd(t_list *cmd, t_env **env, t_data *data);
 int ft_pwd(t_list *cmd);
 int ft_echo(t_list *cmd);
-// int  ft_export(t_list * cmd, t_env **envp);
-
-// void ft_print_export(t_env *envp);
-
 int ft_change_env(char *str, t_env *envp, int concat, t_data *data);
 int ft_unset(t_list *cmd, t_env **envp);
-void ft_exit(t_list *cmd);
-
-int	ft_isdigit(int d);
-int	ft_isalpha(int c);
-int	ft_isalnum(int c);
-
-int *ft_alloc_tab(t_data *data, int *total);
-
+int ft_isdigit(int d);
+int ft_isalpha(int c);
+int ft_isalnum(int c);
 int ft_close_descriptors(t_data *data);
-
 int ft_no_env(t_data **data);
-
-
 int ft_env(t_list *cmd, t_env **envp, t_data *data);
-void ft_print_export(t_env **envp, int flag);
-
 int ft_export(t_list *cmd, t_env **envp, t_data *data);
-
-char    *ft_get_cwd(char *new_path, int mode);
-size_t ft_strlcpy(char *dest, const char *src, size_t size);
-size_t	ft_strlcat(char *dest, char *src, size_t size);
-
-
 int ft_execute(t_list *cmd, t_data *data, char **envp);
-
+int ft_parent_wait(t_data *data, int *tab, int total);
 int ft_is_a_dir(char *str);
-
 int ft_handle_dir(t_list *cmd, t_data *data, char **envp);
-
-
-int	ft_atoi(char *str);
-
+int ft_atoi(char *str);
+int handle_export_argument(char *arg, t_env **env, t_data *data);
+int ft_add_to_export(char *str, t_env **env, int concat, t_addr **addr_env);
+int ft_double_check(char *str);
+int ft_export_is_valid(char *str);
+int ft_is_concat(char *str);
+int ft_is_exist_concat(char *str, t_env *envp);
+int ft_is_exist(char *str, t_env *envp, int concat);
+int *ft_alloc_tab(t_data *data, int *total);
+void ft_putstr_fd(char *str, int fd);
+void handle_file_descriptors(t_list *temp);
+void execute_command(t_list *temp, t_data *data, char **envp);
+void ft_handle_childs(t_list *temp, t_data *data, char **envp);
+void handle_parent_pipes(t_data *data, t_list *temp);
+void handle_pipes(t_data *data, t_list *temp);
+void free_env_node(t_env *node);
+void ft_middle_proccess(t_list *temp, t_data *data, char **envp);
+void ft_concat_export(char *str, t_env **env, t_addr **addr_env);
+void ft_create_pipe(t_list *temp, t_data *data);
+void ft_exit(t_list *cmd);
+void ft_print_export(t_env **envp, int flag);
 void ft_add_to_env(t_env **env, char *key, char *value, t_addr **addr);
-
+void ft_print_error_execute_command(char *str);
+void *ft_memcpy(void *dest, const void *src, size_t n);
+char **ft_split(char const *s, char c, t_data *data);
+char *ft_strjoin(char *s1, char *s2);
+char *ft_get_path(t_list *cmd, t_env *env, t_data *data);
+char **ft_join_for_execve(t_list *cmd, t_addr *addr);
+char *ft_get_cwd(char *new_path, int mode);
 char *gc_substr(char *s, unsigned int start, size_t len, t_addr **addr_env);
-char	*gc_strjoin(char *s1, char *s2, t_addr **addr);
+char *gc_strjoin(char *s1, char *s2, t_addr **addr);
+char *ft_strjoin_export(char *s1, char *s2, t_data *data);
+char **ft_get_paths(t_env *env, t_data *data);
+size_t ft_strlcpy(char *dest, const char *src, size_t size);
+size_t ft_strlcat(char *dest, char *src, size_t size);
+t_env *ft_sort_export(t_env **envp);
 
-
-#endif
+#endif // EXECUTION_H

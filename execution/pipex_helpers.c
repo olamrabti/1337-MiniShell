@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:48:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:52:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:58:01 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	execute_command(t_list *temp, t_data *data, char **envp)
 
 void	ft_handle_childs(t_list *temp, t_data *data, char **envp)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
 	handle_file_descriptors(temp);
 	handle_pipes(data, temp);
 	execute_command(temp, data, envp);

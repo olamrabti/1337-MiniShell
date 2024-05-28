@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:02:29 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/25 15:12:07 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:50:58 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
 	splitted = ft_split_sp(value, addr);
 	if (!splitted)
 		return ;
-	if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0])
+	if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0] || (splitted[1] && is_after_red(curr, addr, env)))
 	{
 		delete_node(curr);
 		return ;

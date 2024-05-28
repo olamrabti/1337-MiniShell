@@ -42,7 +42,7 @@ SRCS = main.c \
 	execution/ft_get_paths.c \
 	execution/pipex_helpers.c \
 	execution/pipex_utils.c \
-	utils.c \
+	execution/utils.c \
 
 brew = $(shell brew --prefix readline)
 
@@ -56,11 +56,11 @@ OBJS = $(SRCS:.c=.o)
 all:
 	@$(MAKE) $(NAME)
 
-$(NAME) : $(OBJS) minishell.h parsing/parse.h execution/execution.h
+$(NAME) : $(OBJS) 
 	@echo "$(GREEN)Creating MINISHELL...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 
-%.o:%.c
+%.o: %.c minishell.h parsing/parse.h execution/execution.h
 	@$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
 
 clean :

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:44:18 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:49:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:57:49 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	ft_pipex(t_data *data, char **envp, int *tab, int total)
 
 	i = 0;
 	temp = data->cmd;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 	while (temp)
 	{
 		ft_create_pipe(temp, data);

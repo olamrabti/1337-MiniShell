@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:58 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/27 15:43:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:35:39 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ int	main(int ac, char **av, char **envp)
 	t_data	*data;
 	char	*line;
 
+	if (!isatty(0))
+		return (0);
 	init_data(ac, av, &data, envp);
-	while (1)
+	while (isatty(0))
 	{
 		signal(SIGINT, ctrl_c_handler);
 		signal(SIGQUIT, ctrl_c_handler);
-		line = readline(BOLD_WHITE "MINISHELL$ " RESET);
+		line = readline("MINISHELL$ ");
 		if (g_signal)
 			ft_exit_status(1);
 		if (line == NULL)

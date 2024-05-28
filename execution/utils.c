@@ -6,11 +6,11 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:30 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/27 15:43:33 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:35:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ctrl_c_handler(int signum)
 {

@@ -1,0 +1,5 @@
+[ ] $cmd :ambiguous redirect
+MINISHELL$ echo $?
+160
+
+[ ] /bin/ls

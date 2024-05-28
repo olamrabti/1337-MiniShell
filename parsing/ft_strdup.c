@@ -25,7 +25,7 @@ char	*gc_strdup(const char *s, t_addr **addr)
 {
 	char	*copy;
 
-	if (!s[0])
+	if (!s || !s[0])
 	{
 		copy = (char *)ft_calloc(addr, 1, sizeof(char));
 		if (!copy)

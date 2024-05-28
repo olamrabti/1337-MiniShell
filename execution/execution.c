@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 21:48:20 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:49:01 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ int	execute_commands(t_data **data, char **envp)
 	tcgetattr(STDIN_FILENO, (*data)->term);
 	if (temp->first && temp->last && ft_is_builtin(temp->value))
 		return (ft_execute_builtin(temp, *data));
-	if (temp->first && temp->last && ft_is_a_dir(temp->value)
-		&& (ft_strcmp(temp->value, "./minishell") != 0))
-		return (ft_handle_dir(temp, *data, envp));
 	ft_pipex((*data), envp, tab, total);
 	return (SUCCESS);
 }

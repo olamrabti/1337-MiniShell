@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:41:56 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:36:46 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	ft_print_error_path(char *str)
 {
 	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": No such file or director", 2);
+	ft_putstr_fd(": No such file or director\n", 2);
 }
 
 char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
@@ -30,10 +30,11 @@ char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
 		return (gc_strdup(cmd->value, &data->addr));
 	if (ft_strncmp(cmd->value, "/", 1) == 0)
 	{
-		if (access(cmd->value, X_OK) == 0)
-			return (gc_strdup(cmd->value, &data->addr));
-		else
+		// if (access(cmd->value, X_OK) == 0)
+		// 	return (gc_strdup(cmd->value, &data->addr));
+		// else
 			ft_print_error_path(cmd->value);
+			exit(127);
 	}
 	paths = ft_get_paths(env, data);
 	while (paths && paths[++i])

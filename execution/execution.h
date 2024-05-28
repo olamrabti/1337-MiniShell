@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/27 16:32:48 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:43:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,9 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 
 t_env	*ft_sort_export(t_env **envp);
+
+int	ft_is_point(char *str);
+char	**convert_envp(t_env *envp, t_addr **addr_env);
+char	*gc_itoa(int n, t_addr **addr);
 
 #endif

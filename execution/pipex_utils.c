@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:45:19 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:51:37 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:36:14 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	ft_execute(t_list *cmd, t_data *data, char **envp)
 	command = ft_join_for_execve(cmd, data->addr);
 	if (!command)
 		return (-1);
+	envp = convert_envp(data->env, &data->addr_env);
 	return (execve(path, command, envp));
 }
 

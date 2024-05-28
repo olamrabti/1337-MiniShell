@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:56:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:21:19 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_print_error_unset(char *str)
 {
 	ft_putstr_fd("unset: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": not a valid identifier", 2);
+	ft_putstr_fd(": not a valid identifier\n", 2);
 }
 
 void	unset_env_variable(char *arg, t_env **envp)

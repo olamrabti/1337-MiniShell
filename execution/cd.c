@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 21:43:48 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 01:40:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	ft_cd_with_args(t_list *cmd, t_env **envp, t_data *data)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
-		ft_putstr_fd(": no such file or directory\n", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (ERROR);
 	}
 	ptr = getcwd(NULL, 0);

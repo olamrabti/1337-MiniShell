@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:08:34 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 00:08:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,10 @@ void	ft_concat_export(char *str, t_env **env, t_addr **addr_env)
 	ft_add_to_env(env, key, value, addr_env);
 }
 
-int	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
+void	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
 {
-	int	flag;
 	int	i;
 
-	flag = 0;
 	i = 0;
 	while (cmd->args[i])
 	{
@@ -95,27 +93,21 @@ int	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
 			handle_export_argument(cmd->args[i], env, data);
 		else
 		{
-			flag = 1;
 			ft_putstr_fd("export: ", 2);
 			ft_putstr_fd(cmd->args[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
+			ft_exit_status(1);
 		}
 		i++;
 	}
-	return (flag);
 }
 
 int	ft_export(t_list *cmd, t_env **envp, t_data *data)
 {
-	int	flag;
-
 	if (cmd->args)
 	{
-		flag = ft_process_arguments(cmd, envp, data);
-		if (flag)
-			return (ERROR);
-		else
-			return (SUCCESS);
+		ft_process_arguments(cmd, envp, data);
+		return (ft_exit_status(-1));
 	}
 	else
 	{

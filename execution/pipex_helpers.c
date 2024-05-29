@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:48:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/28 23:17:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 01:35:22 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,47 +33,56 @@ void execute_command(t_list *temp, t_data *data, char **envp)
 				ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 				exit(2);
 			}
-			mydir = opendir(temp->value);
-			if (!mydir)
+			if (temp->value[0] == '.' || temp->value[0] == '/')
 			{
-				if (temp->value[ft_strlen(temp->value) - 1] == '/')
+				mydir = opendir(temp->value);
+				if (!mydir)
 				{
-					new_cmd = gc_substr(temp->value, 0, ft_strlen(temp->value) - 1, &data->addr);
-					if (access(new_cmd, F_OK) == 0)
+					if (temp->value[ft_strlen(temp->value) - 1] == '/')
 					{
-						ft_putstr_fd("minishell: ", 2);
-						ft_putstr_fd(temp->value, 2);
-						ft_putstr_fd(": Not a directory\n", 2);
-						exit(126);
-					}
-					else
-					{
-						ft_putstr_fd("minishell: ", 2);
-						ft_putstr_fd(temp->value, 2);
-						ft_putstr_fd(": No such file or directory\n", 2);
-						exit(127);
+						new_cmd = gc_substr(temp->value, 0, ft_strlen(temp->value) - 1, &data->addr);
+						if (access(new_cmd, F_OK) == 0)
+						{
+							ft_putstr_fd("minishell: ", 2);
+							ft_putstr_fd(temp->value, 2);
+							ft_putstr_fd(": Not a directory\n", 2);
+							exit(126);
+						}
+						else
+						{
+							ft_putstr_fd("minishell: ", 2);
+							ft_putstr_fd(temp->value, 2);
+							ft_putstr_fd(": No such file or directory\n", 2);
+							exit(127);
+						}
 					}
 				}
-			}
-			if (mydir)
-			{
-				closedir(mydir);
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(temp->value, 2);
-				ft_putstr_fd(": is a directory\n", 2);
-				exit(126);
-			}
-			if (access(temp->value, X_OK) == -1 && access(temp->value, F_OK) == 0 && temp->value[0] == '.' && temp->value[1] == '/')
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(temp->value, 2);
-				ft_putstr_fd(": Permission denied\n", 2);
-				exit(126);
+				if (mydir)
+				{
+					closedir(mydir);
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(temp->value, 2);
+					ft_putstr_fd(": is a directory\n", 2);
+					exit(126);
+				}
+				if (access(temp->value, X_OK) == -1 && access(temp->value, F_OK) == 0 && temp->value[0] == '.' && temp->value[1] == '/')
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(temp->value, 2);
+					ft_putstr_fd(": Permission denied\n", 2);
+					exit(126);
+				}
+				if (access(temp->value, X_OK) == -1 && access(temp->value, F_OK) == -1 && temp->value[0] == '.' && temp->value[1] == '/')
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(temp->value, 2);
+					ft_putstr_fd(": No such file or directory\n", 2);
+					exit(127);
+				}
 			}
 			if (ft_execute(temp, data, envp) == -1)
 			{
 				ft_print_error_execute_command(temp->value);
-				ft_exit_status(127);
 				exit(127);
 			}
 		}

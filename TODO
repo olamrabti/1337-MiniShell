@@ -1,6 +1,6 @@
-[ ] $cmd :ambiguous redirect
+[x] $cmd :ambiguous redirect
 MINISHELL$ echo $?
 160
 
-[ ] /bin/ls
-[ ].
+[x] /bin/ls
+[x].

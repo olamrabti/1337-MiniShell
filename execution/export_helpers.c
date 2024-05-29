@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:03:23 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:15:36 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:13:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_double_check(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '+')
+		if (str[i] == '+' && ft_no_equal(str))
 		{
 			i++;
 			if (str[i] == '=')

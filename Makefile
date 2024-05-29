@@ -1,8 +1,10 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 
 NAME = minishell
+
+HEADERS = minishell.h parsing/parse.h execution/execution.h
 
 SRCS = main.c \
 	parsing/address_collector.c \
@@ -57,11 +59,11 @@ OBJS = $(SRCS:.c=.o)
 all:
 	@$(MAKE) $(NAME)
 
-$(NAME) : $(OBJS) 
+$(NAME) : $(OBJS)
 	@echo "$(GREEN)Creating MINISHELL...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L $(brew)/lib
 
-%.o: %.c minishell.h parsing/parse.h execution/execution.h
+%.o: %.c $(HEADERS)
 	@$(CC) $(CFLAGS)  -c $< -I $(brew)/include -o $@
 
 clean :

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 01:40:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:38:14 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,7 @@ int	ft_home_dir(t_env **envp, t_data *data)
 		{
 			ft_strlcpy(oldpwd, ft_get_cwd(NULL, 0), PATH_MAX);
 			if (chdir((env)->value) == -1)
-			{
-				perror("cd: ");
-				ft_putstr_fd("cd: HOME not set\n", 2);
-				return (ERROR);
-			}
+				return (perror("chdir"), (ERROR));
 			ft_strlcpy(pwd, ft_get_cwd(NULL, 0), PATH_MAX);
 			ft_change_pwd(pwd, envp, data);
 			ft_change_oldpwd(oldpwd, envp, data);

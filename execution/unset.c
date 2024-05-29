@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 00:04:39 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:04:02 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_valid_unset(char *str)
 	if (ft_isalpha(str[0]) || str[0] == '_')
 	{
 		i++;
-		while (str[i] && (str[i] != '=' && str[i] != '+'))
+		while (str[i])
 		{
 			if (ft_isalnum(str[i]) || str[i] == '_')
 				i++;

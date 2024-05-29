@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 18:03:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:14:08 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		ft_is_exist(char *str, t_env *envp, int concat);
 int		ft_exit(t_list *cmd);
 int		ft_is_point(char *str);
 int		ft_lstsize(t_env *lst);
+int		ft_no_equal(char *str);
 
 void	ft_handle_dir(t_list *temp, t_data *data);
 void	ft_putstr_fd(char *str, int fd);

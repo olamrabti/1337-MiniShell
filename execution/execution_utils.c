@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 17:48:21 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:14:35 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,18 @@ int	ft_lstsize(t_env *lst)
 		lst = lst->next;
 	}
 	return (count);
+}
+
+int	ft_no_equal(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != '+')
+	{
+		if (str[i] == '=')
+			return (0);
+		i++;
+	}
+	return (1);
 }

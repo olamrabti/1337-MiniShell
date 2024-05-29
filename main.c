@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:58 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 01:13:46 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:52:59 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	main(int ac, char **av, char **envp)
 	t_data	*data;
 	char	*line;
 
-	// if (!isatty(0))
-	// 	return (0);
 	init_data(ac, av, &data, envp);
 	while (1)
 	{
@@ -38,7 +36,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	ft_lstclear(&data->addr_env, free);
 	ft_free_env(&data->env);
-	free(data);
-	data = NULL;
-	return (0);
+	return (free(data), data = NULL, (0));
 }

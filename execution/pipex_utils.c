@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:45:19 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/28 23:36:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:24:52 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ int	ft_execute(t_list *cmd, t_data *data, char **envp)
 {
 	char	*path;
 	char	**command;
-	int		i;
 
-	i = 0;
 	path = ft_get_path(cmd, data->env, data);
 	if (!path)
 		return (-1);

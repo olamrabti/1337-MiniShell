@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:02:32 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 21:57:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:24:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_print_error_exit(char *str)
 	ft_putstr_fd(": numeric argument required\n", 2);
 }
 
-void	ft_exit(t_list *cmd)
+int	ft_exit(t_list *cmd)
 {
 	int	ext;
 
@@ -85,7 +85,7 @@ void	ft_exit(t_list *cmd)
 		else if (ft_valid_exit(cmd->args[0]) && cmd->args[1])
 		{
 			ft_putstr_fd("exit: too many arguments\n", 2);
-			return ;
+			return (ft_exit_status(1));
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:49:30 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/27 15:55:10 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:05:30 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ int	ms_parse(t_data **data, char *line, t_env *env)
 	remove_token(&list, RM);
 	concat_words(&list, &((*data)->addr));
 	remove_token(&list, W_SPACE);
+	if (check_syntax(&list, &count) == 1)
+		return (ft_exit_status(258), 1);
 	(*data)->fds = malloc((count + 1) * sizeof(int));
 	if ((*data)->fds == NULL)
 		return (1);
-	if (check_syntax(&list, &count) == 1)
-		return (ft_close_descriptors(*data), ft_exit_status(258), 1);
 	(*data)->fds = handle_redirections(&list, &count, data, env);
 	if (g_signal == 2)
 		return (ft_close_descriptors(*data), 1);

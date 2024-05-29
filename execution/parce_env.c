@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:33:30 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/28 23:45:35 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:03:29 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,6 @@ t_env	*ft_parce_env(char **envp, t_addr **addr_env)
 	return (env);
 }
 
-int	ft_lstsize(t_env *lst)
-{
-	int	count;
-
-	count = 0;
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return (count);
-}
-
 char	*inc_shell_level(char *value, t_addr **addr_env)
 {
 	char	*tmp;
@@ -88,13 +75,24 @@ char	*inc_shell_level(char *value, t_addr **addr_env)
 	return (value);
 }
 
+char	*ft_fill_envp(t_env *env, char *envp, t_addr **addr_env)
+{
+	char	*value;
+
+	value = env->value;
+	if (ft_strcmp(env->key, "SHLVL") == 0)
+		value = inc_shell_level(value, addr_env);
+	envp = gc_strjoin(env->key, "=", addr_env);
+	envp = gc_strjoin(envp, value, addr_env);
+	return (envp);
+}
+
 char	**convert_envp(t_env *envp_lst, t_addr **addr_env)
 {
 	t_env	*env;
-	size_t		size;
-	char		**envp;
-	char	*value;
-	int			i;
+	size_t	size;
+	char	**envp;
+	int		i;
 
 	i = 0;
 	env = envp_lst;
@@ -103,16 +101,12 @@ char	**convert_envp(t_env *envp_lst, t_addr **addr_env)
 	size = ft_lstsize(envp_lst);
 	if (size == 0)
 		return (NULL);
-	envp = (char **)ft_calloc(addr_env, (size + 1) , sizeof(char *));
+	envp = (char **)ft_calloc(addr_env, (size + 1), sizeof(char *));
 	if (!envp)
-		exit (1);
+		exit(1);
 	while (env)
 	{
-		value = env->value;
-		if (ft_strcmp(env->key, "SHLVL") == 0)
-			value = inc_shell_level(value, addr_env);
-		envp[i] = gc_strjoin(env->key, "=", addr_env);
-		envp[i] = gc_strjoin(envp[i], value, addr_env);
+		envp[i] = ft_fill_envp(env, envp[i], addr_env);
 		i++;
 		env = env->next;
 	}

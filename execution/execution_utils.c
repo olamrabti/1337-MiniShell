@@ -6,16 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 21:47:22 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:48:21 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-// [x]: check if the command is a builtin
-// [x]: execute the builtin
-// [x] pipex
 
 int	ft_execute_builtin(t_list *cmd, t_data *data)
 {
@@ -34,7 +30,21 @@ int	ft_execute_builtin(t_list *cmd, t_data *data)
 	if (ft_strncmp(cmd->value, "env", 3) == 0)
 		status = ft_env(cmd, &data->env, data);
 	if (ft_strncmp(cmd->value, "exit", 4) == 0)
-		ft_exit(cmd);
+		status = ft_exit(cmd);
+	ft_close_descriptors(data);
 	ft_exit_status(status);
 	return (SUCCESS);
+}
+
+int	ft_lstsize(t_env *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return (count);
 }

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:44:18 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/28 19:00:38 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:30:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_pipex(t_data *data, char **envp, int *tab, int total)
 		ft_create_pipe(temp, data);
 		if (temp->type == NULL_TOKEN && temp->infile == 0 \
 			&& temp->outfile == 1 && temp->last)
-			return(ft_exit_status(-1));
+			return (ft_exit_status(-1));
 		data->pid = fork();
 		if (data->pid == -1)
 			return (perror("fork:"), (ERROR));
@@ -59,5 +59,5 @@ int	ft_pipex(t_data *data, char **envp, int *tab, int total)
 		temp = temp->nxt;
 	}
 	ft_parent_wait(data, tab, total);
-	return(ft_exit_status(-1));
+	return (ft_exit_status(-1));
 }

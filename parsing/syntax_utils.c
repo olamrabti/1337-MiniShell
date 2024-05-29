@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:31:48 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/25 17:43:38 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:08:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	check_syntax(t_list **list, int *count)
 		if (crr->type == RED_IN || crr->type == RED_OUT
 			|| crr->type == R_O_APPEND || crr->type == H_DOC)
 		{
-			(*count)++;
 			if ((!crr->nxt))
 				return (printf("%s `newline'\n", msg), 1);
 			if (crr->nxt && crr->nxt->type != WORD && crr->nxt->type != LTRAL)
 				return (printf("%s `%s'\n", msg, crr->nxt->value), 1);
+			(*count)++;
 		}
 		crr = crr->nxt;
 	}

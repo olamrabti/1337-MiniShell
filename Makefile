@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 NAME = minishell
 
@@ -43,6 +43,7 @@ SRCS = main.c \
 	execution/pipex_helpers.c \
 	execution/pipex_utils.c \
 	execution/utils.c \
+	execution/ft_not_a_dir.c \
 
 brew = $(shell brew --prefix readline)
 

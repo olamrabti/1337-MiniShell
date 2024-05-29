@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 12:16:03 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:34:15 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:55:13 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ int	ft_no_env(t_data **data)
 		ft_add_to_env(&(*data)->env, gc_strdup("_", &(*data)->addr_env), \
 			gc_strdup("/usr/bin/env", &(*data)->addr_env), &(*data)->addr_env);
 		ft_add_to_env(&(*data)->env, gc_strdup("PATH", &(*data)->addr_env), \
-			gc_strdup("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/\
-				sbin:/usr/local/munki:/Library/Apple/usr/bin", \
+			gc_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", \
 				&(*data)->addr_env), &(*data)->addr_env);
 		free(curr_dir);
 	}

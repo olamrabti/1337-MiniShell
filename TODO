@@ -1,6 +1,0 @@
-[x] $cmd :ambiguous redirect
-MINISHELL$ echo $?
-160
-
-[x] /bin/ls
-[x].

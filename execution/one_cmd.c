@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 01:39:30 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:22:01 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
 		return (gc_strdup(cmd->value, &data->addr));
 	if (ft_strncmp(cmd->value, "/", 1) == 0)
 	{
-		// if (access(cmd->value, X_OK) == 0)
-		// 	return (gc_strdup(cmd->value, &data->addr));
-		// else
-			ft_print_error_path(cmd->value);
-			exit(127);
+		ft_print_error_path(cmd->value);
+		exit(127);
 	}
 	paths = ft_get_paths(env, data);
 	while (paths && paths[++i])

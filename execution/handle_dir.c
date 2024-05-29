@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:19:16 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/28 23:10:34 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:41:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,76 +25,59 @@ int	ft_is_point(char *str)
 
 int	ft_is_a_dir(char *str)
 {
-	int	i;
-
-	if (ft_is_point(str))
+	if (str[0] == '.' || str[0] == '/')
 		return (1);
-	i = 0;
-	if (str && *str)
-	{
-		while (str[i])
-		{
-			if (str[i] == '/')
-				return (1);
-			i++;
-		}
-	}
 	return (0);
 }
 
-int	ft_file_exist(t_list *cmd, t_data *data, char **envp)
+void	ft_open_dir(t_list *temp, t_data *data)
 {
-	DIR	*dir;
+	DIR	*mydir;
 
-	dir = opendir(cmd->value);
-	if (dir != NULL)
+	mydir = opendir(temp->value);
+	if (!mydir)
+		ft_not_a_dir(temp, data);
+	if (mydir)
 	{
-		closedir(dir);
+		closedir(mydir);
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->value, 2);
+		ft_putstr_fd(temp->value, 2);
 		ft_putstr_fd(": is a directory\n", 2);
-		return (ft_exit_status(126));
-	}
-	if (access(cmd->value, X_OK) == 0)
-	{
-		if (ft_execute(cmd, data, envp) == -1)
-			return (ft_exit_status(126));
-		return (ft_exit_status(0));
-	}
-	else
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->value, 2);
-		ft_putstr_fd(": permission denied\n", 2);
-		return (ft_exit_status(126));
+		exit(126);
 	}
 }
 
-int	ft_handle_dir(t_list *cmd, t_data *data, char **envp)
+void	ft_permission_denied(t_list *temp)
 {
-	int	status;
+	if (access(temp->value, X_OK) == -1 && access(temp->value, F_OK) == 0 \
+		&& temp->value[0] == '.' && temp->value[1] == '/')
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(temp->value, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
+	}
+	if (access(temp->value, X_OK) == -1 && access(temp->value, F_OK) == -1 \
+		&& temp->value[0] == '.' && temp->value[1] == '/')
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(temp->value, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		exit(127);
+	}
+}
 
-	status = 0;
-	if (ft_is_point(cmd->value))
+void	ft_handle_dir(t_list *temp, t_data *data)
+{
+	if (ft_is_point(temp->value))
 	{
 		ft_putstr_fd("minishell: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
-		return (ft_exit_status(2));
+		exit(2);
 	}
-	else
+	if (ft_is_a_dir(temp->value))
 	{
-		if (access(cmd->value, F_OK) == 0)
-		{
-			status = ft_file_exist(cmd, data, envp);
-			return (status);
-		}
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->value, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			return (ft_exit_status(127));
-		}
+		ft_open_dir(temp, data);
+		ft_permission_denied(temp);
 	}
-	return (0);
 }

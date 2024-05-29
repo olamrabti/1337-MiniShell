@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:02:29 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 18:06:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:21:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_expand(char *key, t_env *env, t_addr **addr)
 	return (value);
 }
 
-void	ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
+int	ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
 {
 	char	**splitted;
 	int		i;
@@ -70,13 +70,10 @@ void	ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
 	i = 0;
 	splitted = ft_split_sp(value, addr);
 	if (!splitted)
-		return ;
+		return (-1);
 	if ((!splitted[0] && is_after_red(curr, addr, env)) || !splitted[0] \
 		|| (splitted[1] && is_after_red(curr, addr, env)))
-	{
-		delete_node(curr);
-		return ;
-	}
+		return (delete_node(curr));
 	while (splitted[i])
 	{
 		add_middle(curr, cr_node(splitted[i], WORD, addr));
@@ -90,6 +87,7 @@ void	ft_split_value(t_list *curr, char *value, t_addr **addr, t_env *env)
 		}
 		i++;
 	}
+	return (0);
 }
 
 void	expand_all(t_list **list, t_env *env, t_addr **addr)

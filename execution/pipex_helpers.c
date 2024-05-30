@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:48:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 20:58:08 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:21:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-void	execute_command(t_list *temp, t_data *data, char **envp)
+void	execute_command(t_list *temp, t_data *data)
 {
 	if (ft_is_builtin(temp->value))
 	{
@@ -25,7 +25,7 @@ void	execute_command(t_list *temp, t_data *data, char **envp)
 		if (temp->type != NULL_TOKEN)
 		{
 			ft_handle_dir(temp, data);
-			if (ft_execute(temp, data, envp) == -1)
+			if (ft_execute(temp, data) == -1)
 			{
 				ft_print_error_execute_command(temp->value);
 				exit(127);
@@ -36,13 +36,13 @@ void	execute_command(t_list *temp, t_data *data, char **envp)
 	}
 }
 
-void	ft_handle_childs(t_list *temp, t_data *data, char **envp)
+void	ft_handle_childs(t_list *temp, t_data *data)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	handle_file_descriptors(temp);
 	handle_pipes(data, temp);
-	execute_command(temp, data, envp);
+	execute_command(temp, data);
 }
 
 void	handle_parent_pipes(t_data *data, t_list *temp)

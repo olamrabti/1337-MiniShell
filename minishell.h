@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:42:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/27 16:33:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:24:54 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_data
 
 int		ms_parse(t_data **data, char *line, t_env *env);
 int		add_addr(t_addr **list, t_addr *new);
-int		execute_commands(t_data **data, char **envp);
+int		execute_commands(t_data **data);
 int		ft_no_env(t_data **data);
 int		ft_close_descriptors(t_data *data);
 int		ft_exit_status(int status);

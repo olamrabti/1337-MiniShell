@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:45:19 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 14:24:52 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:18:54 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ void	handle_file_descriptors(t_list *temp)
 	}
 }
 
-int	ft_execute(t_list *cmd, t_data *data, char **envp)
+int	ft_execute(t_list *cmd, t_data *data)
 {
 	char	*path;
+	char	**envp;
 	char	**command;
 
 	path = ft_get_path(cmd, data->env, data);

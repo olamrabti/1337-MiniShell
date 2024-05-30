@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:44:18 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 17:30:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:23:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	ft_create_pipe(t_list *temp, t_data *data)
 	}
 }
 
-void	ft_middle_proccess(t_list *temp, t_data *data, char **envp)
+void	ft_middle_proccess(t_list *temp, t_data *data)
 {
 	if (data->pid == 0)
-		ft_handle_childs(temp, data, envp);
+		ft_handle_childs(temp, data);
 	handle_parent_pipes(data, temp);
 }
 
-int	ft_pipex(t_data *data, char **envp, int *tab, int total)
+int	ft_pipex(t_data *data, int *tab, int total)
 {
 	t_list	*temp;
 	int		i;
@@ -55,7 +55,7 @@ int	ft_pipex(t_data *data, char **envp, int *tab, int total)
 		if (data->pid == -1)
 			return (perror("fork:"), (ERROR));
 		tab[i++] = data->pid;
-		ft_middle_proccess(temp, data, envp);
+		ft_middle_proccess(temp, data);
 		temp = temp->nxt;
 	}
 	ft_parent_wait(data, tab, total);

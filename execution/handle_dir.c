@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:19:16 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 17:41:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:38:19 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ void	ft_handle_dir(t_list *temp, t_data *data)
 		ft_putstr_fd("minishell: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
 		exit(2);
+	}
+	if (ft_strcmp(temp->value, "..") == 0)
+	{
+		if (ft_execute(temp, data) == -1)
+		{
+			ft_print_error_execute_command(temp->value);
+			exit(127);
+		}
 	}
 	if (ft_is_a_dir(temp->value))
 	{

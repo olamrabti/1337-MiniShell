@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:19:16 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 14:36:15 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:30:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	ft_open_dir(t_list *temp, t_data *data)
 	if (mydir)
 	{
 		closedir(mydir);
-		if ((temp->value[0] == '.' && temp->value[1] == '/') || temp->value[0] == '/')
+		if ((temp->value[0] == '.' && temp->value[1] == '/') \
+			|| temp->value[0] == '/')
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(temp->value, 2);

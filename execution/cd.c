@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:54 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 22:38:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:40:28 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	ft_cd_with_args(t_list *cmd, t_env **envp, t_data *data)
 
 int	ft_cd(t_list *cmd, t_env **envp, t_data *data)
 {
+	ft_exit_status(0);
 	if (cmd->args)
 		return (ft_cd_with_args(cmd, envp, data));
 	else

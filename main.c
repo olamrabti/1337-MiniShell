@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:31:58 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:25:06 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:01:10 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int ac, char **av, char **envp)
 			return (printf("exit\n"), exit(ft_exit_status(-1)), (0));
 		if (*line)
 			add_history(line);
-		if (ms_parse(&data, line, data->env) != 1)
+		if (ms_parse(&data, line) != 1)
 			if (data && data->cmd)
 				execute_commands(&data);
 		ft_clean_parsing(&data, line);

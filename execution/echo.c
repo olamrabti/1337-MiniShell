@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 10:36:44 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 21:45:44 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:40:18 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	ft_echo_printf(t_list *cmd)
 
 int	ft_echo(t_list *cmd)
 {
+	ft_exit_status(0);
 	if (cmd->args && cmd->last && cmd->first)
 	{
 		ft_echo_fd(cmd);

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:51:34 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 14:42:15 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:01:37 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		delete_node(t_list *node);
 int		check_syntax(t_list **list, int *count);
 int		handle_quote(t_list **list, t_token quote, t_addr **addr);
 int		get_key(char *line, int i, int j);
-int		ms_parse(t_data **data, char *line, t_env *env);
+int		ms_parse(t_data **data, char *line);
 int		fill_heredoc(t_list *deli, t_addr **addr, t_env *env);
 int		is_after_red(t_list *curr, t_addr **addr, t_env *env);
 int		fill_args(t_list *curr, int count, t_addr **addr);
@@ -46,6 +46,7 @@ void	remove_token(t_list **list, t_token token);
 void	ms_tokenize(t_list *current, char *line, t_addr **addr, int *j);
 void	find_delimiter(t_list *list);
 void	ft_putstr_fd(char *str, int fd);
+void	print_syntax_err(char *value);
 
 int		*handle_redirections(t_list **list, int *count, \
 	t_data **data, t_env *env);

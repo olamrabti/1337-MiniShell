@@ -6,12 +6,19 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:49:30 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 18:05:30 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:02:40 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "../minishell.h"
+
+void	print_syntax_err(char *value)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(value, 2);
+	ft_putstr_fd("'\n", 2);
+}
 
 void	remove_token(t_list **list, t_token token)
 {
@@ -47,7 +54,7 @@ int	fill_data(t_data **data, t_list *list)
 	return (0);
 }
 
-int	ms_parse(t_data **data, char *line, t_env *env)
+int	ms_parse(t_data **data, char *line)
 {
 	t_list	*list;
 	int		count;
@@ -59,7 +66,7 @@ int	ms_parse(t_data **data, char *line, t_env *env)
 	if (handle_quote(&list, S_QUOTE, &((*data)->addr)) % 2 != 0)
 		return (printf("quote>\n"), 1);
 	remove_token(&list, RM);
-	expand_all(&list, env, &((*data)->addr));
+	expand_all(&list, (*data)->env, &((*data)->addr));
 	remove_token(&list, RM);
 	concat_words(&list, &((*data)->addr));
 	remove_token(&list, W_SPACE);
@@ -68,7 +75,7 @@ int	ms_parse(t_data **data, char *line, t_env *env)
 	(*data)->fds = malloc((count + 1) * sizeof(int));
 	if ((*data)->fds == NULL)
 		return (1);
-	(*data)->fds = handle_redirections(&list, &count, data, env);
+	(*data)->fds = handle_redirections(&list, &count, data, (*data)->env);
 	if (g_signal == 2)
 		return (ft_close_descriptors(*data), 1);
 	return (fill_data(data, list));

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:06:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:12:56 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_execute_builtin(t_list *cmd, t_data *data)
 {
 	int	status;
 
-	ft_exit_status(0);
 	if (ft_strncmp(cmd->value, "echo", 4) == 0)
 		status = ft_echo(cmd);
 	if (ft_strncmp(cmd->value, "cd", 2) == 0)
@@ -25,7 +24,7 @@ int	ft_execute_builtin(t_list *cmd, t_data *data)
 	if (ft_strncmp(cmd->value, "pwd", 3) == 0)
 		status = ft_pwd(cmd);
 	if (ft_strncmp(cmd->value, "export", 6) == 0)
-		status = ft_export(cmd, &data->env, data);
+		status = ft_export(cmd, data);
 	if (ft_strncmp(cmd->value, "unset", 5) == 0)
 		status = ft_unset(cmd, &data->env);
 	if (ft_strncmp(cmd->value, "env", 3) == 0)

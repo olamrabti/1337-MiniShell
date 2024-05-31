@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:31:48 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/31 14:55:13 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:31:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,6 @@ int	ft_isalnum(int c)
 	if (ft_isalpha(c) || ft_isdigit(c))
 		return (1);
 	return (0);
-}
-
-void print_syntax_err(char *value)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(value, 2);
-	ft_putstr_fd("'\n", 2);
 }
 
 int	check_syntax(t_list **list, int *count)

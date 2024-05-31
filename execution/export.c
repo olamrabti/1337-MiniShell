@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 00:08:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:21:03 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,38 @@ int	ft_concat_env(char *str, t_env *envp, t_data *data)
 	return (SUCCESS);
 }
 
-int	ft_change_env(char *str, t_env *envp, int concat, t_data *data)
+int	ft_change_env(char *str, int concat, t_data **data)
 {
 	t_env	*env;
 	int		start;
 	int		len;
 
-	env = envp;
+	env = (*data)->env;
 	start = 0;
 	len = ft_strlen(str);
+	printf("%s\n", str);
 	if (concat)
-		return (ft_concat_env(str, env, data));
+	{
+		puts("ft_concat_env");
+		return (ft_concat_env(str, env, *data));
+	}
 	else
 	{
+		puts("good1");
 		while (str[start] && str[start] != '=')
 			start++;
 		while (env)
 		{
 			if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
 			{
-				env->value = gc_substr(str, start + 1, len - start - 1,
-						&data->addr_env);
+				puts("ok1");
+				env->value = "ola";
+				printf("%p\n", env);
+			// env->value = gc_substr(str, start + 1, len - start - 1,
+			// 			&(*data)->addr_env);
+			// 	printf("%s\n", env->value);
+			// 	printf("start=[%d]\n", start);
+			// 	printf("len=[%d]\n", len);
 				return (SUCCESS);
 			}
 			env = env->next;
@@ -82,7 +93,7 @@ void	ft_concat_export(char *str, t_env **env, t_addr **addr_env)
 	ft_add_to_env(env, key, value, addr_env);
 }
 
-void	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
+void	ft_process_arguments(t_list *cmd, t_data *data)
 {
 	int	i;
 
@@ -90,7 +101,10 @@ void	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
 	while (cmd->args[i])
 	{
 		if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
-			handle_export_argument(cmd->args[i], env, data);
+		{
+			puts("in");
+			handle_export_argument(cmd->args[i], data);
+		}
 		else
 		{
 			ft_putstr_fd("export: ", 2);
@@ -102,16 +116,17 @@ void	ft_process_arguments(t_list *cmd, t_env **env, t_data *data)
 	}
 }
 
-int	ft_export(t_list *cmd, t_env **envp, t_data *data)
+int	ft_export(t_list *cmd, t_data *data)
 {
+	ft_exit_status(0);
 	if (cmd->args)
 	{
-		ft_process_arguments(cmd, envp, data);
+		ft_process_arguments(cmd, data);
 		return (ft_exit_status(-1));
 	}
 	else
 	{
-		ft_print_export(envp, data->is_hiden);
+		ft_print_export(data, data->is_hiden);
 		return (SUCCESS);
 	}
 }

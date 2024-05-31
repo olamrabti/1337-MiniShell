@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 14:13:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:41:08 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	ft_env(t_list *cmd, t_env **envp, t_data *data)
 {
 	t_env	*env;
 
+	ft_exit_status(0);
 	env = *envp;
 	if (cmd->args != NULL)
 	{

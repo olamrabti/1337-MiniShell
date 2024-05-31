@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:24 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:06:21 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:40:57 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	process_unset_command(t_list *cmd, t_env **envp)
 
 int	ft_unset(t_list *cmd, t_env **envp)
 {
+	ft_exit_status(0);
 	if (!cmd->args || !*envp)
 		return (SUCCESS);
 	process_unset_command(cmd, envp);

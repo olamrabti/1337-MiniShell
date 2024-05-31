@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:19:16 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:38:19 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:36:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ int	ft_is_point(char *str)
 	return (0);
 }
 
-int	ft_is_a_dir(char *str)
-{
-	if (str[0] == '.' || str[0] == '/')
-		return (1);
-	return (0);
-}
-
 void	ft_open_dir(t_list *temp, t_data *data)
 {
 	DIR	*mydir;
@@ -40,10 +33,17 @@ void	ft_open_dir(t_list *temp, t_data *data)
 	if (mydir)
 	{
 		closedir(mydir);
+		if ((temp->value[0] == '.' && temp->value[1] == '/') || temp->value[0] == '/')
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(temp->value, 2);
+			ft_putstr_fd(": is a directory\n", 2);
+			exit(126);
+		}
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(temp->value, 2);
-		ft_putstr_fd(": is a directory\n", 2);
-		exit(126);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(127);
 	}
 }
 
@@ -83,9 +83,6 @@ void	ft_handle_dir(t_list *temp, t_data *data)
 			exit(127);
 		}
 	}
-	if (ft_is_a_dir(temp->value))
-	{
-		ft_open_dir(temp, data);
-		ft_permission_denied(temp);
-	}
+	ft_open_dir(temp, data);
+	ft_permission_denied(temp);
 }

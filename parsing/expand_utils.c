@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:13:44 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/25 17:43:59 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:46:27 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ int	is_after_red(t_list *curr, t_addr **addr, t_env *env)
 		return (0);
 	if (tmp->type == RED_IN || tmp->type == RED_OUT || tmp->type == R_O_APPEND)
 	{
-		printf("minishell: %s :ambiguous redirect\n", curr->value);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(curr->value, 2);
+		ft_putstr_fd(": ambiguous redirect\n", 2);
 		ft_exit_status(1);
 		empty_cmd(tmp, addr, env);
 		return (1);

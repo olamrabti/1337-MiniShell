@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 06:01:59 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 16:46:28 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:13:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ void	ft_print_env(t_env *envp, t_data *data)
 	{
 		if (env && env->key && env->value)
 		{
-			if (data->is_hiden == 1 && strcmp(env->key, "PATH") == 0)
+			if (data->is_hiden == 1 && ft_strcmp(env->key, "PATH") == 0)
 			{
-				printf("cococo\n");
 				env = env->next;
 				continue ;
 			}
-			if (data->oldpwd == 1 && strcmp(env->key, "OLDPWD") == 0)
+			if (data->oldpwd == 1 && ft_strcmp(env->key, "OLDPWD") == 0)
 			{
 				env = env->next;
 				continue ;

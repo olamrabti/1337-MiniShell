@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:51:34 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/27 16:33:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:42:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	concat_words(t_list **list, t_addr **addr);
 void	remove_token(t_list **list, t_token token);
 void	ms_tokenize(t_list *current, char *line, t_addr **addr, int *j);
 void	find_delimiter(t_list *list);
+void	ft_putstr_fd(char *str, int fd);
 
 int		*handle_redirections(t_list **list, int *count, \
 	t_data **data, t_env *env);

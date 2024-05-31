@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 16:31:48 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 16:08:16 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:55:13 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,33 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
+void print_syntax_err(char *value)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(value, 2);
+	ft_putstr_fd("'\n", 2);
+}
+
 int	check_syntax(t_list **list, int *count)
 {
 	t_list	*crr;
-	char	*msg;
 
 	crr = *list;
-	msg = "minishell: syntax error near unexpected token";
 	while (crr)
 	{
 		if (crr->type == PIPE)
 		{
 			if ((crr->prv && !crr->prv->prv)
 				|| !crr->nxt || (crr->nxt && crr->nxt->type == PIPE))
-				return (printf("%s `|'\n", msg), 1);
+				return (print_syntax_err("|"), 1);
 		}
 		if (crr->type == RED_IN || crr->type == RED_OUT
 			|| crr->type == R_O_APPEND || crr->type == H_DOC)
 		{
 			if ((!crr->nxt))
-				return (printf("%s `newline'\n", msg), 1);
+				return (print_syntax_err("newline"), 1);
 			if (crr->nxt && crr->nxt->type != WORD && crr->nxt->type != LTRAL)
-				return (printf("%s `%s'\n", msg, crr->nxt->value), 1);
+				return (print_syntax_err(crr->nxt->value), 1);
 			(*count)++;
 		}
 		crr = crr->nxt;

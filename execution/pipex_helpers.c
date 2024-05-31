@@ -6,14 +6,14 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:48:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:21:57 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:33:04 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
 
-void	execute_command(t_list *temp, t_data *data)
+void	execute_command(t_list *temp, t_data **data)
 {
 	if (ft_is_builtin(temp->value))
 	{
@@ -24,8 +24,8 @@ void	execute_command(t_list *temp, t_data *data)
 	{
 		if (temp->type != NULL_TOKEN)
 		{
-			ft_handle_dir(temp, data);
-			if (ft_execute(temp, data) == -1)
+			ft_handle_dir(temp, *data);
+			if (ft_execute(temp, *data) == -1)
 			{
 				ft_print_error_execute_command(temp->value);
 				exit(127);
@@ -36,12 +36,12 @@ void	execute_command(t_list *temp, t_data *data)
 	}
 }
 
-void	ft_handle_childs(t_list *temp, t_data *data)
+void	ft_handle_childs(t_list *temp, t_data **data)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	handle_file_descriptors(temp);
-	handle_pipes(data, temp);
+	handle_pipes(*data, temp);
 	execute_command(temp, data);
 }
 

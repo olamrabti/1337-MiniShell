@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:05:40 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:35:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int		ft_strlen(char *str);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, unsigned int n);
 int		execute_commands(t_data **data);
-int		ft_execute_builtin(t_list *cmd, t_data *data);
-int		ft_pipex(t_data *data, int *tab, int total);
+int		ft_execute_builtin(t_list *cmd, t_data **data);
+int		ft_pipex(t_data **data, int *tab, int total);
 int		ft_is_builtin(char *value);
 int		ft_cd(t_list *cmd, t_env **env, t_data *data);
 int		ft_pwd(t_list *cmd);
@@ -41,12 +41,12 @@ int		ft_isalnum(int c);
 int		ft_close_descriptors(t_data *data);
 int		ft_no_env(t_data **data);
 int		ft_env(t_list *cmd, t_env **envp, t_data *data);
-int		ft_export(t_list *cmd, t_data *data);
+int		ft_export(t_list *cmd, t_data **data);
 int		ft_execute(t_list *cmd, t_data *data);
 int		ft_parent_wait(t_data *data, int *tab, int total);
 int		ft_is_a_dir(char *str);
 int		ft_atoi(char *str);
-int		handle_export_argument(char *arg, t_data *data);
+int		handle_export_argument(char *arg, t_data **data);
 int		ft_add_to_export(char *str, t_env **env, int concat, t_addr **addr_env);
 int		ft_double_check(char *str);
 int		ft_export_is_valid(char *str);
@@ -61,15 +61,15 @@ int		ft_no_equal(char *str);
 void	ft_handle_dir(t_list *temp, t_data *data);
 void	ft_putstr_fd(char *str, int fd);
 void	handle_file_descriptors(t_list *temp);
-void	execute_command(t_list *temp, t_data *data);
-void	ft_handle_childs(t_list *temp, t_data *data);
+void	execute_command(t_list *temp, t_data **data);
+void	ft_handle_childs(t_list *temp, t_data **data);
 void	handle_parent_pipes(t_data *data, t_list *temp);
 void	handle_pipes(t_data *data, t_list *temp);
 void	free_env_node(t_env *node);
-void	ft_middle_proccess(t_list *temp, t_data *data);
+void	ft_middle_proccess(t_list *temp, t_data **data);
 void	ft_concat_export(char *str, t_env **env, t_addr **addr_env);
 void	ft_create_pipe(t_list *temp, t_data *data);
-void	ft_print_export(t_data *data, int flag);
+void	ft_print_export(t_data **data, int flag);
 void	ft_add_to_env(t_env **env, char *key, char *value, t_addr **addr);
 void	ft_print_error_execute_command(char *str);
 void	ft_not_a_dir(t_list *temp, t_data *data);

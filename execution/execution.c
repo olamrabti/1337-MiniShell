@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:24:23 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:35:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	execute_commands(t_data **data)
 	tab = ft_alloc_tab((*data), &total);
 	tcgetattr(STDIN_FILENO, (*data)->term);
 	if (temp->first && temp->last && ft_is_builtin(temp->value))
-		return (ft_execute_builtin(temp, *data));
-	ft_pipex((*data), tab, total);
+		return (ft_execute_builtin(temp, data));
+	ft_pipex(data, tab, total);
 	ft_close_descriptors((*data));
 	return (SUCCESS);
 }

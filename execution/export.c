@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:21:03 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:03:50 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,24 @@ int	ft_change_env(char *str, int concat, t_data **data)
 	t_env	*env;
 	int		start;
 	int		len;
+	char	*key;
 
 	env = (*data)->env;
 	start = 0;
 	len = ft_strlen(str);
-	printf("%s\n", str);
 	if (concat)
-	{
-		puts("ft_concat_env");
 		return (ft_concat_env(str, env, *data));
-	}
 	else
 	{
-		puts("good1");
 		while (str[start] && str[start] != '=')
 			start++;
+		key = gc_substr(str,0,start, &(*data)->addr_env);
 		while (env)
 		{
-			if ((ft_strncmp(str, env->key, start) == 0) && ((len - start) != 0))
+			if ((ft_strcmp(key, env->key) == 0))
 			{
-				puts("ok1");
-				env->value = "ola";
-				printf("%p\n", env);
-			// env->value = gc_substr(str, start + 1, len - start - 1,
-			// 			&(*data)->addr_env);
-			// 	printf("%s\n", env->value);
-			// 	printf("start=[%d]\n", start);
-			// 	printf("len=[%d]\n", len);
+			env->value = gc_substr(str, start + 1, len - start - 1,
+						&(*data)->addr_env);
 				return (SUCCESS);
 			}
 			env = env->next;
@@ -93,7 +84,7 @@ void	ft_concat_export(char *str, t_env **env, t_addr **addr_env)
 	ft_add_to_env(env, key, value, addr_env);
 }
 
-void	ft_process_arguments(t_list *cmd, t_data *data)
+void	ft_process_arguments(t_list *cmd, t_data **data)
 {
 	int	i;
 
@@ -116,7 +107,7 @@ void	ft_process_arguments(t_list *cmd, t_data *data)
 	}
 }
 
-int	ft_export(t_list *cmd, t_data *data)
+int	ft_export(t_list *cmd, t_data **data)
 {
 	ft_exit_status(0);
 	if (cmd->args)
@@ -126,7 +117,7 @@ int	ft_export(t_list *cmd, t_data *data)
 	}
 	else
 	{
-		ft_print_export(data, data->is_hiden);
+		ft_print_export(data, (*data)->is_hiden);
 		return (SUCCESS);
 	}
 }

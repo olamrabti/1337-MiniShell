@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 21:58:29 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:21:51 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:46:24 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ t_env	*ft_sort_export(t_env **envp)
 	return (*envp);
 }
 
-void	ft_print_export(t_data *data, int flag)
+void	ft_print_export(t_data **data, int flag)
 {
 	t_env	*env;
 
-	env = ft_sort_export(&data->env);
+	env = ft_sort_export(&(*data)->env);
 	while (env)
 	{
 		if (ft_strcmp(env->key, "PATH") == 0 && flag == 1)
@@ -92,33 +92,33 @@ char	*ft_strjoin_export(char *s1, char *s2, t_data *data)
 	return (result);
 }
 
-int	handle_export_argument(char *arg, t_data *data)
+int	handle_export_argument(char *arg, t_data **data)
 {
 	int	concat;
 	t_env *env;
 
-	env = data->env;
+	env = (*data)->env;
 	concat = ft_is_concat(arg);
 	printf("concat=[%d]\n", concat);
 	if ((ft_strncmp(arg, "PATH", 4) == 0) && (arg[4] == '=' || arg[4] == '+'))
-		data->is_hiden = 0;
-	if (ft_is_exist(arg, data->env, concat))
+		(*data)->is_hiden = 0;
+	if (ft_is_exist(arg, (*data)->env, concat))
 	{
 		puts("ft_change_env");
-		ft_change_env(arg, concat, &data);
-		printf("%p\n", data->env);
-		while (env)
-		{
-			printf("|%s|=|%s|\n", env->key, env->value);
-			env = env->next;
-		}
+		ft_change_env(arg, concat, data);
+		// printf("%p\n", (*data)->env);
+		// while (env)
+		// {
+		// 	printf("|%s|=|%s|\n", env->key, env->value);
+		// 	env = env->next;
+		// }
 		
 		
 	}
 	else
 	{
 		puts("ft_add_to_export");
-		ft_add_to_export(arg, &data->env, concat, &data->addr_env);
+		ft_add_to_export(arg, &(*data)->env, concat, &(*data)->addr_env);
 	}
 	return (SUCCESS);
 }

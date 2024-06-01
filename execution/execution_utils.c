@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:09 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:30:14 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:25:38 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_execute_builtin(t_list *cmd, t_data **data)
 	if (ft_strncmp(cmd->value, "unset", 5) == 0)
 		status = ft_unset(cmd, &(*data)->env);
 	if (ft_strncmp(cmd->value, "env", 3) == 0)
-		status = ft_env(cmd, &(*data)->env,  *data);
+		status = ft_env(cmd, &(*data)->env, *data);
 	if (ft_strncmp(cmd->value, "exit", 4) == 0)
 		status = ft_exit(cmd);
 	ft_close_descriptors(*data);

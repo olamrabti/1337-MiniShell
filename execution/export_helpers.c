@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:03:23 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 16:23:05 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:23:33 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	ft_is_concat(char *str)
 
 int	ft_is_exist_concat(char *str, t_env *envp)
 {
-	t_env	*env;
-	int		start;
+	t_env		*env;
+	int			start;
 
 	start = 0;
 	env = envp;
@@ -78,7 +78,7 @@ int	ft_is_exist_concat(char *str, t_env *envp)
 		start++;
 	while (env)
 	{
-		if ((ft_strncmp(str, env->key, start) == 0)
+		if ((ft_strncmp(str, env->key, start) == 0) \
 			&& (env->key[start] == '\0'))
 			return (1);
 		env = env->next;
@@ -88,8 +88,8 @@ int	ft_is_exist_concat(char *str, t_env *envp)
 
 int	ft_is_exist(char *str, t_env *envp, int concat)
 {
-	t_env	*env;
-	int		start;
+	t_env		*env;
+	int			start;
 
 	env = envp;
 	start = 0;
@@ -101,7 +101,7 @@ int	ft_is_exist(char *str, t_env *envp, int concat)
 			start++;
 		while (env)
 		{
-			if ((ft_strncmp(str, env->key, start) == 0)
+			if ((ft_strncmp(str, env->key, start) == 0) \
 				&& (env->key[start] == '\0'))
 				return (1);
 			env = env->next;

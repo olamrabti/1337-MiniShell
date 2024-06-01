@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:32:49 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 15:40:43 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:18:41 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_get_cwd(char *new_path, int flag)
 int	ft_pwd(t_list *cmd)
 {
 	char	*path;
-	
+
 	(void)cmd;
 	ft_exit_status(0);
 	path = ft_get_cwd(NULL, 0);

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:35:05 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:43:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		ft_is_builtin(char *value);
 int		ft_cd(t_list *cmd, t_env **env, t_data *data);
 int		ft_pwd(t_list *cmd);
 int		ft_echo(t_list *cmd);
-int		ft_change_env(char *str, int concat, t_data **data);
+int		ft_change_env(char *str, int concat, t_data **data, char *key);
 int		ft_unset(t_list *cmd, t_env **envp);
 int		ft_isdigit(int d);
 int		ft_isalpha(int c);

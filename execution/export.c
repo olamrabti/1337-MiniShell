@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 03:33:11 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 19:03:50 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:25:15 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@
 int	ft_concat_env(char *str, t_env *envp, t_data *data)
 {
 	t_env	*env;
+	char	*key;
 	int		start;
 
 	env = envp;
 	start = 0;
 	while (str[start] && str[start] != '+')
 		start++;
+	key = gc_substr(str, 0, start, &(data)->addr_env);
 	while (env)
 	{
-		if (ft_strncmp(str, env->key, start) == 0)
+		if (ft_strcmp(key, env->key) == 0)
 		{
 			env->value = ft_strjoin_export(env->value, str + (start + 2), data);
 			return (SUCCESS);
@@ -34,12 +36,11 @@ int	ft_concat_env(char *str, t_env *envp, t_data *data)
 	return (SUCCESS);
 }
 
-int	ft_change_env(char *str, int concat, t_data **data)
+int	ft_change_env(char *str, int concat, t_data **data, char *key)
 {
 	t_env	*env;
 	int		start;
 	int		len;
-	char	*key;
 
 	env = (*data)->env;
 	start = 0;
@@ -50,13 +51,12 @@ int	ft_change_env(char *str, int concat, t_data **data)
 	{
 		while (str[start] && str[start] != '=')
 			start++;
-		key = gc_substr(str,0,start, &(*data)->addr_env);
 		while (env)
 		{
 			if ((ft_strcmp(key, env->key) == 0))
 			{
-			env->value = gc_substr(str, start + 1, len - start - 1,
-						&(*data)->addr_env);
+				env->value = gc_substr(str, start + 1, len - start - 1, \
+					&(*data)->addr_env);
 				return (SUCCESS);
 			}
 			env = env->next;
@@ -92,10 +92,7 @@ void	ft_process_arguments(t_list *cmd, t_data **data)
 	while (cmd->args[i])
 	{
 		if (ft_export_is_valid(cmd->args[i]) && ft_double_check(cmd->args[i]))
-		{
-			puts("in");
 			handle_export_argument(cmd->args[i], data);
-		}
 		else
 		{
 			ft_putstr_fd("export: ", 2);

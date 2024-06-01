@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 21:58:29 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:46:24 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:22:48 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ char	*ft_strjoin_export(char *s1, char *s2, t_data *data)
 		return (NULL);
 	if (!s1)
 		s1 = gc_strdup("", &data->addr_env);
-	result = (char *)ft_calloc(&data->addr_env,
-			((ft_strlen(s2) + ft_strlen(s1)) + 1), sizeof(char));
+	result = (char *)ft_calloc(&data->addr_env, \
+		((ft_strlen(s2) + ft_strlen(s1)) + 1), sizeof(char));
 	if (!result)
 		return (0);
 	while (s1[i])
@@ -94,32 +94,23 @@ char	*ft_strjoin_export(char *s1, char *s2, t_data *data)
 
 int	handle_export_argument(char *arg, t_data **data)
 {
-	int	concat;
-	t_env *env;
+	t_env		*env;
+	char		*key;
+	int			concat;
+	int			start;
 
+	start = 0;
+	while (arg[start] && arg[start] != '=')
+		start++;
+	key = gc_substr(arg, 0, start, &(*data)->addr_env);
 	env = (*data)->env;
 	concat = ft_is_concat(arg);
-	printf("concat=[%d]\n", concat);
 	if ((ft_strncmp(arg, "PATH", 4) == 0) && (arg[4] == '=' || arg[4] == '+'))
 		(*data)->is_hiden = 0;
 	if (ft_is_exist(arg, (*data)->env, concat))
-	{
-		puts("ft_change_env");
-		ft_change_env(arg, concat, data);
-		// printf("%p\n", (*data)->env);
-		// while (env)
-		// {
-		// 	printf("|%s|=|%s|\n", env->key, env->value);
-		// 	env = env->next;
-		// }
-		
-		
-	}
+		ft_change_env(arg, concat, data, key);
 	else
-	{
-		puts("ft_add_to_export");
 		ft_add_to_export(arg, &(*data)->env, concat, &(*data)->addr_env);
-	}
 	return (SUCCESS);
 }
 

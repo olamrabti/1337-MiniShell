@@ -46,6 +46,7 @@ SRCS = main.c \
 	execution/pipex_utils.c \
 	execution/utils.c \
 	execution/ft_not_a_dir.c \
+	execution/exit_utils.c \
 
 brew = $(shell brew --prefix readline)
 

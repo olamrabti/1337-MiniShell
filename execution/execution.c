@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 00:28:02 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:35:15 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/03 00:37:13 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,57 @@ int	ft_is_builtin(char *value)
 	return (0);
 }
 
+void	ft_handle_buitins_red(t_list *temp)
+{
+	if (temp->infile != 0)
+	{
+		if (dup2(temp->infile, 0) == -1)
+		{
+			perror("dup2");
+			ft_exit_status(1);
+		}
+		close(temp->infile);
+	}
+	if (temp->outfile != 1)
+	{
+		if (dup2(temp->outfile, 1) == -1)
+		{
+			perror("dup2");
+			ft_exit_status(1);
+		}
+		close(temp->outfile);
+	}
+}
+
+int	ft_execute_one_builtin(t_list *temp, t_data **data)
+{
+	int	save_std_in;
+	int	save_std_out;
+
+	save_std_in = dup(0);
+	save_std_out = dup(1);
+	if (save_std_in == -1 || save_std_out == -1)
+	{
+		perror("dup");
+		ft_exit_status(1);
+	}
+	ft_handle_buitins_red(temp);
+	ft_execute_builtin(temp, data);
+	if (dup2(save_std_in, 0) == -1)
+	{
+		perror("dup2");
+		ft_exit_status(1);
+	}
+	if (dup2(save_std_out, 1) == -1)
+	{
+		perror("dup2");
+		ft_exit_status(1);
+	}
+	close(save_std_in);
+	close(save_std_out);
+	return (ft_exit_status(-1));
+}
+
 int	execute_commands(t_data **data)
 {
 	t_list	*temp;
@@ -43,8 +94,9 @@ int	execute_commands(t_data **data)
 	tab = ft_alloc_tab((*data), &total);
 	tcgetattr(STDIN_FILENO, (*data)->term);
 	if (temp->first && temp->last && ft_is_builtin(temp->value))
-		return (ft_execute_builtin(temp, data));
-	ft_pipex(data, tab, total);
+		ft_execute_one_builtin(temp, data);
+	else
+		ft_pipex(data, tab, total);
 	ft_close_descriptors((*data));
-	return (SUCCESS);
+	return (ft_exit_status(-1));
 }

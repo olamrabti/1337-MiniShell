@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 19:43:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/03 00:33:42 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		ft_exit(t_list *cmd);
 int		ft_is_point(char *str);
 int		ft_lstsize(t_env *lst);
 int		ft_no_equal(char *str);
+int		ft_valid_exit(char *str);
 
 void	ft_handle_dir(t_list *temp, t_data *data);
 void	ft_putstr_fd(char *str, int fd);

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 12:02:29 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 19:21:47 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:17:53 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ char	*ft_expand(char *key, t_env *env, t_addr **addr)
 {
 	char	*value;
 
-	if (ft_strncmp(key, "$_", ft_strlen(key)) == 0)
-		return (key);
 	if (ft_strncmp(key, "$$", ft_strlen(key)) == 0)
 		return (key);
 	if (ft_strncmp(key, "$?", ft_strlen(key)) == 0)

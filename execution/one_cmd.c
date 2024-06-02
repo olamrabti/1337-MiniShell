@@ -6,18 +6,12 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/29 14:22:01 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/03 00:18:12 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-
-void	ft_print_error_path(char *str)
-{
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
-}
 
 char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
 {
@@ -26,13 +20,9 @@ char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
 	int		i;
 
 	i = -1;
-	if (access(cmd->value, X_OK) == 0)
+	if (access(cmd->value, X_OK) == 0 \
+		&& (cmd->value[0] == '.' || cmd->value[0] == '/'))
 		return (gc_strdup(cmd->value, &data->addr));
-	if (ft_strncmp(cmd->value, "/", 1) == 0)
-	{
-		ft_print_error_path(cmd->value);
-		exit(127);
-	}
 	paths = ft_get_paths(env, data);
 	while (paths && paths[++i])
 	{

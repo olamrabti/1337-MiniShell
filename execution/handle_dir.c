@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 22:19:16 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 15:30:16 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:17:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,6 @@ void	ft_open_dir(t_list *temp, t_data *data)
 			ft_putstr_fd(": is a directory\n", 2);
 			exit(126);
 		}
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(temp->value, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 09:07:01 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/26 22:38:45 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/04 05:48:05 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,34 +74,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		i++;
 	}
 	return (byte_dest);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	int		i;
-	int		len;
-	char	*result;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s2) + ft_strlen(s1);
-	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result)
-		exit(1);
-	while (s1[i])
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	i = 0;
-	while (s2[i])
-	{
-		result[ft_strlen(s1) + i] = s2[i];
-		i++;
-	}
-	result[i + ft_strlen(s1)] = '\0';
-	return (result);
 }
 
 void	ft_putstr_fd(char *s, int fd)

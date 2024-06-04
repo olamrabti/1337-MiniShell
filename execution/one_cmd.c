@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 10:36:50 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/06/03 00:18:12 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/04 05:47:47 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ char	*ft_get_path(t_list *cmd, t_env *env, t_data *data)
 	paths = ft_get_paths(env, data);
 	while (paths && paths[++i])
 	{
-		full_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(full_path, cmd->value);
+		full_path = gc_strjoin(paths[i], "/", &data->addr);
+		full_path = gc_strjoin(full_path, cmd->value, &data->addr);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
-		free(full_path);
-		full_path = NULL;
 	}
 	return (NULL);
 }

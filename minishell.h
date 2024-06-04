@@ -6,15 +6,13 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:42:04 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/05/31 18:01:27 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/04 05:57:17 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define BOLD_WHITE "\033[1;37m"
-# define RESET "\033[0m"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>

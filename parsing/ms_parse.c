@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:49:30 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/06/03 00:17:45 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/04 05:57:41 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ms_parse(t_data **data, char *line)
 		return (ft_exit_status(258), 1);
 	(*data)->fds = malloc((count + 1) * sizeof(int));
 	if ((*data)->fds == NULL)
-		return (1);
+		return (ft_lstclear(&(*data)->addr, free), (1));
 	(*data)->fds = handle_redirections(&list, &count, data, (*data)->env);
 	if (g_signal == 2)
 		return (ft_close_descriptors(*data), 1);

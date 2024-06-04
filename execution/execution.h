@@ -6,7 +6,7 @@
 /*   By: oumimoun <oumimoun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 15:24:13 by oumimoun          #+#    #+#             */
-/*   Updated: 2024/06/03 00:33:42 by oumimoun         ###   ########.fr       */
+/*   Updated: 2024/06/04 05:52:16 by oumimoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int		ft_env(t_list *cmd, t_env **envp, t_data *data);
 int		ft_export(t_list *cmd, t_data **data);
 int		ft_execute(t_list *cmd, t_data *data);
 int		ft_parent_wait(t_data *data, int *tab, int total);
-int		ft_is_a_dir(char *str);
 int		ft_atoi(char *str);
 int		handle_export_argument(char *arg, t_data **data);
 int		ft_add_to_export(char *str, t_env **env, int concat, t_addr **addr_env);
@@ -78,7 +77,6 @@ void	ft_not_a_dir(t_list *temp, t_data *data);
 int		*ft_alloc_tab(t_data *data, int *total);
 
 void	*ft_memcpy(void *dest, const void *src, size_t n);
-char	*ft_strjoin(char *s1, char *s2);
 char	*ft_get_path(t_list *cmd, t_env *env, t_data *data);
 char	*ft_get_cwd(char *new_path, int mode);
 char	*gc_substr(char *s, unsigned int start, size_t len, t_addr **addr_env);
